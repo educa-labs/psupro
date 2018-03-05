@@ -1,0 +1,1714 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# tuniversidad-api
+
+These are the docs for tuniversidad API
+
+
+# Group Users and Auth
+
+## Users [/users]
+
+### Create User [POST]
+
++ Request (application/json)
+   
+        {  
+           "user":{  
+              "email":"cadiz.in@gmail.com",
+              "first_name":"eMasdO",
+              "last_name":"hERRAZURIZ",
+              "password":"123456",
+              "password_confirmation":"123456",
+              "level_id":1,
+              "rut":"some_rut"
+           }
+        }  
+        
++ Response 201
+
+        {
+            "id": 3,
+            "email": "cadizsazsfasg.in@gmail.com",
+            "auth_token": "aYx6Sv8CDp8zLCxpWybB",
+            "first_name": "Emasdo",
+            "last_name": "Herrazuriz",
+            "rut": "00.000.000-0",
+            "city_id": null,
+            "phone": "",
+            "institution_id": null,
+            "admin": false,
+            "preuniversity": false,
+            "notifications": true,
+            "level_id": 1,
+            "tutorial": false,
+            "nem": null,
+            "ranking": null,
+            "birth_date": null
+        }
+        
++ Response 422
+
+        {
+            "errors": {
+                "some attribute": [
+                    "some problem"
+                ]
+            }
+        }
+        
+## User [/users/{user_id}]
+
++ Parameters
+    + user_id (number) - ID of the user.
+
+### Update User [PUT]
+
++ Request (application/json)
+    + Headers
+    
+            Authorization: some_auth_token
+    
+    + Body
+    
+            {  
+               "user": {  
+                  "some_user_param": "some_value"
+               }
+            }
+            
++ Response 200
+
+        {
+            "id": 3,
+            "email": "cadizsazsfasg.in@gmail.com",
+            "auth_token": "aYx6Sv8CDp8zLCxpWybB",
+            "first_name": "Emasdo",
+            "last_name": "Herrazuriz",
+            "rut": "00.000.000-0",
+            "city_id": null,
+            "phone": "",
+            "institution_id": null,
+            "admin": false,
+            "preuniversity": false,
+            "notifications": true,
+            "level_id": 1,
+            "tutorial": false,
+            "nem": null,
+            "ranking": null,
+            "birth_date": null
+        }
+    
++ Response 422
+
+        {
+            "errors": {
+                "some attribute": [
+                    "some problem"
+                ]
+            }
+        }
+
+### Delete User [DELETE]
+
++ Request
+    + Headers
+    
+            Authorization: some_auth_token
+
++ Response 204
+
+## Validate Rut [/validate_rut{?rut}]
+
++ Parameters
+    + rut (string) - rut to validate
+
+### Rut Validation [GET]
+        
++ Response 200
+    
+        {
+        "valid": false,
+        "error": "some_error"
+        }
+    
+
++ Response 200
+    
+        {
+        "valid": true
+        }
+
+## Reset Password [/reset_passwords{?email}]
+
++ Parameters
+    + email (string) - Email of user about to change password
+
+### Reset password [GET]
+
++ Response 200
+    
+        {
+        "email_sent": false,
+        "errors": "some_error"
+        }
+    
+
++ Response 200
+    
+        {
+        "email_sent": true
+        }
+        
+## Sessions [/sessions]
+
+### Login [POST]
+
++ Request (application/json)
+    + Body
+    
+            {
+               "session":{
+                  "email":"cadiz.in@gmail.com",
+                  "password":"123456"
+               }
+            }
+
++ Response 200
+
+        {
+            "id": 2,
+            "email": "cadiz.in@gmail.com",
+            "auth_token": "r56ytz_SHeXbDgYZJ752",
+            "first_name": "Emasdo",
+            "last_name": "Herrazuriz",
+            "rut": "19.291.235-0",
+            "city_id": null,
+            "phone": "",
+            "institution_id": null,
+            "admin": false,
+            "preuniversity": false,
+            "notifications": true,
+            "level_id": 1,
+            "tutorial": true,
+            "nem": 720,
+            "ranking": 600,
+            "birth_date": null
+        }
+
+
+# Group Constants
+
+### Regions [GET /regions]
+
++ Response 200
+
+        [
+            {
+                "id": 1,
+                "title": "Tarapacá"
+            },
+            {
+                "id": 2,
+                "title": "Antofagasta"
+            },
+            {
+                "id": 3,
+                "title": "Atacama"
+            }
+        ]
+        
+### Cities [GET /cities]
+
++ Response 200
+
+        [
+            {
+                "id": 1,
+                "title": "Iquique",
+                "region_id": 1
+            },
+            {
+                "id": 2,
+                "title": "Alto Hospicio",
+                "region_id": 1
+            },
+            {
+                "id": 3,
+                "title": "Pozo Almonte",
+                "region_id": 1
+            }
+        ]
+        
+### Cities per region [GET /regions/{region_id}/cities]
+
++ Parameters
+    + region_id (integer) - Region ID for cities to be returned.
+    
++ Response 200
+
+        [
+            {
+                "id": 279,
+                "title": "Santiago",
+                "region_id": 13
+            },
+            {
+                "id": 280,
+                "title": "Cerrillos",
+                "region_id": 13
+            },
+            {
+                "id": 281,
+                "title": "Cerro Navia",
+                "region_id": 13
+            },
+            {
+                "id": 282,
+                "title": "Conchalí",
+                "region_id": 13
+            }
+        ]
+
+### Areas [GET /areas]
+
++ Response 200
+
+        [
+            {
+                "id": 1,
+                "title": "Administración y comercio"
+            },
+            {
+                "id": 2,
+                "title": "Agropecuaria"
+            },
+            {
+                "id": 3,
+                "title": "Arte y Arquitectura"
+            }
+        ]
+        
+### Area picture [GET /areas/{area_id}]
+
++ Parameters
+    + area_id (integer) - Area ID for picture to be returned.
+    
++ Response 200
+    
+        {
+            "image": "some base64 image"
+        }
+    
+### Schedules [GET /schedules]
+
++ Response 200
+
+        {
+            "schedules": [
+                "Diurno",
+                "Vespertino"
+            ]
+        }
+        
+### University Types [GET /university_types]
+
++ Response 200
+
+        [
+            {
+                "id": 1,
+                "title": "Estatal"
+            },
+            {
+                "id": 2,
+                "title": "Privada"
+            }
+        ]
+
+
+# Group Universities
+
+### Universities [GET /universities]
+
++ Response 200
+
+        [
+            {
+                "id": 6,
+                "title": "Pontifica Universidad Católica de Valparaíso",
+                "foundation": "1928-03-15T00:00:00+00:00",
+                "website": "www.pucv.cl",
+                "freeness": true,
+                "motto": "Fides et Labor",
+                "nick": "",
+                "description": "La Pontificia Universidad Católica de Valparaíso (PUCV), también llamada Universidad Católica de Valparaíso(UCV), es una universidad tradicional y privada de Chile, perteneciente al Consejo de Rectores de las Universidades Chilenas, a la Agrupación de Universidades Regionales de Chile y a la Red Universitaria G9. Es además una universidad católica pontificia, que depende directamente de la Santa Sede y del Obispado de Valparaíso. Es reconocida como una entidad de alto prestigio académico, así como una institución universitaria compleja por su alto desarrollo formativo e investigativo en las ciencias, las humanidades y las artes.",
+                "u_type": "Privada",
+                "initials": "PUCV",
+                "students": 19369,
+                "teachers": 1386,
+                "degrees": 59,
+                "postgraduates": 46,
+                "doctorates": 15,
+                "institution_id": 6
+            },
+            {
+                "id": 2,
+                "title": "Pontificia Universidad Católica de Chile",
+                "foundation": "1888-06-21T00:00:00+00:00",
+                "website": "www.uc.cl",
+                "freeness": true,
+                "motto": "In Christi lumine pro mundi vita",
+                "nick": "",
+                "description": "La Pontificia Universidad Católica de Chile fue fundada el 21 de junio de 1888 por iniciativa del Arzobispo de Santiago, Monseñor Mariano Casanova, con el objetivo de ser una institución que integrara la excelencia académica y una formación inspirada en la doctrina cristiana. Su creación se inserta en las circunstancias históricas universales y locales que afectaron a la Iglesia Católica, instándola a formar profesionales poseedores de un auténtico sentido cristiano de la vida, que sirviera como fermento renovador para las nuevas generaciones.",
+                "u_type": "Privada",
+                "initials": "PUC",
+                "students": 28311,
+                "teachers": 3289,
+                "degrees": 53,
+                "postgraduates": 148,
+                "doctorates": 34,
+                "institution_id": 2
+            }
+        ]
+
+### University show [GET /universities/{university_id}/{?image}]
+
++ Parameters
+    + university_id (integer) - university ID for data to be sent in response.
+    + image (boolean) - if true response is universities images, else is university data.
+    
++ Response 200
+
+            {
+                "id": 2,
+                "title": "Pontificia Universidad Católica de Chile",
+                "foundation": "1888-06-21T00:00:00+00:00",
+                "website": "www.uc.cl",
+                "freeness": true,
+                "motto": "In Christi lumine pro mundi vita",
+                "nick": "",
+                "description": "La Pontificia Universidad Católica de Chile fue fundada el 21 de junio de 1888 por iniciativa del Arzobispo de Santiago, Monseñor Mariano Casanova, con el objetivo de ser una institución que integrara la excelencia académica y una formación inspirada en la doctrina cristiana. Su creación se inserta en las circunstancias históricas universales y locales que afectaron a la Iglesia Católica, instándola a formar profesionales poseedores de un auténtico sentido cristiano de la vida, que sirviera como fermento renovador para las nuevas generaciones.",
+                "u_type": "Privada",
+                "initials": "PUC",
+                "students": 28311,
+                "teachers": 3289,
+                "degrees": 53,
+                "postgraduates": 148,
+                "doctorates": 34,
+                "institution_id": 2
+            }
+
++ Response 200
+
+            {
+                "cover": "base64 image data",
+                "profile": "base64 image data"
+            }
+
+### Universities per city [GET   /cities/{city_id}/universities]
+
++ Parameters
+    + city_id (integer) - ID of the city whose universities will be returned.
+    
++ Response 200
+
+        [
+            {
+                "id": 31,
+                "title": "Universidad Arturo Prat",
+                "foundation": "1984-12-14T00:00:00+00:00",
+                "website": "www.unap.cl",
+                "freeness": true,
+                "motto": "La única manera de que el pueblo alcance su libertad es con educación",
+                "nick": "",
+                "description": "La Universidad Arturo Prat es una de las dieciséis universidades del Consorcio de Universidades del Estado de Chile y es miembro de la Agrupación de Universidades Regionales de Chile, la cual pertenece al Consejo de Rectores de las Universidades Chilenas. Su Casa Central se encuentra en Iquique, Región de Tarapacá, Chile.",
+                "u_type": "Estatal",
+                "initials": "UNAP",
+                "students": 13115,
+                "teachers": 181,
+                "degrees": 55,
+                "postgraduates": 20,
+                "doctorates": 1,
+                "institution_id": 31
+            },
+            {
+                "id": 16,
+                "title": "Universidad de Tarapacá",
+                "foundation": "1981-12-11T00:00:00+00:00",
+                "website": "www.uta.cl",
+                "freeness": true,
+                "motto": "Universidad de verdad",
+                "nick": "",
+                "description": "La Universidad de Tarapacá es una universidad chilena, de carácter estatal, cuya sede central se encuentra ubicada en Arica, capital de la XV Región. Forma parte de la Agrupación de Universidades Regionales de Chile, del Consejo de Rectores de las Universidades Chilenas y del Consorcio de Universidades del Estado de Chile. La universidad es reconocida mundialmente por su aporte constante al desarrollo de la Arqueología del Norte Grande de Chile y por su rápido crecimiento y posicionamiento estratégicos, a nivel nacional y latinoamericano.",
+                "u_type": "Estatal",
+                "initials": "UTA",
+                "students": 8672,
+                "teachers": 438,
+                "degrees": 48,
+                "postgraduates": 14,
+                "doctorates": 1,
+                "institution_id": 16
+            }
+        ]
+        
+### Popular universities [GET /popular/universities]
+
+    Responds with array of most popular universities
+    
++ Response 200
+
+        [
+            {
+                "id": 3,
+                "title": "Universidad de Concepción",
+                "foundation": "1919-05-14T00:00:00+00:00",
+                "website": "www.udec.cl",
+                "freeness": true,
+                "motto": "Por el desarrollo libre del espíritu",
+                "nick": "",
+                "description": "La idea de fundar la Universidad de Concepción era una antigua aspiración de los penquistas. Desde el siglo pasado, insignes rectores del Liceo de Concepción abogaban por la creación de carreras profesionales bajo la tutela de ese plantel. Esta idea que contaba con gran apoyo dentro de la sociedad penquista, no se había podido concretar principalmente, por la falta de organización \"de todas las personas que así pensaban\", señala un artículo del diario El Sur, de febrero de 1917.",
+                "u_type": "Privada",
+                "initials": "UDEC",
+                "students": 27468,
+                "teachers": 1597,
+                "degrees": 90,
+                "postgraduates": 86,
+                "doctorates": 27,
+                "institution_id": 3
+            },
+            {
+                "id": 12,
+                "title": "Universidad de Valparaíso",
+                "foundation": "1981-02-12T00:00:00+00:00",
+                "website": "www.uv.cl",
+                "freeness": true,
+                "motto": "Tradición, excelencia e innovación",
+                "nick": "",
+                "description": "La Universidad de Valparaíso es una institución estatal, pública y autónoma, fundada en una larga tradición y se plantea como misión generar y difundir el conocimiento, cultivando las artes, las ciencias, las humanidades y las tecnologías, a través del desarrollo de docencia de pregrado, posgrado, e investigación, así como entregando competencias y valores para formar graduados, profesionales e investigadores en un marco de calidad y compromiso con el desarrollo regional y nacional, promoviendo su carácter sostenible.",
+                "u_type": "Estatal",
+                "initials": "UV",
+                "students": 3129,
+                "teachers": 1828,
+                "degrees": 51,
+                "postgraduates": 107,
+                "doctorates": 8,
+                "institution_id": 12
+            }
+        ]
+
+
+# Group Careers
+
+### Careers  [GET /carreers]
+
++ Response 200
+
+            [
+                {
+                    "id": 1,
+                    "title": "Actuación Teatral",
+                    "university_name": "Universidad de Chile",
+                    "campu_name": "Casa Central",
+                    "campu_id": 2,
+                    "certification": false,
+                    "area_id": 3,
+                    "semesters": 10,
+                    "price": 3540700,
+                    "area_title": "Arte y Arquitectura",
+                    "schedule": "Diurno",
+                    "openings": 23,
+                    "employability": 48,
+                    "income": 700000,
+                    "university_id": 1,
+                    "admission": "PSU",
+                    "last_cut": 601,
+                    "description": "La Licenciatura en Artes con mención en Actuación Teatral de la Universidad de Chile, busca entregar conocimientos generales acerca del pensamiento humano y destrezas propias del arte de la representación, que te permitirán desarrollar habilidades artísticas y/o reflexivas.",
+                    "weighing": {
+                        "id": 1,
+                        "NEM": 10,
+                        "ranking": 20,
+                        "language": 30,
+                        "math": 15,
+                        "history": 25,
+                        "science": 0
+                    }
+                },
+                {
+                    "id": 64,
+                    "title": "Administración Pública",
+                    "university_name": "Universidad de Chile",
+                    "campu_name": "Casa Central",
+                    "campu_id": 2,
+                    "certification": true,
+                    "area_id": 1,
+                    "semesters": 11,
+                    "price": 3120100,
+                    "area_title": "Administración y comercio",
+                    "schedule": "Diurno",
+                    "openings": 100,
+                    "employability": 86,
+                    "income": 1700000,
+                    "university_id": 1,
+                    "admission": null,
+                    "last_cut": 659,
+                    "description": "La carrera Administración Pública de la Universidad de Chile, busca entregar a sus estudiantes la capacidad para encontrar equilibrios entre la autoridad, el orden, la libertad y expectativas de desarrollo de los ciudadanos.",
+                    "weighing": {
+                        "id": 64,
+                        "NEM": 10,
+                        "ranking": 30,
+                        "language": 20,
+                        "math": 20,
+                        "history": 20,
+                        "science": 0
+                    }
+                }
+            ]
+
+### Carreers per University [GET /universities/{university_id}/carreers]
+
++ Parameters
+    + university_id (integer) - ID of university to send carreer data.
+    
++ Response 200
+
+        [
+            {
+                "id": 1,
+                "title": "Actuación Teatral",
+                "university_name": "Universidad de Chile",
+                "campu_name": "Casa Central",
+                "campu_id": 2,
+                "certification": false,
+                "area_id": 3,
+                "semesters": 10,
+                "price": 3540700,
+                "area_title": "Arte y Arquitectura",
+                "schedule": "Diurno",
+                "openings": 23,
+                "employability": 48,
+                "income": 700000,
+                "university_id": 1,
+                "admission": "PSU",
+                "last_cut": 601,
+                "description": "La Licenciatura en Artes con mención en Actuación Teatral de la Universidad de Chile, busca entregar conocimientos generales acerca del pensamiento humano y destrezas propias del arte de la representación, que te permitirán desarrollar habilidades artísticas y/o reflexivas.",
+                "weighing": {
+                    "id": 1,
+                    "NEM": 10,
+                    "ranking": 20,
+                    "language": 30,
+                    "math": 15,
+                    "history": 25,
+                    "science": 0
+                }
+            },
+            {
+                "id": 64,
+                "title": "Administración Pública",
+                "university_name": "Universidad de Chile",
+                "campu_name": "Casa Central",
+                "campu_id": 2,
+                "certification": true,
+                "area_id": 1,
+                "semesters": 11,
+                "price": 3120100,
+                "area_title": "Administración y comercio",
+                "schedule": "Diurno",
+                "openings": 100,
+                "employability": 86,
+                "income": 1700000,
+                "university_id": 1,
+                "admission": null,
+                "last_cut": 659,
+                "description": "La carrera Administración Pública de la Universidad de Chile, busca entregar a sus estudiantes la capacidad para encontrar equilibrios entre la autoridad, el orden, la libertad y expectativas de desarrollo de los ciudadanos.",
+                "weighing": {
+                    "id": 64,
+                    "NEM": 10,
+                    "ranking": 30,
+                    "language": 20,
+                    "math": 20,
+                    "history": 20,
+                    "science": 0
+                }
+            }
+        ]
+
+### Popular Careers  [GET /popular/carreers]
+
+Responds with array of most popular careers.
+
++ Response 200
+
+        [
+            {
+                "id": 100,
+                "title": "Nutrición y Dietética",
+                "university_name": "Pontificia Universidad Católica de Chile",
+                "campu_name": "Campus San Joaquin",
+                "campu_id": 9,
+                "certification": false,
+                "area_id": 9,
+                "semesters": 10,
+                "price": 3778000,
+                "area_title": "Salud",
+                "schedule": "Diurno",
+                "openings": 55,
+                "employability": null,
+                "income": null,
+                "university_id": 2,
+                "admission": null,
+                "last_cut": 669,
+                "description": "El Nutricionista de la Pontificia Universidad Católica de Chile es un profesional que estudia la alimentación y nutrición del humano para entender, prevenir y tratar los problemas de salud y patologías prevalentes en el país en esta área.",
+                "weighing": {
+                    "id": 100,
+                    "NEM": 20,
+                    "ranking": 20,
+                    "language": 15,
+                    "math": 20,
+                    "history": 0,
+                    "science": 25
+                }
+            },
+            {
+                "id": 3,
+                "title": "Diseño Teatral",
+                "university_name": "Universidad de Chile",
+                "campu_name": "Casa Central",
+                "campu_id": 2,
+                "certification": false,
+                "area_id": 3,
+                "semesters": 10,
+                "price": 2547000,
+                "area_title": "Arte y Arquitectura",
+                "schedule": "Diurno",
+                "openings": 23,
+                "employability": 77,
+                "income": 900000,
+                "university_id": 1,
+                "admission": null,
+                "last_cut": 601,
+                "description": "La carrera Licenciatura en Artes con mención en Diseño Teatral de la Universidad de Chile, entrega a sus estudiantes un conocimiento integral de las artes de la visualidad teatral, con énfasis en elementos de escenografía, vestuario, iluminación, utilería y maquillaje.",
+                "weighing": {
+                    "id": 3,
+                    "NEM": 10,
+                    "ranking": 20,
+                    "language": 20,
+                    "math": 20,
+                    "history": 25,
+                    "science": 0
+                }
+            }
+        ]
+
+
+# Group Campus
+
+### Campuses [GET /campus]
+
++ Response 200 
+
+        [
+            {
+                "id": 1,
+                "title": "Juan Gómez Millas",
+                "university_id": 1,
+                "lat": "-334.659.887",
+                "long": "-705.970.512",
+                "address": "Las Encinas 3305 Ñuñoa",
+                "city_id": 347
+            },
+            {
+                "id": 2,
+                "title": "Casa Central",
+                "university_id": 1,
+                "lat": "-334.445.011",
+                "long": "-706.530.677",
+                "address": "Av. Libertador Bernardo O'Higgins 1058",
+                "city_id": 279
+            }
+        ]
+
+### Campuses per city [GET /cities/{city_id}/campus]
+
++ Ṕarameters
+    + city_id (integer) - ID of the city whose campuses will be returned.
+
++ Response 200
+
+        [
+            {
+                "id": 69,
+                "title": "Casa Central",
+                "university_id": 16,
+                "lat": "-202.137.304",
+                "long": "-701.550.115",
+                "address": "Avda Anibal Pinto 595",
+                "city_id": 1
+            },
+            {
+                "id": 125,
+                "title": "Casa Central",
+                "university_id": 31,
+                "lat": "-20.243.629",
+                "long": "-70.143.691",
+                "address": "Arturo Prat Chacón 2120",
+                "city_id": 1
+            }
+        ]
+
+### Campus per University [GET /university/{university_id}/campus]
+
++ Parameters
+    + university_id (integer) - ID of the university whose campuses will be returned.
+
++ Response 200
+
+        [
+            {
+                "id": 45,
+                "title": "Campus Peñalolén",
+                "university_id": 10,
+                "lat": "-334.894.238",
+                "long": "-705.188.557",
+                "address": "Diagonal Las Torres 2640, Penalolen",
+                "city_id": 279
+            },
+            {
+                "id": 46,
+                "title": "Campus Viña del Mar",
+                "university_id": 10,
+                "lat": "-330.194.761",
+                "long": "-715.313.669",
+                "address": "Padre Hurtado 750",
+                "city_id": 47
+            }
+        ]
+
+
+# Group Goals
+
+## Goal [/goals]
+
+### Create Goal [POST]
+
+Adds Career to authenticated user's goals
+
++ Request 
+
+    + Headers
+    
+            Authorization: some_auth_token
+    
+    + Body
+
+
+            {  
+               "carreer": {  
+                  "id": 100
+               }
+            }
+            
++ Response 201
+
+        {
+            "scores": {
+                "science": {
+                    "max": 500,
+                    "avg": 500,
+                    "obj": 500
+                },
+                "history": {
+                    "max": 600,
+                    "avg": 600,
+                    "obj": 600
+                },
+                "last_cut": 669
+            },
+            "carreer": {
+                "id": 100,
+                "title": "Nutrición y Dietética",
+                "university_name": "Pontificia Universidad Católica de Chile",
+                "campu_name": "Campus San Joaquin",
+                "campu_id": 9,
+                "certification": false,
+                "area_id": 9,
+                "semesters": 10,
+                "price": 3778000,
+                "area_title": "Salud",
+                "schedule": "Diurno",
+                "openings": 55,
+                "employability": null,
+                "income": null,
+                "university_id": 2,
+                "admission": null,
+                "last_cut": 669,
+                "description": "El Nutricionista de la Pontificia Universidad Católica de Chile es un profesional que estudia la alimentación y nutrición del humano para entender, prevenir y tratar los problemas de salud y patologías prevalentes en el país en esta área.",
+                "weighing": {
+                    "id": 100,
+                    "NEM": 20,
+                    "ranking": 20,
+                    "language": 15,
+                    "math": 20,
+                    "history": 0,
+                    "science": 25
+                }
+            }
+        }
+
+### Goal list [GET]
+
+
++ Request 
+
+    + Headers
+    
+            Authorization: some_auth_token
+
++ Response 200
+
+        [
+            {
+                "scores": {
+                    "science": {
+                        "max": 500,
+                        "avg": 500,
+                        "obj": 500
+                    },
+                    "history": {
+                        "max": 500,
+                        "avg": 500,
+                        "obj": 500
+                    },
+                    "last_cut": 669
+                },
+                "carreer": {
+                    "id": 100,
+                    "title": "Nutrición y Dietética",
+                    "university_name": "Pontificia Universidad Católica de Chile",
+                    "campu_name": "Campus San Joaquin",
+                    "campu_id": 9,
+                    "certification": false,
+                    "area_id": 9,
+                    "semesters": 10,
+                    "price": 3778000,
+                    "area_title": "Salud",
+                    "schedule": "Diurno",
+                    "openings": 55,
+                    "employability": null,
+                    "income": null,
+                    "university_id": 2,
+                    "admission": null,
+                    "last_cut": 669,
+                    "description": "El Nutricionista de la Pontificia Universidad Católica de Chile es un profesional que estudia la alimentación y nutrición del humano para entender, prevenir y tratar los problemas de salud y patologías prevalentes en el país en esta área.",
+                    "weighing": {
+                        "id": 100,
+                        "NEM": 20,
+                        "ranking": 20,
+                        "language": 15,
+                        "math": 20,
+                        "history": 0,
+                        "science": 25
+                    }
+                }
+            },
+            {
+                "scores": {
+                    "science": {
+                        "max": 500,
+                        "avg": 500,
+                        "obj": 500
+                    },
+                    "history": {
+                        "max": 500,
+                        "avg": 500,
+                        "obj": 500
+                    },
+                    "last_cut": 669
+                },
+                "carreer": {
+                    "id": 99,
+                    "title": "Música",
+                    "university_name": "Pontificia Universidad Católica de Chile",
+                    "campu_name": "Campus Oriente",
+                    "campu_id": 11,
+                    "certification": true,
+                    "area_id": 3,
+                    "semesters": 8,
+                    "price": 3789000,
+                    "area_title": "Arte y Arquitectura",
+                    "schedule": "Diurno",
+                    "openings": 35,
+                    "employability": null,
+                    "income": null,
+                    "university_id": 2,
+                    "admission": null,
+                    "last_cut": 622,
+                    "description": "El Licenciado en Música de la Pontificia Universidad Católica de Chile es un experto en el conocimiento teórico y aplicado del arte musical, especializado en alguna de sus diversas expresiones, ya sea composición, musicología, interpretación o teoría y literatura musical. Los Licenciados en Música pueden, además, optar por el título profesional de Intérprete Musical con Mención en instrumento, canto y dirección coral.",
+                    "weighing": {
+                        "id": 99,
+                        "NEM": 20,
+                        "ranking": 20,
+                        "language": 20,
+                        "math": 25,
+                        "history": 15,
+                        "science": 0
+                    }
+                }
+            }
+        ]
+
+## Goal  [/goals/{carreer_id}]
+
++ Parameters
+    + carreer_id (integer) - ID of carreer to query.
+
+### Career is user goal [GET]
+Returns true if career of id career_id is goal of authenticated user.
+
+
++ Request 
+
+    + Headers
+    
+            Authorization: some_auth_token
+
++ Response 200
+
+        {
+            "goal":true
+        }
+ 
+### Destroy career goal [DELETE]
+
+Eliminates career of id career_id  from authenticated user's goals.
+
++ Request 
+
+    + Headers
+    
+            Authorization: some_auth_token
+
++ Response 204
+
+
+# Group Essays
+
+## Essays  [/essays]
+
+### List Essays [GET]
+
++ Response 200
+
+        [
+            {
+                "id": 16,
+                "user_id": 3,
+                "title": "asd",
+                "score": 722,
+                "date": "15-11-2017",
+                "subject": {
+                    "id": 4,
+                    "title": "Ciencias Naturales"
+                }
+            },
+            {
+                "id": 17,
+                "user_id": 3,
+                "title": "asd",
+                "score": 722,
+                "date": "15-11-2017",
+                "subject": {
+                    "id": 4,
+                    "title": "Ciencias Naturales"
+                }
+            }
+        ]
+
+### Create Essay [POST]
+
++ Request 
+
+    + Headers
+    
+            Authorization: some_auth_token
+    
+    + Body
+
+                {
+                   "essay":{
+                      "score":722,
+                      "subject_id":4,
+                      "date_full":"15-11-2017",
+                      "title":"asd"
+                   }
+                }
+
++ Response 200
+
+        {
+            "id": 17,
+            "user_id": 3,
+            "title": "asd",
+            "score": 722,
+            "date": "15-11-2017",
+            "subject": {
+                "id": 4,
+                "title": "Ciencias Naturales"
+            }
+        }
+
+### Destroy essay [DELETE /essays/{essay_id}]
+
++ Parameters
+    + essay_id (integer) - ID of essay to destroy.
+    
++ Request 
+
+    + Headers
+    
+            Authorization: some_auth_token
+    
++ Response 204
+
+
+# Group Progress
+
+## Objectives [/objectives]
+
+### Create Objective [POST]
+Creates or updates score objectives for authenticated user.
+
++ Request
+
+    + Headers
+    
+            Authorization: some_auth_token
+            
+    + Body
+
+            [
+               {
+                  "objective":{
+                     "score":700,
+                     "subject_id":1
+                  }
+               },
+               {
+                  "objective":{
+                     "score":700,
+                     "subject_id":2
+                  }
+               },
+               {
+                  "objective":{
+                     "score":700,
+                     "subject_id":4
+                  }
+               }
+            ]
+
++ Response 200
+
+### List Objectives [GET]
+Returns objectives of authenticated user indexed by subject_id
+
++ Request
+
+    + Headers
+    
+            Authorization: some_auth_token
+
++ Response 200
+
+        {
+            "1": 700,
+            "2": 700,
+            "4": 700
+        }
+
+### Goal Progress [GET /progress/{career_id}]
+DEPRECATED
+
++ Request
+
+    + Headers
+    
+            Authorization: some_auth_token
+
++ Parameters
+    + career_id (integer) - ID of career to calculate progress
+    
++ Response 200
+
+            {
+                "scores": {
+                    "science": {
+                        "max": 500,
+                        "avg": 500,
+                        "obj": 500
+                    },
+                    "history": {
+                        "max": 500,
+                        "avg": 500,
+                        "obj": 500
+                    },
+                    "last_cut": 669
+                }
+            }
+
+### Get Essay and stats per subject [GET  /progress/{?subject_id}]
+
++ Parameters
+    + subject_id (integer) - ID of subject to calculate stats and return essays.
+    
++ Request
+
+    + Headers
+    
+            Authorization: some_auth_token
+
++ Response 200
+
+        {
+            "stats": {
+                "expectation": 722,
+                "max": 722
+            },
+            "essays": [
+                {
+                    "id": 16,
+                    "user_id": 3,
+                    "title": "asd",
+                    "score": 722,
+                    "date": "15-11-2017",
+                    "subject": {
+                        "id": 4,
+                        "title": "Ciencias Naturales"
+                    }
+                },
+                {
+                    "id": 17,
+                    "user_id": 3,
+                    "title": "asd",
+                    "score": 722,
+                    "date": "15-11-2017",
+                    "subject": {
+                        "id": 4,
+                        "title": "Ciencias Naturales"
+                    }
+                }
+            ]
+        }
+
+
+# Group Search 
+
+### Search [GET /search]
+
++ Request
+
+    + Headers
+    
+            Authorization: some_auth_token
+            
+    + Body
+
+            {
+                "university":{  
+                    "text":"chile",
+                    "region_id":13,
+                    "freeness":true,
+                    "university_type_id":2,
+                    "city_ids":[  
+                        279,
+                        280
+                    ]
+                }
+            }
+
++ Response 200
+
+        [
+            {
+                "id": 2,
+                "title": "Pontificia Universidad Católica de Chile",
+                "foundation": "1888-06-21T00:00:00+00:00",
+                "website": "www.uc.cl",
+                "freeness": true,
+                "motto": "In Christi lumine pro mundi vita",
+                "nick": "",
+                "description": "La Pontificia Universidad Católica de Chile fue fundada el 21 de junio de 1888 por iniciativa del Arzobispo de Santiago, Monseñor Mariano Casanova, con el objetivo de ser una institución que integrara la excelencia académica y una formación inspirada en la doctrina cristiana. Su creación se inserta en las circunstancias históricas universales y locales que afectaron a la Iglesia Católica, instándola a formar profesionales poseedores de un auténtico sentido cristiano de la vida, que sirviera como fermento renovador para las nuevas generaciones.",
+                "u_type": "Privada",
+                "initials": "PUC",
+                "students": 28311,
+                "teachers": 3289,
+                "degrees": 53,
+                "postgraduates": 148,
+                "doctorates": 34,
+                "institution_id": 2
+            },
+            {
+                "id": 30,
+                "title": "Universidad Autónoma de Chile",
+                "foundation": "1989-08-11T00:00:00+00:00",
+                "website": "www.uautonoma.cl",
+                "freeness": true,
+                "motto": "Más Universidad. Duc in altum",
+                "nick": "",
+                "description": "La Universidad Autónoma de Chile es una universidad privada chilena, con sedes en Temuco, Talca y Santiago(Providencia y Llano Subercaseaux). Está adscrita al Sistema Único de Admisión del Consejo de Rectores de Universidades Chilenas. Actualmente se encuentra acreditada por la Comisión Nacional de Acreditación (CNA-Chile) por un período de cuatro años (de un máximo de 7), desde octubre de 2015 hasta octubre de 2019, en todas las áreas obligatorias, además de las áreas optativas de Investigación y Vinculación con el medio. Figura como la 30.ª universidad chilena según la clasificación webométrica del CSIC, en julio de 2016, y en el 26.º lugar según el ranking de AméricaEconomía 2016.Está, además, entre las 22 universidades chilenas que aparecen en el ránking de Scimago Institution Rankings (SIR) 2016, con el 21.° lugar a nivel nacional, y 673.° a nivel mundial.",
+                "u_type": "Privada",
+                "initials": "UA",
+                "students": 20343,
+                "teachers": 1675,
+                "degrees": 29,
+                "postgraduates": 15,
+                "doctorates": 3,
+                "institution_id": 30
+            },
+            {
+                "id": 45,
+                "title": "Universidad Tecnológica de Chile",
+                "foundation": "1966-10-21T00:00:00+00:00",
+                "website": "www.inacap.cl",
+                "freeness": true,
+                "motto": "Los profesionales que Chile necesita",
+                "nick": "",
+                "description": "La Misión de INACAP es formar personas con valores y competencias que les permitan desarrollarse como ciudadanos responsables e integrarse con autonomía y productividad a la sociedad. Asimismo, contribuir al mejoramiento de la competitividad de los distintos sectores productivos del país a través del desarrollo de su capital humano y de la innovación tecnológica.",
+                "u_type": "Privada",
+                "initials": "INACAP",
+                "students": 120000,
+                "teachers": 5000,
+                "degrees": 59,
+                "postgraduates": 20,
+                "doctorates": 0,
+                "institution_id": 45
+            }
+        ]
+
+
+
++ Request
+
+    + Headers
+    
+            Authorization: some_auth_token
+            
+    + Body
+
+            {
+               "carreer":{
+                  "text":"historia",
+                  "region_id":13,
+                  "cut":{
+                     "min":550,
+                     "max":750
+                  },
+                  "semesters":{
+                     "min":7,
+                     "max":10
+                  },
+                  "price":{
+                     "min":100,
+                     "max":3000000
+                  },
+                  "area":7,
+                  "schedule":"Diurno",
+                  "employability":80,
+                  "income":600000,
+                  "university_id":4
+               }
+            }
+
++ Response 200
+
+        [
+            {
+                "id": 257,
+                "title": "Pedagogía en Historia y Ciencias Sociales / Licenciatura en Educación en Historia y Ciencias Sociales",
+                "university_name": "Universidad de Santiago de Chile",
+                "campu_name": "Único",
+                "campu_id": 16,
+                "certification": true,
+                "area_id": 7,
+                "semesters": 10,
+                "price": 2367000,
+                "area_title": "Educación",
+                "schedule": "Diurno",
+                "openings": 35,
+                "employability": 83,
+                "income": 700000,
+                "university_id": 4,
+                "admission": null,
+                "last_cut": 626,
+                "description": "La carrera Pedagogía en Historia y Ciencias Sociales / Licenciatura en Educación en Historia y Ciencias Sociales de la Universidad de Santiago de Chile formará a un profesional reflexivo, un actor social que toma posición respecto del medio que lo rodea.",
+                "weighing": {
+                    "id": 257,
+                    "NEM": 10,
+                    "ranking": 40,
+                    "language": 25,
+                    "math": 10,
+                    "history": 15,
+                    "science": 0
+                }
+            }
+        ]
+
+
+# Group Prediction
+
+### Predict User Score [GET /prediction/{subject_id}]
+
++ Request
+
+    + Headers
+    
+            Authorization: some_auth_token
+
++ Parameters
+    + subject_id (integer) - ID of subject to predict scores.
+    
++ Response 200
+
+        {
+            "prediction": 726,
+            "probability": 0.9999732156133601,
+            "r_score": 0.8686774988819571
+        }
+
+
+# Group Similar
+
+### Similar Careers [GET /similar{?carreer_id,k}]
+
++ Parameters
+    + carreer_id (integer) - ID of career to obtain similar careers.
+    + k (integer) - Amount Of similar careers.
+    
++ Response 200
+
+        [
+            {
+                "id": 599,
+                "title": "Pedagogía en Filosofía",
+                "university_name": "Universidad de Valparaíso",
+                "campu_name": "Casa Central",
+                "campu_id": 54,
+                "certification": true,
+                "area_id": 7,
+                "semesters": 10,
+                "price": 1839000,
+                "area_title": "Educación",
+                "schedule": "Diurno",
+                "openings": 30,
+                "employability": 62,
+                "income": 0,
+                "university_id": 12,
+                "admission": null,
+                "last_cut": 507,
+                "description": "Una sólida formación en la tradición filosófica occidental —con énfasis en las áreas de Historia de la Filosofía, Lógica, Filosofía de las Ciencias y Filosofía Práctica— posibilita que los graduados y graduadas egresen de la Carrera con habilidades y competencias para realizar docencia e investigación en los temas y problemas más relevantes del pensamiento contemporáneo.",
+                "weighing": {
+                    "id": 599,
+                    "NEM": 10,
+                    "ranking": 40,
+                    "language": 20,
+                    "math": 10,
+                    "history": 20,
+                    "science": 0
+                }
+            },
+            {
+                "id": 600,
+                "title": "Pedagogía en Historia y Ciencias Sociales",
+                "university_name": "Universidad de Valparaíso",
+                "campu_name": "Casa Central",
+                "campu_id": 54,
+                "certification": true,
+                "area_id": 7,
+                "semesters": 10,
+                "price": 1809000,
+                "area_title": "Educación",
+                "schedule": "Diurno",
+                "openings": 70,
+                "employability": 73,
+                "income": 700000,
+                "university_id": 12,
+                "admission": null,
+                "last_cut": 529,
+                "description": "Profesional capacitado para dirigir, planificar, asesorar, en entidades o instituciones educativas, como generador y/o ejecutor de programas de capacitación y desarrollo; supervisor técnico pedagógico en el Ministerio de Educación, editoriales, medios de comunicación u otros ámbitos relacionados con su especialización.",
+                "weighing": {
+                    "id": 600,
+                    "NEM": 10,
+                    "ranking": 40,
+                    "language": 20,
+                    "math": 10,
+                    "history": 20,
+                    "science": 0
+                }
+            },
+            {
+                "id": 602,
+                "title": "Química y Farmacia",
+                "university_name": "Universidad de Valparaíso",
+                "campu_name": "Casa Central",
+                "campu_id": 54,
+                "certification": true,
+                "area_id": 10,
+                "semesters": 12,
+                "price": 3344000,
+                "area_title": "Sin área definida",
+                "schedule": "Diurno",
+                "openings": 60,
+                "employability": 98,
+                "income": 1500000,
+                "university_id": 12,
+                "admission": null,
+                "last_cut": 630,
+                "description": "La Escuela de Química y Farmacia está comprometida con lograr que nuestros estudiantes adquieran una sólida formación en las áreas profesionales propias del Químico Farmacéutico, como son el Seguimiento Farmacoterapéutico, Producción de Medicamentos y Cosméticos, Análisis Clínico y Gestión en Salud, y con habilidades comunicacionales que les permiten relacionarse con los pacientes y otros profesionales de la salud con el fin que la administración de las terapia farmacológica se realice en forma segura y eficaz.",
+                "weighing": {
+                    "id": 602,
+                    "NEM": 10,
+                    "ranking": 40,
+                    "language": 20,
+                    "math": 20,
+                    "history": 0,
+                    "science": 10
+                }
+            },
+            {
+                "id": 891,
+                "title": "Pedagogía en Ingles",
+                "university_name": "Universidad del Bío-Bío",
+                "campu_name": "Campus Chillán",
+                "campu_id": 74,
+                "certification": true,
+                "area_id": 7,
+                "semesters": 10,
+                "price": 1960800,
+                "area_title": "Educación",
+                "schedule": "Diurno",
+                "openings": 45,
+                "employability": 80,
+                "income": 700000,
+                "university_id": 17,
+                "admission": null,
+                "last_cut": 532,
+                "description": "Serás un profesional de la educación autónomo, con capacidad de reflexionar acerca del idioma inglés y su didáctica, a un nivel avanzado, evaluando críticamente el proceso y el producto de la enseñanza y aprendizaje de tus estudiantes. Actuarás con principios éticos que te permitirán enfrentar una sociedad en permanente cambio.",
+                "weighing": {
+                    "id": 891,
+                    "NEM": 10,
+                    "ranking": 40,
+                    "language": 30,
+                    "math": 10,
+                    "history": 10,
+                    "science": 0
+                }
+            },
+            {
+                "id": 1570,
+                "title": "Pedagogía en Religión Educación Básica y Media",
+                "university_name": "Universidad Católica Silva Henríquez",
+                "campu_name": "Campus Los Cañas",
+                "campu_id": 138,
+                "certification": true,
+                "area_id": 7,
+                "semesters": 10,
+                "price": 2356400,
+                "area_title": "Educación",
+                "schedule": "Diurno",
+                "openings": null,
+                "employability": null,
+                "income": null,
+                "university_id": 34,
+                "admission": null,
+                "last_cut": null,
+                "description": "El profesor de Religión de la UCSH, como educador cristiano, debe ser maestro en humanidad, promoviendo la dignidad de la persona, la libertad y la responsabilidad. De este modo es capaz de presentar el mensaje cristiano como un saber estructurado y sistemático, exponiendo la doctrina y la experiencia de fe con la racionalidad específica del pensamiento cristiano.",
+                "weighing": {
+                    "id": 1570,
+                    "NEM": 0,
+                    "ranking": 0,
+                    "language": 50,
+                    "math": 50,
+                    "history": 0,
+                    "science": 0
+                }
+            },
+            {
+                "id": 1646,
+                "title": "Pedagogía en Educación Media en Artes",
+                "university_name": "Universidad de Los Lagos",
+                "campu_name": "Campus Puerto Montt",
+                "campu_id": 144,
+                "certification": true,
+                "area_id": 7,
+                "semesters": 10,
+                "price": 2505000,
+                "area_title": "Educación",
+                "schedule": "Diurno",
+                "openings": 35,
+                "employability": null,
+                "income": null,
+                "university_id": 37,
+                "admission": null,
+                "last_cut": 467,
+                "description": "Es una instancia de formación docente y artística, cuya orientación principal es formar profesores(as) de artes con menciones, desde un enfoque socio crítico. Con competencias para educar la sensibilidad, la expresividad y la creatividad de sus estudiantes, aportando a la formación de un sujeto integral y que esté en condiciones de aplicar programas de educación artística, en su área disciplinar y en ambientes socioeducativos diversos.",
+                "weighing": {
+                    "id": 1646,
+                    "NEM": 10,
+                    "ranking": 40,
+                    "language": 25,
+                    "math": 15,
+                    "history": 10,
+                    "science": 10
+                }
+            }
+        ]
+
+
+# Group Recommendations
+
+### Generate Recs [POST /recommendation]
+
+Creates Recommendations for authenticated user and stores them in DB. If `essays` is true uses predicted scores, else
+ it uses the users objective scores. If `area` is an integer it uses it as an area id and recommends careers from that area else if 
+ area is "compute" it uses user goals to generate an area for recommendations. Returns 3 recommendations.
+
++ Request
+
+    + Headers
+    
+            Authorization: some_auth_token
+            
+    + Body
+
+            {
+                "essays":true,
+                "area":5
+            }
+
++ Response 200
+
+        [
+           {
+              "id":1,
+              "user_id":2,
+              "area_id":5,
+              "liked":false,
+              "seen":true,
+              "carreer":"some carreer object"
+           }
+        ]
+
+
+### Get Recs [GET /recommendation{?essays,area}]
+
+Returns  3 unseen recs from the database tha were the generated witht he same parameters as the query parameters.
+
++ Parameters
+    + essays (boolean) - See Generate Recs
+    + area (integer  string) - See Generate Recs
+
++ Request
+
+    + Headers
+    
+            Authorization: some_auth_token
+
++ Response 200
+
+        [
+           {
+              "id":1,
+              "user_id":2,
+              "area_id":5,
+              "liked":false,
+              "seen":true,
+              "carreer":"some carreer object"
+           }
+        ]
+
+### Like Rec [PUT /recommendation/{recommendation_id}]
+
++ Parameters 
+    + recommendation_id (integer) - ID of recommendation to like.
+    
++ Request
+
+    + Headers
+    
+            Authorization: some_auth_token
+
+    + Body
+
+            {
+               "recommendation":{
+                  "liked":true
+               }
+            }
+            
++ Response 200
+
+        [
+           {
+              "id":1,
+              "user_id":2,
+              "area_id":5,
+              "liked":true,
+              "seen":true,
+              "carreer":"some carreer object"
+           }
+        ]
+
+
+### Get liked recs [GET /recommendaion/liked]
+
+Returns liked recommendations o authenticated user.
+
++ Request
+
+    + Headers
+    
+            Authorization: some_auth_token
+ 
++ Response 200
+
+        [
+           {
+              "id":1,
+              "user_id":2,
+              "area_id":5,
+              "liked":true,
+              "seen":true,
+              "carreer":"some carreer object"
+           }
+        ]A          
+
+
+
+# Group News
+
+### News [GET /news]
+
++ Response 200
+
+        [
+            {
+                "id": 6,
+                "title": "Universidad Adolfo Ibáñez agenda su segundo Ensayo PSU",
+                "lowering": "Se realizará el sábado 21 de octubre en sus dos campus, Peñalolén y Viña del Mar",
+                "body": "La Universidad Adolfo Ibáñez llevará a cabo su segundo Ensayo PSU el sábado 21 de octubre en sus dos sedes, el Campus Peñalolén en Santiago y el Campus Viña del Mar.\n Los alumnos que estén cursando IV Medio tendrán acceso a los 3 ensayos, mientras que los de III Medio solo podrán rendir el de Matemáticas y el de Lenguaje y Comunicación. \n El programa del día comienza a las 11:30 hrs con una recepción, seguido del primer ensayo a las 12:00 hrs, un almuerzo a las 14:40 hrs y finalizará con el segundo ensayo a las 15:30 hrs.\n La universidad contará con buses de acercamiento. En la sede de Peñalolén saldrán buses desde el metro Los Dominicos (10:45 hrs) y desde el metro Grecia (10:45 hrs). El Campus Viña del Mar tendrá buses a las 11:00 hrs en la calle Libertad con 4 Norte. La inscripción es online y gratuita.",
+                "date": "23-09-2017",
+                "author": "Don juanito"
+            }
+        ]
+
+### New image [GET /news/{new_id}?image=true]
+
++ Parameters
+    + new_id (integer) - New ID to return image
+
++ Response 200
+
+        {
+            "picture": "some base64 image"
+        }

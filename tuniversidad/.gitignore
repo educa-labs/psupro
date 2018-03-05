@@ -1,0 +1,7 @@
+Newton/preprocessing/W2V/sbw_vectors.bin
+Newton/preprocessing/W2V/trained_vectors
+Newton/preprocessing/W2V/trained_vectors.syn0.npy
+Newton/preprocessing/W2V/*.csv
+Newton/data/*
+Newton/preprocessed_data/*
+Newton/serialized/*

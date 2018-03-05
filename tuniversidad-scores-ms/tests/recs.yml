@@ -1,0 +1,15 @@
+config:
+  target: 'http://newton.tuniversidad.cl'
+  phases:
+    - duration: 10
+      arrivalCount: 20
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+scenarios:
+  - flow:
+    - post:
+        url: '/get_nn'
+        json:
+          carreers: [10]
+          k: 3
