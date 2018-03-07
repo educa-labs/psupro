@@ -5,3 +5,4 @@ Newton/preprocessing/W2V/*.csv
 Newton/data/*
 Newton/preprocessed_data/*
 Newton/serialized/*
+.idea/*
