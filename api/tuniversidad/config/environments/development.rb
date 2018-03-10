@@ -8,12 +8,8 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
+  config.force_ssl = false
   
-  if ENV['LOCAL'].nil?
-    config.force_ssl = true
-  else
-    config.force_ssl = false
-  end
   # Show full error reports.
   config.consider_all_requests_local = true
   Sunspot.config.solr.url = 'http://localhost:8983/solr'

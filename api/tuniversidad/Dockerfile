@@ -19,22 +19,18 @@ WORKDIR /app
 #COPY Gemfile /app/Gemfile
 #COPY Gemfile.lock /app/Gemfile.lock
 
-#Config Puma
-COPY config/puma.rb config/puma.rb
 
 # Move folders
 COPY . .
 
+#Config Puma
+COPY config/puma.rb config/puma.rb
 #RUN bundle install
 
 # Expose and setup start command
 ENV RAILS_ENV=development
 ENV RAILS_ROOT=/app
 EXPOSE 3000
-
-CMD bundle exec puma -C config/puma.rb
-
+WORKDIR /app/api/tuniversidad
 # Run app
-#CMD rails db:migrate
-#CMD rails db:seed
-#CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD bundle exec puma -C config/puma.rb 

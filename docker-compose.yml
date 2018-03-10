@@ -5,16 +5,20 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_DB=tuniversidad_development
-      - POSTGRES_PASSWORD=123456
+      - POSTGRES_PASSWORD=tuniversidad
 
   api:
     build: ./api/tuniversidad
+    command: bin/rails server --port 3000 --binding 0.0.0.0
+
     volumes:
       - .:/app
     expose:
       - "3000"
     depends_on:
       - db
+    ports:
+      - "3000:3000"
   web:
     build:
       context: .
