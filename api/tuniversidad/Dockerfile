@@ -2,11 +2,11 @@ FROM ruby:2.4.1
 
 # Install dependencies
 RUN apt-get update -qq
-RUN apt-get install -y build-essential libpq-dev nodejs graphviz
+RUN apt-get install -y build-essential libpq-dev nodejs
 
 WORKDIR /tmp
-ADD tuniversidad/tuniversidad/Gemfile Gemfile
-ADD tuniversidad/tuniversidad/Gemfile.lock Gemfile.lock
+ADD Gemfile Gemfile
+ADD Gemfile.lock Gemfile.lock
 RUN gem install bundler
 RUN bundle install
 
@@ -20,10 +20,10 @@ WORKDIR /app
 #COPY Gemfile.lock /app/Gemfile.lock
 
 #Config Puma
-COPY tuniversidad/tuniversidad/config/puma.rb config/puma.rb
+COPY config/puma.rb config/puma.rb
 
 # Move folders
-COPY . /app
+COPY . .
 
 #RUN bundle install
 
@@ -35,6 +35,6 @@ EXPOSE 3000
 CMD bundle exec puma -C config/puma.rb
 
 # Run app
-CMD rails db:migrate
+#CMD rails db:migrate
 #CMD rails db:seed
-CMD ["rails", "server", "-b", "0.0.0.0"]
+#CMD ["rails", "server", "-b", "0.0.0.0"]
