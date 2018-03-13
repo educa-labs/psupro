@@ -19,11 +19,26 @@ services:
       - db
     ports:
       - "3000:3000"
-  web:
+
+  front:
+    container_name: front
     build:
-      context: .
-      dockerfile: Dockerfile-nginx
+      context: ./front
+    volumes:
+      - '.:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    ports:
+      - '5000:5000'
+    environment:
+      - NODE_ENV=development
     links:
       - api
-    ports:
-      - "80:80"
+      
+  # web:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile-nginx
+  #   links:
+  #     - api
+  #   ports:
+  #     - "80:80"

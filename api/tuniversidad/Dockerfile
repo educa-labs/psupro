@@ -26,7 +26,7 @@ COPY . .
 #Config Puma
 COPY config/puma.rb config/puma.rb
 #RUN bundle install
-
+#RUN rm app/api/tuniversidad/tmp/pids/server.pid.
 # Expose and setup start command
 ENV RAILS_ENV=development
 ENV RAILS_ROOT=/app
