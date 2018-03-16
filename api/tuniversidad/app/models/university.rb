@@ -1,11 +1,6 @@
 class University < ApplicationRecord
-  validates_presence_of :website, :institution_id
-  validates_uniqueness_of :institution_id
-  belongs_to :institution
-  belongs_to :university_type
+  validates_presence_of :website
   has_many :campus
-  # DEPRECATED: institution model should be removed soon.
-  delegate :title, to: :institution
   attr_accessor :get_profile_picture
   attr_accessor :get_cover_picture
 

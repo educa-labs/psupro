@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180316204950) do
+ActiveRecord::Schema.define(version: 20180316213407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,22 +90,6 @@ ActiveRecord::Schema.define(version: 20180316204950) do
     t.index ["user_id"], name: "index_essays_on_user_id", using: :btree
   end
 
-  create_table "institution_types", force: :cascade do |t|
-    t.string   "title",      default: ""
-    t.integer  "level_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.index ["level_id"], name: "index_institution_types_on_level_id", using: :btree
-  end
-
-  create_table "institutions", force: :cascade do |t|
-    t.text     "title",               default: ""
-    t.integer  "institution_type_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.index ["institution_type_id"], name: "index_institutions_on_institution_type_id", using: :btree
-  end
-
   create_table "news", force: :cascade do |t|
     t.text     "body"
     t.text     "title"
@@ -162,7 +146,6 @@ ActiveRecord::Schema.define(version: 20180316204950) do
     t.boolean  "freeness",           default: false
     t.string   "motto",              default: ""
     t.text     "nick",               default: ""
-    t.integer  "institution_id"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
     t.text     "initials",           default: ""
@@ -178,7 +161,7 @@ ActiveRecord::Schema.define(version: 20180316204950) do
     t.string   "profile_extension"
     t.integer  "university_type_id"
     t.integer  "visits",             default: 0
-    t.index ["institution_id"], name: "index_universities_on_institution_id", using: :btree
+    t.string   "title"
     t.index ["university_type_id"], name: "index_universities_on_university_type_id", using: :btree
   end
 

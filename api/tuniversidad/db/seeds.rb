@@ -465,8 +465,7 @@ else
       u.website =           row['Sitio web'],
       u.freeness =          boolean_hash[row['Gratuidad']],
       u.motto =             row['Lema'],
-      # u.nick =              nil,  # ¡No existe algo como 'nick' en la tabla!
-      u.institution =       Institution.find_or_create_by!(title:row['Nombre'], institution_type:it_2),
+      u.title =             row['Nombre']
       u.initials =          row['Sigla'],
       u.students =          row['Nro de Alumnos'],
       u.teachers =          row['Nro de Profesores'],
