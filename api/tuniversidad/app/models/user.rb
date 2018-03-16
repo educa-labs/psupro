@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  attr_accessor :get_picture # DEPRECATED
   include ActiveModel::Validations
   validates :auth_token, uniqueness: true
   validates_presence_of :first_name,:last_name,:email
@@ -11,11 +10,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable # Devise utilities.
   before_create :generate_authentication_token! # Generates auth token.
 
-  # Deprecated: Questions are deprecated.
-  has_many :carreer_questions
-  has_many :carreer_answers
-  has_many :university_questions
-  has_many :university_answers
   belongs_to :city, optional: true
   belongs_to :institution, optional: true
   belongs_to :level, optional: true
@@ -37,18 +31,6 @@ class User < ApplicationRecord
       self.birth_date.strftime("%d-%m-%Y")
     else
       nil
-    end
-  end
-
-  # DEPRECATED: User pictures were never used.
-  def encoded_picture
-    "data:image/#{self.extension};base64,#{File.open('public/images/' + self.picture,'rb').read}"
-  end
-
-  # DEPRECATED: User pictures were never used.
-  def save_picture(data)
-    File.open('public/images/'+ self.picture,'w') do |f|
-      f.write data
     end
   end
 

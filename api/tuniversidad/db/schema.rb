@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180316201904) do
+ActiveRecord::Schema.define(version: 20180316204950) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -213,8 +213,6 @@ ActiveRecord::Schema.define(version: 20180316201904) do
     t.boolean  "notifications",          default: true
     t.string   "last_name"
     t.float    "nem"
-    t.string   "picture"
-    t.string   "extension"
     t.boolean  "tutorial",               default: false
     t.integer  "ranking"
     t.boolean  "writer",                 default: false

@@ -2,19 +2,9 @@ class Api::V1::UsersController < ApplicationController
   before_action :authenticate_with_token!, only: [:show,:update, :destroy]
   respond_to :json
 
-  # DEPRECATED
-  def show
-    current_user.get_picture = params[:get_picture]
-    render json: current_user, status:200
-  end
-
   def create
-    # DEPRECATED: User pictures are deprecated
-    user_hash,data = clear_params
+    user_hash = clear_params
     user = User.new(user_hash)
-    if data
-      user.save_picture(data)
-    end
     if user.save
       user.generate_authentication_token!
       user.save
@@ -26,12 +16,8 @@ class Api::V1::UsersController < ApplicationController
 
   def update
     user = current_user
-    user_hash,data = clear_params
+    user_hash= clear_params
     if user.update(user_hash)
-      if data
-        user.save_picture(data)
-      end
-
       render json: user, status: 200, location: [:api, user]
     else
       render json: { errors: user.errors }, status: 422
@@ -60,16 +46,7 @@ class Api::V1::UsersController < ApplicationController
       user_hash[:last_name] =user_hash[:last_name].downcase
       user_hash[:last_name] = user_hash[:last_name].capitalize
     end
-    if user_hash[:image_data]
-      user_hash[:picture] = user_hash[:email]+ '_picture'
-      user_hash[:extension] = File.extname(user_hash[:image_name])
-      data = user_hash[:image_data]
-      user_hash.except!(:image_data)
-      user_hash.except!(:image_name)
-      return user_hash,data
-    end
-    return user_hash,nil
+    return user_hash
   end
-
 
 end
