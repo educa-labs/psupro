@@ -1,4 +1,4 @@
-# Newton service
+# Newton service (DEPRECATED)
 Este es un micro servicio destinado a proveer de todo lo relacionado a Newton:
  * La predicción de los puntajes de los estudiantes basado en un modelo de regresión 
 lineal bayesiana con ajuste a una función de bajo crecimiento (raiz,logaritmo).

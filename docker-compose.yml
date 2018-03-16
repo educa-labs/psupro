@@ -5,22 +5,40 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_DB=tuniversidad_development
-      - POSTGRES_PASSWORD=123456
+      - POSTGRES_PASSWORD=tuniversidad
 
-  app:
-    build: .
-    command: bundle exec puma -C config/puma.rb
+  api:
+    build: ./api/tuniversidad
+    command: bin/rails server --port 3000 --binding 0.0.0.0
+
     volumes:
       - .:/app
     expose:
       - "3000"
     depends_on:
       - db
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile-nginx
-    links:
-      - app
     ports:
-      - "80:80"
+      - "3000:3000"
+
+  front:
+    container_name: front
+    build:
+      context: ./front
+    volumes:
+      - '.:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    ports:
+      - '5000:5000'
+    environment:
+      - NODE_ENV=development
+    links:
+      - api
+      
+  # web:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile-nginx
+  #   links:
+  #     - api
+  #   ports:
+  #     - "80:80"
