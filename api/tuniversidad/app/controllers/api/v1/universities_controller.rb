@@ -20,9 +20,9 @@ class Api::V1::UniversitiesController < ApplicationController
   def index
     # /cities/city_id/universities .
     if params[:city_id]
-      render json:City.find_by(id: params[:city_id]).universities.includes(:institution,:university_type).order("institutions.title asc"), status:200
+      render json:City.find_by(id: params[:city_id]).universities.includes(:university_type).order("institutions.title asc"), status:200
     else
-      render json: University.all.includes(:institution,:university_type).order("institutions.title asc"), status:200
+      render json: University.all.includes(:university_type).order("institutions.title asc"), status:200
     end
   end
 end

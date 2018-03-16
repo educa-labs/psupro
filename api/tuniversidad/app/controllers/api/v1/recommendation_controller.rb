@@ -155,7 +155,7 @@ class Api::V1::RecommendationController < ApplicationController
 
   # Returns liked recommendations.
   def liked
-    recs = Recommendation.where(user_id:current_user.id,liked:true).includes(carreer:[:campu,:weighing,:area,{university: :institution}])
+    recs = Recommendation.where(user_id:current_user.id,liked:true).includes(carreer:[:campu,:weighing,:area])
     render json:recs, status:200
   end
 

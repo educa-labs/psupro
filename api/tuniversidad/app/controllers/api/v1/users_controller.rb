@@ -32,7 +32,7 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation,:first_name,:last_name,:rut,:birth_date,:city_id,:phone,:writer,:institution_id,:admin,:preuniversity,:notifications,:level_id,:image_data,:image_name,:tutorial,:ranking,:nem)
+    params.require(:user).permit(:email, :password, :password_confirmation,:first_name,:last_name,:rut,:birth_date,:city_id,:phone,:writer,:admin,:preuniversity,:notifications,:level_id,:image_data,:image_name,:tutorial,:ranking,:nem)
   end
 
   # Sanitize and format user data.

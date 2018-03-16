@@ -11,7 +11,6 @@ class User < ApplicationRecord
   before_create :generate_authentication_token! # Generates auth token.
 
   belongs_to :city, optional: true
-  belongs_to :institution, optional: true
   belongs_to :level, optional: true
   has_and_belongs_to_many :carreers
   has_many :essays

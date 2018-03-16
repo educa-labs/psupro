@@ -10,10 +10,10 @@ class Api::V1::SearchController < ApplicationController
       filters = params[:university]
       # If no filters we do a regular query
       unless filters.size > 0
-        render json:University.all.includes(:institution,:campu,campu: :city).order("institutions.title ASC"), status:200
+        render json:University.all.includes(:campu,campu: :city).order("institutions.title ASC"), status:200
         return
       end
-      result = University.search(include:[:institution,:university_type]) do
+      result = University.search(include:[:university_type]) do
         order_by(:id, :asc)
         paginate(page:params[:page] || 1 ,per_page: 20)
           if filters[:text]
@@ -46,7 +46,7 @@ class Api::V1::SearchController < ApplicationController
         render json:Carreer.all.includes(:campu,:weighing,:area,university: :institution,campu: :city).order("institutions.id ASC"), status:200
         return
       end
-      result = Carreer.search(include:[:campu,:weighing,:area,{university: :institution}]) do
+      result = Carreer.search(include:[:campu,:weighing,:area]) do
         paginate(page:params[:page] || 1 ,per_page: 20)
         order_by(:university_id,:asc)
         if filters[:text]

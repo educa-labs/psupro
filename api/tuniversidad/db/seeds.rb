@@ -427,16 +427,6 @@ else
   # Fin cargar ciudades y regiones
 
 
-
-
-  l1 = Level.create!(title: 'High School')
-  l2 = Level.create!(title: 'High School Graduate')
-  l3 = Level.create!(title: 'Superior')
-  l4 = Level.create!(title: 'Superior Graduate')
-
-  it_1 = InstitutionType.create!(title: 'High School', level_id: l1.id)
-  it_2 = InstitutionType.create!(title: 'University', level_id: l3.id)
-
   # Areas
   areas_hash = {}
   read_tsv('areas.tsv').each do |row|
