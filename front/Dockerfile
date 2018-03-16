@@ -15,11 +15,13 @@ COPY scripts /usr/src/app/scripts
 COPY config /usr/src/app/config
 COPY public /usr/src/app/public
 
-RUN npm install 
-RUN npm install -g serve 
+# RUN npm install 
+# RUN npm install -g serve 
 
 
 # start app
-RUN npm run build
+# RUN npm run build
 
-CMD serve -s front/build
+# CMD serve -s front/build
+
+CMD npm start
