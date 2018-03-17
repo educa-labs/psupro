@@ -25,12 +25,13 @@ COPY . .
 
 #Config Puma
 COPY config/puma.rb config/puma.rb
-#RUN bundle install
-#RUN rm app/api/tuniversidad/tmp/pids/server.pid.
+
 # Expose and setup start command
 ENV RAILS_ENV=development
 ENV RAILS_ROOT=/app
 EXPOSE 3000
 WORKDIR /app/api/tuniversidad
+COPY docker-entrypoint.sh .
 # Run app
-CMD bundle exec puma -C config/puma.rb 
+ENTRYPOINT ["/app/api/tuniversidad/docker-entrypoint.sh"]
+CMD bundle exec puma -C config/puma.rb

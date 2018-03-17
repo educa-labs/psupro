@@ -19,16 +19,16 @@ class University < ApplicationRecord
   end
 
   # Makes model searchable by solr.
-  searchable do
-    boolean :freeness
-    text :nick
-    text :title
-    text :initials
-    integer :id
-    integer :cities, multiple: true
-    integer :university_type_id
-    integer :regions, multiple: true
-  end
+  # searchable do
+  #   boolean :freeness
+  #   text :nick
+  #   text :title
+  #   text :initials
+  #   icnteger :id
+  #   integer :cities, multiple: true
+  #   integer :university_type_id
+  #   integer :regions, multiple: true
+  # end
 
   # Returns string with base64 profile image for injection in html.
   def encoded_profile_picture
