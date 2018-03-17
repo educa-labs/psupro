@@ -5,8 +5,10 @@
         <i class="material-icons">search</i>
 
         <input type="text" placeholder="Busca por ciudad, carrera o universidad"
+          v-model="search"
           @focus="focusHandler"
           @blur="blurHandler"
+          @input="inputHandler"
           ref="input"
         >
       </div>
@@ -15,7 +17,18 @@
         @before-enter="beforeEnter"
         @after-leave="afterLeave"
       >
-        <div class="field-results" v-if="$store.state.test"></div>
+        <div class="field-results" v-if="$store.state.test">
+          <section>
+            <h5 class="title">Universidades</h5>
+
+            <div v-for="university in $store.state.search.universities" :key="university.id">{{ university.title }}</div>
+          </section>
+          <section>
+            <h5 class="title">Carreras</h5>
+
+            <div v-for="career in $store.state.search.careers" :key="career.id">{{ career.title }}</div>
+          </section>
+        </div>
       </transition>
     </div>
   </form>
@@ -23,8 +36,14 @@
 
 <script>
 export default {
+  props: {
+    delay: { type: Number, default: 250 },
+  },
   data() {
     return {
+      search: '',
+      searchTimeout: null,
+
       active: false,
     };
   },
@@ -34,6 +53,13 @@ export default {
     },
     blurHandler() {
       this.$store.dispatch('test2');
+    },
+    inputHandler() {
+      clearTimeout(this.searchTimeout);
+
+      this.searchTimeout = setTimeout(() => {
+        this.$store.dispatch('search', { search: this.search });
+      }, this.delay);
     },
     beforeEnter() {
       this.active = true;
@@ -89,7 +115,7 @@ form
       right: 1em
       left: 1em
 
-      height: 100px
+      min-height: 100px
 
       border-top: 1px solid lightgray
       border-bottom-right-radius: $border-radius
