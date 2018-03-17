@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     test: false,
+    search: null,
   },
   mutations: {
     test1(state) {
@@ -14,6 +15,13 @@ export default new Vuex.Store({
     test2(state) {
       state.test = false;
     },
+    search(state, { search, filters }) {
+      Vue.prototype.$API.search.search(search, filters).then(response => {
+        state.search = response;
+
+        console.log(response);
+      });
+    },
   },
   actions: {
     test1(context) {
@@ -21,6 +29,9 @@ export default new Vuex.Store({
     },
     test2(context) {
       context.commit('test2');
+    },
+    search(context, payload) {
+      context.commit('search', payload);
     },
   },
 });
