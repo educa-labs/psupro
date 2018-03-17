@@ -25,6 +25,17 @@ const preprocessors = {
   universities(API_university) {
     return API_university;
   },
+  search: {
+    careers(API_careers) {
+      return API_careers;
+    },
+    universities(API_universities) {
+      return API_universities;
+    },
+    search(careers, universities) {
+      return { careers, universities };
+    },
+  },
 };
 
 export default preprocessors;
