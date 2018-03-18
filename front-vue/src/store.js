@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     test: false,
     search: null,
+    searchFetched: false,
   },
   mutations: {
     test1(state) {
@@ -15,12 +16,15 @@ export default new Vuex.Store({
     test2(state) {
       state.test = false;
     },
-    search(state, { search, filters }) {
-      Vue.prototype.$API.search.search(search, filters).then(response => {
-        state.search = response;
+    search(state, payload) {
+      state.searchFetched = false;
 
-        console.log(response);
-      });
+      Vue.prototype.$API.search
+        .search(payload.search, payload.filters, payload.image)
+        .then(response => {
+          state.search = response;
+          state.searchFetched = true;
+        });
     },
   },
   actions: {

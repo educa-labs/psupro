@@ -1,6 +1,7 @@
 import Home from './../components/Home.vue';
 import Career from './../components/Career.vue';
 import University from './../components/University.vue';
+import SearchResults from './../components/SearchResults.vue';
 
 export default [
   {
@@ -19,5 +20,10 @@ export default [
     component: University,
     name: 'university',
     props: route => ({ id: Number(route.params.id) }),
+  },
+  {
+    path: '/search',
+    component: SearchResults,
+    name: 'search',
   },
 ];
