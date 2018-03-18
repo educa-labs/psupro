@@ -1,7 +1,7 @@
 import Vue from 'vue'; // Vue
 import API from './API/API'; // VueResource
 import router from './router/router'; // VueRouter
-import store from './store'; // Vuex
+import store from './store/store'; // Vuex
 
 require('./stylesheets'); // Stylesheets
 
