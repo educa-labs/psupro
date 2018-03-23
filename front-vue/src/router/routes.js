@@ -1,4 +1,4 @@
-import Home from './../components/Home.vue';
+import Trending from './../components/Trending.vue';
 import Career from './../components/Career.vue';
 import University from './../components/University.vue';
 import SearchResults from './../components/SearchResults.vue';
@@ -6,8 +6,8 @@ import SearchResults from './../components/SearchResults.vue';
 export default [
   {
     path: '/',
-    component: Home,
-    name: 'home',
+    component: Trending,
+    name: 'trending',
   },
   {
     path: '/career/:id',
