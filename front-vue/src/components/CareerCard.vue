@@ -18,7 +18,9 @@ export default {
   },
   computed: {
     fetched() {
-      return this.career.image;
+      // return this.career.image;
+
+      return true;
     },
   },
 };

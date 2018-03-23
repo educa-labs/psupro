@@ -19,7 +19,9 @@ export default {
   },
   computed: {
     fetched() {
-      return this.university.image;
+      // return this.university.image;
+
+      return true;
     },
     summary() {
       let description = this.university.description,

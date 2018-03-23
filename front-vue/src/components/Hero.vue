@@ -1,6 +1,6 @@
 <template>
   <div id="hero">
-    <div class="logo z-depth-1"></div>
+    <div class="logo z-depth-2"></div>
 
     <app-search-form></app-search-form>
 

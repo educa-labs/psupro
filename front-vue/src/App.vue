@@ -35,6 +35,7 @@ export default {
 
   .overlay
     position: absolute
+    z-index: 1000
     top: 0
     right: 0
     bottom: 0

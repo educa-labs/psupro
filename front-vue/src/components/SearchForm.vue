@@ -1,36 +1,47 @@
 <template>
-  <form @click="$refs.input.focus()">
-    <div class="field z-depth-2" :class="{ active }">
-      <div class="field-wrapper">
-        <i class="material-icons">search</i>
+  <form class="search-bar z-depth-2" :class="{ active }"
+    @click="$refs.input.focus()"
+  >
+    <div class="input">
+      <i class="material-icons">search</i>
 
-        <input type="text" placeholder="Busca por ciudad, carrera o universidad"
-          v-model="search"
-          @focus="focusHandler"
-          @blur="blurHandler"
-          @input="inputHandler"
-          ref="input"
-        >
-      </div>
-
-      <transition name="dropdown"
-        @before-enter="beforeEnter"
-        @after-leave="afterLeave"
+      <input type="text" :placeholder="esCL.placeholder"
+        v-model="search"
+        @keypress.enter.prevent="keypressHandler"
+        @input="inputHandler"
+        @focus="focusHandler"
+        @blur="blurHandler"
+        ref="input"
       >
-        <div class="field-results" v-if="$store.state.test">
-          <section>
-            <h5 class="title">Universidades</h5>
-
-            <div v-for="university in $store.state.search.universities" :key="university.id">{{ university.title }}</div>
-          </section>
-          <section>
-            <h5 class="title">Carreras</h5>
-
-            <div v-for="career in $store.state.search.careers" :key="career.id">{{ career.title }}</div>
-          </section>
-        </div>
-      </transition>
     </div>
+
+    <transition name="dropdown"
+      @before-enter="beforeEnter"
+      @after-leave="afterLeave"
+    >
+      <div class="search-results" v-if="$store.state.searching"><div>
+        <section>
+          <div>{{ esCL.searchResults.universities }}</div>
+
+          <ul><li
+            v-for="university in $store.state.search.universities"
+            :key="`university-${university.id}`"
+          >
+            <i class="material-icons">account_balance</i> {{ university.title }}
+          </li></ul>
+        </section>
+        <section>
+          <div>{{ esCL.searchResults.careers }}</div>
+
+          <ul><li
+            v-for="career in $store.state.search.careers"
+            :key="`career-${career.id}`"
+          >
+            <i class="material-icons">school</i> {{ career.title }}
+          </li></ul>
+        </section>
+      </div></div>
+    </transition>
   </form>
 </template>
 
@@ -45,14 +56,22 @@ export default {
       searchTimeout: null,
 
       active: false,
+
+      esCL: {
+        placeholder: 'Búsqueda según carrera, universidad o ciudad',
+        searchResults: {
+          careers: 'Carreras',
+          universities: 'Universidades',
+        },
+      },
     };
   },
   methods: {
     focusHandler() {
-      this.$store.dispatch('test1');
+      this.$store.dispatch('searchOn');
     },
     blurHandler() {
-      this.$store.dispatch('test2');
+      this.$store.dispatch('searchOff');
     },
     inputHandler() {
       clearTimeout(this.searchTimeout);
@@ -61,6 +80,11 @@ export default {
         this.$store.dispatch('search', { search: this.search });
       }, this.delay);
     },
+    keypressHandler() {
+      this.$store.dispatch('searchOff');
+
+      this.$router.push({ name: 'search' });
+    },
     beforeEnter() {
       this.active = true;
     },
@@ -68,68 +92,98 @@ export default {
       this.active = false;
     },
   },
+  created() {
+    // this.$store.dispatch('search', { search: this.search });
+  },
 };
 </script>
 
 <style lang="sass" scoped>
-form
+.search-bar
+  $border-radius: 3px
+
+  position: relative
+
+  z-index: 1010
+
   cursor: pointer
 
-  .field
-    $border-radius: 2px
+  border-radius: $border-radius
+  background-color: #FFFFFF
 
-    .field-wrapper
-      $padding: .75rem
+  .input
+    $padding: .75rem
 
-      display: flex
-      align-items: center
+    display: flex
+    align-items: center
 
-      padding: $padding
+    padding: $padding
 
-      border-radius: $border-radius
+    i
+      margin-right: $padding
 
-      background-color: #ffffff
+      color: #757575
 
-      i
-        margin-right: $padding
+    input
+      box-sizing: border-box
 
-        color: #757575
+      width: 100%
+      height: 100%
 
-      input
-        box-sizing: border-box
+      border: none
+      outline: none
 
-        width: 100%
-        height: 100%
+      font-size: medium
 
-        border: none
-        outline: none
+    input::placeholder
+      color: #8C8C8C
 
-        font-size: medium
+  .search-results
+    position: absolute
+    z-index: 1010
+    right: 0
+    left: 0
 
-      input::placeholder
-        color: #8C8C8C
+    overflow-y: scroll
 
-    .field-results
-      position: absolute
-      z-index: 19999
-      right: 1em
-      left: 1em
+    height: 200px
 
-      min-height: 100px
+    border-top: 1px solid #F5F5F5
+    border-bottom-right-radius: $border-radius
+    border-bottom-left-radius: $border-radius
+    background-color: #FFFFFF
 
-      border-top: 1px solid lightgray
-      border-bottom-right-radius: $border-radius
-      border-bottom-left-radius: $border-radius
-      background-color: #ffffff
+    & > div
+      padding: 1rem
 
-      &.dropdown-enter, &.dropdown-leave-to
-        height: 0
+      ul
+        margin: 0
+        padding: 0
 
-      &.dropdown-enter-active, &.dropdown-leave-active
-        transition: all .2s ease
+        li
+          display: flex
+          align-items: center
 
-  .field.active
-    .field-wrapper
-      border-bottom-right-radius: 0
-      border-bottom-left-radius: 0
+          margin-bottom: .75rem
+
+          i
+            margin-right: 1rem
+
+            color: #8C8C8C
+
+    &.dropdown-enter
+      height: 0
+
+    &.dropdown-enter-active
+      transition: all .25s ease
+
+    &.dropdown-leave-active
+      transition: all .25s ease
+
+    &.dropdown-leave-to
+      height: 0
+
+.search-bar.active
+  border-bottom-right-radius: 0
+  border-bottom-left-radius: 0
 </style>
