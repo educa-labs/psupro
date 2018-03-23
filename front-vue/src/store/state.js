@@ -1,5 +1,4 @@
 export default {
-  search: null,
-  searchFetched: false,
-  searching: false,
+  heavySearchResponse: null,
+  isSearchBarFocused: false,
 };

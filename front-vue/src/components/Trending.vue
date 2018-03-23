@@ -1,10 +1,10 @@
 <template>
-  <section class="trending" v-if="$store.state.searchFetched">
+  <section class="trending" v-if="$store.state.heavySearchResponseFetched">
     <section class="careers">
       <div>{{ esCL.trending.careers }}</div>
 
       <router-link
-        v-for="career in $store.state.search.careers"
+        v-for="career in $store.state.heavySearchResponse.careers"
         :key="`career-${career.id}`"
         :to="{ name: 'career', params: { id: career.id } }"
       >
@@ -16,7 +16,7 @@
       <div>{{ esCL.trending.universities }}</div>
 
       <router-link 
-        v-for="university in $store.state.search.universities"
+        v-for="university in $store.state.heavySearchResponse.universities"
         :key="`university-${university.id}`"
         :to="{ name: 'university', params: { id: university.id } }"
       >
@@ -48,7 +48,8 @@ export default {
   watch: { $route: 'fetch' },
   methods: {
     fetch() {
-      this.$store.dispatch('search', { search: '', image: true });
+      let payload = { query: '', image: true };
+      this.$store.dispatch('fetchHeavySearch', payload);
     },
   },
   created() {

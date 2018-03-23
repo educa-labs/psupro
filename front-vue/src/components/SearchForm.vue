@@ -19,22 +19,23 @@
       @before-enter="beforeEnter"
       @after-leave="afterLeave"
     >
-      <div class="search-results" v-if="$store.state.searching"><div>
+      <div class="search-results" v-if="$store.state.isSearchBarFocused"><div>
         <section>
           <div>{{ esCL.searchResults.universities }}</div>
 
           <ul><li
-            v-for="university in $store.state.search.universities"
+            v-for="university in response.universities"
             :key="`university-${university.id}`"
           >
             <i class="material-icons">account_balance</i> {{ university.title }}
           </li></ul>
         </section>
+
         <section>
           <div>{{ esCL.searchResults.careers }}</div>
 
           <ul><li
-            v-for="career in $store.state.search.careers"
+            v-for="career in response.careers"
             :key="`career-${career.id}`"
           >
             <i class="material-icons">school</i> {{ career.title }}
@@ -54,6 +55,7 @@ export default {
     return {
       search: '',
       searchTimeout: null,
+      response: null,
 
       active: false,
 
@@ -67,23 +69,31 @@ export default {
     };
   },
   methods: {
+    fetch() {
+      this.$API.search.search(this.search).then(response => {
+        this.response = response;
+      });
+    },
     focusHandler() {
-      this.$store.dispatch('searchOn');
+      this.$store.dispatch('updateIsSearchBarFocused', { focus: true });
     },
     blurHandler() {
-      this.$store.dispatch('searchOff');
+      this.$store.dispatch('updateIsSearchBarFocused', { focus: false });
     },
     inputHandler() {
       clearTimeout(this.searchTimeout);
 
       this.searchTimeout = setTimeout(() => {
-        this.$store.dispatch('search', { search: this.search });
+        this.fetch();
       }, this.delay);
     },
     keypressHandler() {
-      this.$store.dispatch('searchOff');
+      this.$store.dispatch('updateIsSearchBarFocused', { focus: false });
 
-      this.$router.push({ name: 'search' });
+      let payload = { query: this.search, image: true };
+      this.$store.dispatch('fetchHeavySearch', payload).then(() => {
+        this.$router.push({ name: 'search' });
+      });
     },
     beforeEnter() {
       this.active = true;
@@ -93,7 +103,7 @@ export default {
     },
   },
   created() {
-    // this.$store.dispatch('search', { search: this.search });
+    this.fetch();
   },
 };
 </script>

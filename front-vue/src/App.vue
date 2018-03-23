@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <transition name="fade">
-      <div class="overlay" v-if="$store.state.searching"></div>
+      <div class="overlay" v-if="$store.state.isSearchBarFocused"></div>
     </transition>
 
     <header ref="header">

@@ -1,15 +1,15 @@
 <template>
-  <div class="search-results">
+  <div class="search-results" v-if="$store.state.heavySearchResponse">
     <section class="results">
       <h5 class="title">{{ 'Resultados' }}</h5>
 
-      <template v-for="career in $store.state.search.careers">
+      <template v-for="career in $store.state.heavySearchResponse.careers">
         <router-link :to="{ name: 'career', params: { id: career.id } }" :key="`career-${career.id}`">
           <app-career-card :career="career"></app-career-card>
         </router-link>
       </template>
 
-      <template v-for="university in $store.state.search.universities">
+      <template v-for="university in $store.state.heavySearchResponse.universities">
         <router-link :to="{ name: 'university', params: { id: university.id } }" :key="`university-${university.id}`">
           <app-university-card :university="university"></app-university-card>
         </router-link>

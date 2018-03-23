@@ -1,11 +1,18 @@
+import Vue from 'vue';
+
 export default {
-  searchOn(context) {
-    context.commit('searchOn');
+  fetchHeavySearch(context, payload) {
+    return new Promise(resolve => {
+      Vue.prototype.$API.search
+        .search(payload.query, payload.filters, payload.image)
+        .then(response => {
+          context.commit('updateHeavySearchResponse', { response });
+
+          resolve();
+        });
+    });
   },
-  searchOff(context) {
-    context.commit('searchOff');
-  },
-  search(context, payload) {
-    context.commit('search', payload);
+  updateIsSearchBarFocused(context, payload) {
+    context.commit('updateIsSearchBarFocused', payload);
   },
 };
