@@ -30,8 +30,8 @@ const API = {
     });
   },
   search: {
-    careers(search, filters, image = false) {
-      let body = { carreer: { text: search, ...filters } };
+    careers(query, filters, image = false) {
+      let body = { carreer: { text: query, ...filters } };
 
       return new Promise((resolve, reject) => {
         Vue.http.post(`${API.url}/search`, body).then(response => {
@@ -53,8 +53,8 @@ const API = {
         });
       });
     },
-    universities(search, filters, image = false) {
-      let body = { university: { text: search, ...filters } };
+    universities(query, filters, image = false) {
+      let body = { university: { text: query, ...filters } };
 
       return new Promise((resolve, reject) => {
         Vue.http.post(`${API.url}/search`, body).then(response => {
@@ -76,10 +76,10 @@ const API = {
         });
       });
     },
-    search(search, filters, image = false) {
+    search(query, filters, image = false) {
       return new Promise((resolve, reject) => {
-        API.search.careers(search, filters, image).then(careers => {
-          API.search.universities(search, filters, image).then(universities => {
+        API.search.careers(query, filters, image).then(careers => {
+          API.search.universities(query, filters, image).then(universities => {
             resolve(preprocessors.search.search(careers, universities));
           });
         });

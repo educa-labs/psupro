@@ -1,5 +1,5 @@
 <template>
-  <section class="trending" v-if="$store.state.heavySearchResponseFetched">
+  <section class="trending" v-if="$store.state.heavySearchResponse">
     <section class="careers">
       <div>{{ esCL.trending.careers }}</div>
 

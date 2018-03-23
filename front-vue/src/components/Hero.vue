@@ -2,18 +2,18 @@
   <div id="hero">
     <div class="logo z-depth-2"></div>
 
-    <app-search-form></app-search-form>
+    <app-search-bar></app-search-bar>
 
     <i class="material-icons">keyboard_arrow_down</i>
   </div>
 </template>
 
 <script>
-import SearchForm from './SearchForm.vue';
+import SearchBar from './SearchBar.vue';
 
 export default {
   components: {
-    'app-search-form': SearchForm,
+    'app-search-bar': SearchBar,
   },
 };
 </script>

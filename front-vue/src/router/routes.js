@@ -1,7 +1,7 @@
 import Trending from './../components/Trending.vue';
 import Career from './../components/Career.vue';
 import University from './../components/University.vue';
-import SearchResults from './../components/SearchResults.vue';
+import SearchResponse from './../components/SearchResponse.vue';
 
 export default [
   {
@@ -23,7 +23,7 @@ export default [
   },
   {
     path: '/search',
-    component: SearchResults,
+    component: SearchResponse,
     name: 'search',
   },
 ];

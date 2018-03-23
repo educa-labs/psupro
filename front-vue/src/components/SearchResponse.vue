@@ -1,5 +1,5 @@
 <template>
-  <div class="search-results" v-if="$store.state.heavySearchResponse">
+  <div class="search-response" v-if="$store.state.heavySearchResponse">
     <section class="results">
       <h5 class="title">{{ 'Resultados' }}</h5>
 
@@ -31,6 +31,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.search-results
+.search-response
   padding: 1em
 </style>

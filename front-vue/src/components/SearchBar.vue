@@ -19,7 +19,7 @@
       @before-enter="beforeEnter"
       @after-leave="afterLeave"
     >
-      <div class="search-results" v-if="$store.state.isSearchBarFocused"><div>
+      <div class="search-response" v-if="$store.state.isSearchBarFocused"><div>
         <section>
           <div>{{ esCL.searchResults.universities }}</div>
 
@@ -148,7 +148,7 @@ export default {
     input::placeholder
       color: #8C8C8C
 
-  .search-results
+  .search-response
     position: absolute
     z-index: 1010
     right: 0
