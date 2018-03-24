@@ -1,6 +1,10 @@
 import Trending from './../components/Trending.vue';
 import Career from './../components/Career.vue';
+
 import University from './../components/University.vue';
+import Information from './../components/University/Information.vue';
+import Careers from './../components/University/Careers.vue';
+
 import SearchResponse from './../components/SearchResponse.vue';
 
 export default [
@@ -18,8 +22,19 @@ export default [
   {
     path: '/university/:id',
     component: University,
-    name: 'university',
     props: route => ({ id: Number(route.params.id) }),
+    children: [
+      {
+        path: '',
+        component: Information,
+        name: 'university',
+      },
+      {
+        path: 'careers',
+        component: Careers,
+        name: 'careers',
+      },
+    ],
   },
   {
     path: '/search',

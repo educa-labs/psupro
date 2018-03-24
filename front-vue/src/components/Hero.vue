@@ -1,11 +1,14 @@
 <template>
-  <div id="hero">
-    <div class="logo z-depth-2"></div>
+  <transition name="hola">
+    <div id="hero" :class="{ test }">
+      <div class="logo z-depth-2" v-if="!test"></div>
 
-    <app-search-bar></app-search-bar>
+      <app-search-bar></app-search-bar>
 
-    <i class="material-icons">keyboard_arrow_down</i>
-  </div>
+      <i class="material-icons" v-if="!test"
+        @click="test = true">keyboard_arrow_down</i>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -15,6 +18,11 @@ export default {
   components: {
     'app-search-bar': SearchBar,
   },
+  data() {
+    return {
+      test: false
+    }
+  }
 };
 </script>
 
@@ -48,4 +56,9 @@ export default {
     color: #F5F5F5
 
     font-size: 96px
+
+  transition: all .25s ease
+
+#hero.test
+  height: 100px
 </style>
