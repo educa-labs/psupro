@@ -1,4 +1,6 @@
-require('./assets/stylesheets/variable.sass');
-require('./assets/stylesheets/main.sass');
-require('./assets/stylesheets/card.sass');
-require('./assets/stylesheets/shadow.sass');
+import './assets/stylesheets/variable.sass';
+import './assets/stylesheets/main.sass';
+import './assets/stylesheets/card.sass';
+import './assets/stylesheets/shadow.sass';
+
+import './assets/stylesheets/tabs.sass'; // Tabs - Temporal
