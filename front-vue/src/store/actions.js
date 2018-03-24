@@ -15,4 +15,7 @@ export default {
   updateIsSearchBarFocused(context, payload) {
     context.commit('updateIsSearchBarFocused', payload);
   },
+  updateTest(context, payload) {
+    context.commit('updateTest', payload);
+  },
 };
