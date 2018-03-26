@@ -1,5 +1,6 @@
 <template>
   <section class="trending" v-if="$store.state.heavySearchResponse">
+    <!--
     <section class="careers">
       <div>{{ esCL.trending.careers }}</div>
 
@@ -11,12 +12,13 @@
         <app-career-card :career="career"></app-career-card>
       </router-link>
     </section>
+    -->
 
     <section class="universities">
       <div>{{ esCL.trending.universities }}</div>
 
       <router-link 
-        v-for="university in $store.state.heavySearchResponse.universities"
+        v-for="university in $store.state.heavySearchResponse.universities.slice(0, 1)"
         :key="`university-${university.id}`"
         :to="{ name: 'university', params: { id: university.id } }"
       >

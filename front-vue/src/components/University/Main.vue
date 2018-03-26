@@ -12,12 +12,7 @@
           <div>{{ university.title }} <br> {{ university.initials }}</div>
         </div>
 
-        <ul class="tabs z-depth-1">
-          <li class="tab"><a @click="$router.replace({ name: 'university' })">{{ esCL.tabs.information }}</a></li>
-          <li class="tab"><a @click="$router.replace({ name: 'careers' })">{{ esCL.tabs.careers }}</a></li>
-
-          <!-- <li class="indicator"></li> -->
-        </ul>
+        <app-tabs></app-tabs>
 
         <div class="card-content">
           <router-view></router-view>
@@ -28,7 +23,12 @@
 </template>
 
 <script>
+import Tabs from './Tabs.vue';
+
 export default {
+  components: {
+    'app-tabs': Tabs,
+  },
   props: {
     id: { type: Number, required: true },
   },
@@ -134,25 +134,4 @@ export default {
 
   &.fade-enter-active
     transition: opacity .25s ease
-
-// Tabs - Temporal
-
-.tabs
-  display: flex
-
-  padding: 0
-
-  text-align: center
-
-  background-color: rgb(0, 171, 241)
-  
-  li
-    flex: 1
-
-    a
-      padding: 0
-
-.indicator
-  right: 467px
-  left: 0
 </style>
