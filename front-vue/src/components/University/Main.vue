@@ -15,7 +15,9 @@
         <app-tabs></app-tabs>
 
         <div class="card-content">
-          <router-view></router-view>
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
         </div>
       </div>
     </div> 

@@ -1,7 +1,16 @@
 <template>
   <ul class="tabs z-depth-1">
-    <li class="tab" @click="active = 0"><a @click="$router.replace({ name: 'university' })">{{ 'Información' }}</a></li>
-    <li class="tab" @click="active = 1"><a @click="$router.replace({ name: 'careers' })">{{ 'Carreras' }}</a></li>
+    <li class="tab"
+      :class="{ active: active === 0 }"
+      @click="active = 0">
+      <a @click="$router.replace({ name: 'university' })">{{ 'Información' }}</a>
+    </li>
+
+    <li class="tab"
+      :class="{ active: active === 1 }"
+      @click="active = 1">
+      <a @click="$router.replace({ name: 'careers' })">{{ 'Carreras' }}</a>
+    </li>
 
     <li class="indicator" ref="indicator"></li>
   </ul>
@@ -14,9 +23,11 @@ export default {
   data() {
     return {
       active: 0,
-      duration: 350,
-      delay: 150,
       tabs: null,
+
+      delay: 150,
+      duration: 350,
+      gap: 25,
     };
   },
   watch: {
@@ -40,16 +51,20 @@ export default {
     right() {
       let rightTabs = this.tabs.slice(this.active + 1, this.tabs.length);
 
-      return rightTabs.reduce((before, current) => {
-        return before + current.offsetWidth;
-      }, 0);
+      return (
+        rightTabs.reduce((before, current) => {
+          return before + current.offsetWidth;
+        }, 0) + this.gap
+      );
     },
     left() {
       let leftTabs = this.tabs.slice(0, this.active);
 
-      return leftTabs.reduce((before, current) => {
-        return before + current.offsetWidth;
-      }, 0);
+      return (
+        leftTabs.reduce((before, current) => {
+          return before + current.offsetWidth;
+        }, 0) + this.gap
+      );
     },
     animate(property) {
       anime({
@@ -68,7 +83,7 @@ export default {
   },
   mounted() {
     this.tabs = Array.from(this.$el.children).filter(li => {
-      return li.className === 'tab';
+      return li.className.match(/\btab\b/);
     });
 
     this.setRightLeft();
