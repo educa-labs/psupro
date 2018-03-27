@@ -55,7 +55,4 @@ export default {
 
     &.fade-leave-to
       opacity: 0
-
-  main
-    min-height: 100vh
 </style>
