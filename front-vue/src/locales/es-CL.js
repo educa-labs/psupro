@@ -4,5 +4,6 @@ export default {
     empty: 'Vacío',
   },
   careers: 'Carreras',
+  loading: 'Cargando',
   universities: 'Universidades',
 };
