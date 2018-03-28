@@ -1,7 +1,9 @@
 import Vue from 'vue'; // Vue
 import API from './API/API'; // VueResource
+import locales from './locales/locales'; // Locales
 import router from './router/router'; // VueRouter
 import store from './store/store'; // Vuex
+
 import './stylesheets'; // Stylesheets
 
 import App from './App.vue';
