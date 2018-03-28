@@ -4,28 +4,26 @@
         <div class="overlay"></div>
 
         <div class="title">{{ university.title }}</div>
-        <div class="summary">{{ summary }}</div>
+        <div class="description" ref="description" v-if="lines > 0">{{ university.description }}</div>
       </div>
     </div>
 </template>
 
 <script>
+import Ellipsis from 'ellipsis.js';
+
 export default {
   props: {
     university: { type: Object, required: true },
-    summaryLimit: { type: Number, default: 200 },
+    lines: { type: Number, default: 3 },
   },
-  computed: {
-    summary() {
-      let description = this.university.description;
-
-      if (description.length > this.summaryLimit)
-        description = description.slice(0, this.summaryLimit);
-
-      if (this.summaryLimit > 0) description = `${description}...`;
-
-      return description;
-    },
+  data() {
+    return {
+      ellipsis: Ellipsis({ lines: this.lines + 1 }),
+    };
+  },
+  mounted() {
+    this.ellipsis.add(this.$refs.description);
   },
 };
 </script>
@@ -70,7 +68,7 @@ export default {
 
       font-size: 20px
 
-    .summary
+    .description
       z-index: 1
 
       color: #FFFFFF
