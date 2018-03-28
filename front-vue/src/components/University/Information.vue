@@ -26,7 +26,8 @@
       </div>
     </div>
   </div>
-  <div v-else>Loading...</div>
+
+  <app-spinner v-else></app-spinner>
 </template>
 
 <script>

@@ -22,29 +22,34 @@
       <div class="search-response" 
         @mousedown.prevent
         v-if="$store.state.isSearchBarFocused"
-      ><div>
-        <section>
-          <div>{{ $l.universities }}</div>
+      >
+        <div v-if="response">
+          <section v-if="response.universities.length > 0">
+            <div>{{ $l.universities }}</div>
 
-          <ul><li
-            v-for="university in response.universities"
-            :key="`university-${university.id}`"
-          >
-            <i class="material-icons">account_balance</i> {{ university.title }}
-          </li></ul>
-        </section>
+            <ul><li
+              v-for="university in response.universities"
+              :key="`university-${university.id}`"
+            >
+              <i class="material-icons">account_balance</i> {{ university.title }}
+            </li></ul>
+          </section>
 
-        <section>
-          <div>{{ $l.careers }}</div>
+          <section v-if="response.careers.length > 0">
+            <div>{{ $l.careers }}</div>
 
-          <ul><li
-            v-for="career in response.careers"
-            :key="`career-${career.id}`"
-          >
-            <i class="material-icons">school</i> {{ career.title }}
-          </li></ul>
-        </section>
-      </div></div>
+            <ul><li
+              v-for="career in response.careers"
+              :key="`career-${career.id}`"
+            >
+              <i class="material-icons">school</i> {{ career.title }}
+            </li></ul>
+          </section>
+
+          <div v-if="response.universities.length === 0 && response.careers.length === 0">{{ $l.empty }}</div>
+        </div>
+        <app-spinner v-else></app-spinner>
+      </div>
     </transition>
   </form>
 </template>
@@ -65,6 +70,8 @@ export default {
   },
   methods: {
     fetch() {
+      this.response = null;
+
       this.$API.search.search(this.search).then(response => {
         this.response = response;
       });

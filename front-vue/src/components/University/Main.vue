@@ -21,6 +21,8 @@
         </div>
       </div>
     </div> 
+
+    <app-spinner v-else></app-spinner>
   </transition>
 </template>
 

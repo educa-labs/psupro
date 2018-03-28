@@ -2,7 +2,8 @@
   <div v-if="fetched" class="careers">
     <div class="description">{{ university.description }}</div>
   </div>
-  <div v-else>Loading...</div>
+
+  <app-spinner v-else></app-spinner>
 </template>
 
 <script>

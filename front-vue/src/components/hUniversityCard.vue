@@ -56,13 +56,11 @@ export default {
       bottom: 0
       left: 0
 
-      opacity: .5
-      background: linear-gradient(transparent, black)
+      opacity: .75
+      background: linear-gradient(transparent, #000000)
 
     .title
       z-index: 1
-
-      margin-bottom: 1em
 
       color: #FFFFFF
 
@@ -72,4 +70,7 @@ export default {
       z-index: 1
 
       color: #FFFFFF
+      margin-top: 1rem
+
+      font-weight: 300
 </style>
