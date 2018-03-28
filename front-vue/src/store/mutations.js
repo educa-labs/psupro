@@ -10,4 +10,7 @@ export default {
   updateTest(state, payload) {
     state.test = payload.test;
   },
+  updateLocale(state, payload) {
+    state.locale = state.locales[payload.locale];
+  },
 };

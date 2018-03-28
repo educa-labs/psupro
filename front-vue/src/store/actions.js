@@ -6,7 +6,7 @@ export default {
       Vue.prototype.$API.search
         .search(payload.query, payload.filters, payload.image)
         .then(response => {
-          console.log(response)
+          console.log(response);
           context.commit('updateHeavySearchResponse', { response });
 
           resolve();
@@ -18,5 +18,8 @@ export default {
   },
   updateTest(context, payload) {
     context.commit('updateTest', payload);
+  },
+  selectLocale(context, payload) {
+    context.commit('updateLocale', payload);
   },
 };

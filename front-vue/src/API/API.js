@@ -88,6 +88,4 @@ const API = {
   },
 };
 
-Vue.prototype.$API = API;
-
 export default API;

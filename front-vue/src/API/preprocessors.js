@@ -1,4 +1,4 @@
-const preprocessors = {
+export default {
   careers(API_career) {
     return {
       weighing: {
@@ -41,5 +41,3 @@ const preprocessors = {
     },
   },
 };
-
-export default preprocessors;
