@@ -1,8 +1,11 @@
 class University < ApplicationRecord
   validates_presence_of :website
   has_many :campus
+  belongs_to :university_type
+  
   attr_accessor :get_profile_picture
   attr_accessor :get_cover_picture
+
 
   # Returns array of self's city ids.
   def cities

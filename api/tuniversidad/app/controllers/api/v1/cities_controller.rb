@@ -1,5 +1,5 @@
 class Api::V1::CitiesController < ApplicationController
-  before_action :authenticate_with_token!, only: [:show,:index]
+#  before_action :authenticate_with_token!, only: [:show,:index]
 
   def show
     a = City.find_by(id: params[:id])
