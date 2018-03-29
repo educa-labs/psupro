@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171020223638) do
+ActiveRecord::Schema.define(version: 20180316213407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,33 +32,6 @@ ActiveRecord::Schema.define(version: 20171020223638) do
     t.datetime "updated_at",                 null: false
     t.index ["city_id"], name: "index_campus_on_city_id", using: :btree
     t.index ["university_id"], name: "index_campus_on_university_id", using: :btree
-  end
-
-  create_table "carreer_answers", force: :cascade do |t|
-    t.integer  "carreer_question_id"
-    t.integer  "user_id"
-    t.string   "answer",              default: ""
-    t.integer  "likes",               default: 0
-    t.integer  "dislikes",            default: 0
-    t.datetime "date"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.index ["carreer_question_id"], name: "index_carreer_answers_on_carreer_question_id", using: :btree
-    t.index ["user_id"], name: "index_carreer_answers_on_user_id", using: :btree
-  end
-
-  create_table "carreer_questions", force: :cascade do |t|
-    t.integer  "carreer_id"
-    t.integer  "user_id"
-    t.string   "question",   default: ""
-    t.string   "details",    default: ""
-    t.integer  "likes",      default: 0
-    t.integer  "dislikes",   default: 0
-    t.datetime "date"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.index ["carreer_id"], name: "index_carreer_questions_on_carreer_id", using: :btree
-    t.index ["user_id"], name: "index_carreer_questions_on_user_id", using: :btree
   end
 
   create_table "carreers", force: :cascade do |t|
@@ -117,28 +90,6 @@ ActiveRecord::Schema.define(version: 20171020223638) do
     t.index ["user_id"], name: "index_essays_on_user_id", using: :btree
   end
 
-  create_table "institution_types", force: :cascade do |t|
-    t.string   "title",      default: ""
-    t.integer  "level_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.index ["level_id"], name: "index_institution_types_on_level_id", using: :btree
-  end
-
-  create_table "institutions", force: :cascade do |t|
-    t.text     "title",               default: ""
-    t.integer  "institution_type_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.index ["institution_type_id"], name: "index_institutions_on_institution_type_id", using: :btree
-  end
-
-  create_table "levels", force: :cascade do |t|
-    t.string   "title",      default: ""
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-  end
-
   create_table "news", force: :cascade do |t|
     t.text     "body"
     t.text     "title"
@@ -195,7 +146,6 @@ ActiveRecord::Schema.define(version: 20171020223638) do
     t.boolean  "freeness",           default: false
     t.string   "motto",              default: ""
     t.text     "nick",               default: ""
-    t.integer  "institution_id"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
     t.text     "initials",           default: ""
@@ -211,35 +161,8 @@ ActiveRecord::Schema.define(version: 20171020223638) do
     t.string   "profile_extension"
     t.integer  "university_type_id"
     t.integer  "visits",             default: 0
-    t.index ["institution_id"], name: "index_universities_on_institution_id", using: :btree
+    t.string   "title"
     t.index ["university_type_id"], name: "index_universities_on_university_type_id", using: :btree
-  end
-
-  create_table "university_answers", force: :cascade do |t|
-    t.integer  "university_question_id"
-    t.integer  "user_id"
-    t.string   "answer",                 default: ""
-    t.integer  "likes",                  default: 0
-    t.integer  "dislikes",               default: 0
-    t.datetime "date"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.index ["university_question_id"], name: "index_university_answers_on_university_question_id", using: :btree
-    t.index ["user_id"], name: "index_university_answers_on_user_id", using: :btree
-  end
-
-  create_table "university_questions", force: :cascade do |t|
-    t.integer  "university_id"
-    t.integer  "user_id"
-    t.string   "question",      default: ""
-    t.string   "details",       default: ""
-    t.integer  "likes",         default: 0
-    t.integer  "dislikes",      default: 0
-    t.datetime "date"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.index ["university_id"], name: "index_university_questions_on_university_id", using: :btree
-    t.index ["user_id"], name: "index_university_questions_on_user_id", using: :btree
   end
 
   create_table "university_types", force: :cascade do |t|
@@ -271,11 +194,8 @@ ActiveRecord::Schema.define(version: 20171020223638) do
     t.boolean  "admin",                  default: false
     t.boolean  "preuniversity",          default: false
     t.boolean  "notifications",          default: true
-    t.integer  "level_id"
     t.string   "last_name"
     t.float    "nem"
-    t.string   "picture"
-    t.string   "extension"
     t.boolean  "tutorial",               default: false
     t.integer  "ranking"
     t.boolean  "writer",                 default: false
@@ -283,7 +203,6 @@ ActiveRecord::Schema.define(version: 20171020223638) do
     t.index ["city_id"], name: "index_users_on_city_id", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["institution_id"], name: "index_users_on_institution_id", using: :btree
-    t.index ["level_id"], name: "index_users_on_level_id", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 

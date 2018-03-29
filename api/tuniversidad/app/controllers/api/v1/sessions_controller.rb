@@ -10,7 +10,6 @@ class Api::V1::SessionsController < ApplicationController
           sign_in user, store: false
           # user.generate_authentication_token!
           # user.save
-          user.get_picture = params[:get_picture] # DEPRECATED
           render json:user,status: 200, location: [:api, user]
         else
           render json: { errors: {password:"Invalid password"} }, status: 401

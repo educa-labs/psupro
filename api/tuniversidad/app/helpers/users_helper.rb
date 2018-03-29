@@ -1,3 +1,0 @@
-# DEPRECATED
-module UsersHelper
-end

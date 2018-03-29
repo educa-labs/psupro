@@ -1,13 +1,11 @@
 class University < ApplicationRecord
-  validates_presence_of :website, :institution_id
-  validates_uniqueness_of :institution_id
-  belongs_to :institution
-  belongs_to :university_type
+  validates_presence_of :website
   has_many :campus
-  # DEPRECATED: institution model should be removed soon.
-  delegate :title, to: :institution
+  belongs_to :university_type
+  
   attr_accessor :get_profile_picture
   attr_accessor :get_cover_picture
+
 
   # Returns array of self's city ids.
   def cities
@@ -24,16 +22,16 @@ class University < ApplicationRecord
   end
 
   # Makes model searchable by solr.
-  searchable do
-    boolean :freeness
-    text :nick
-    text :title
-    text :initials
-    integer :id
-    integer :cities, multiple: true
-    integer :university_type_id
-    integer :regions, multiple: true
-  end
+  # searchable do
+  #   boolean :freeness
+  #   text :nick
+  #   text :title
+  #   text :initials
+  #   icnteger :id
+  #   integer :cities, multiple: true
+  #   integer :university_type_id
+  #   integer :regions, multiple: true
+  # end
 
   # Returns string with base64 profile image for injection in html.
   def encoded_profile_picture

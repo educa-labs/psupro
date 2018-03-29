@@ -20,19 +20,19 @@ services:
     ports:
       - "3000:3000"
 
-  front:
-    container_name: front
-    build:
-      context: ./front
-    volumes:
-      - '.:/usr/src/app'
-      - '/usr/src/app/node_modules'
-    ports:
-      - '5000:5000'
-    environment:
-      - NODE_ENV=development
-    links:
-      - api
+  # front:
+  #   container_name: front
+  #   build:
+  #     context: ./front
+  #   volumes:
+  #     - '.:/usr/src/app'
+  #     - '/usr/src/app/node_modules'
+  #   ports:
+  #     - '5000:5000'
+  #   environment:
+  #     - NODE_ENV=development
+  #   links:
+  #     - api
       
   # web:
   #   build:

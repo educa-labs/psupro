@@ -10,22 +10,14 @@ Rails.application.routes.draw do
       resources :universities, only: [:index,:show] do
         resources :carreers, only: [:index]
         resources :campus, only: [:index]
-        resources :university_questions, only:[:index,:show,:create,:destroy]
-        post 'university_question/:id', to:'university_questions#create'
-        delete 'university_question/:university_question_id/answers/:id', to: 'university_questions#destroy'
       end
+      resources :carreers, only: [:index, :show]
       resources :cities, only: [:show,:index] do
         resources :universities, only: [:index]
         resources :campus, only: [:index]
       end
-      resources :carreers, only:[:index,:show] do
-        resources :carreer_questions, only:[:index,:show,:create,:destroy]
-        post 'carreer_question/:id', to:'carreer_questions#create'
-        delete 'carreer_question/:carreer_question_id/answers/:id', to: 'carreer_questions#destroy'
-      end
       resources :campus, only: [:index,:show]
       resources :goals, only: [:index,:create,:update,:show,:destroy]
-      resources :levels, only: [:index]
       resources :search, only: [:create]
       resources :regions, only: [:show,:index] do
         resources :cities, only: [:index]
