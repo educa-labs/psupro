@@ -5,6 +5,7 @@ export default {
   cFilter: {
     city: 'Ciudad',
     clear: 'Limpiar',
+    default: 'Todas',
     name: 'Filtro',
     region: 'Región',
   },

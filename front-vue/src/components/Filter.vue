@@ -1,36 +1,34 @@
 <template>
   <div class="filter z-depth-2" v-if="fetched">
     <transition mode="out-in" @enter="enter" @leave="leave">
-      <div class="filter-closed" @click="open" v-if="closed" key="closed">
+      <div class="filter-closed" @click="open" v-if="closed" key="filter-closed">
         <i class="material-icons">tune</i> {{ $l.cFilter.name }}
       </div>
 
-      <div class="filter-open" v-else key="open">
+      <div class="filter-open" v-else key="filter-open">
         <div class="menu">
-          <button @click="close"><i class="material-icons">keyboard_arrow_down</i> {{ $l.cFilter.name }}</button>
+          <button @click="close"><i class="material-icons">keyboard_arrow_down</i> {{ $l.cFilter.name }} <span class="z-depth-1" v-if="count > 0">{{ count }}</span></button>
 
-          <button class="clear" @click="clear"><i class="material-icons">clear_all</i> {{ $l.cFilter.clear }}</button>
+          <button @click="clear"><i class="material-icons">clear_all</i> {{ $l.cFilter.clear }}</button>
         </div>
 
-        <div class="fields">
+        <form>
           <div class="field">
             <label for="region">{{ $l.cFilter.region }}</label>
-            <app-select id="region" v-model="region" :options="regions" :default="`Todas`"></app-select>
+            <app-select id="region" v-model="form.region" :options="regions" :default="$l.cFilter.default"></app-select>
           </div>
 
           <div class="field">
             <label for="city">{{ $l.cFilter.city }}</label>
-            <app-select id="city" v-model="city" :options="regions" :default="`Todas`"></app-select>
+            <app-select id="city" v-model="form.city" :options="regions" :default="$l.cFilter.default"></app-select>
           </div>
-        </div>
+        </form>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-// contador de filtros
-
 import anime from 'animejs';
 
 import Select from './Select.vue';
@@ -41,21 +39,33 @@ export default {
   },
   data() {
     return {
-      closed: true,
+      fetched: false,
 
       cities: null,
       regions: null,
 
-      fetched: false,
+      form: {
+        city: 0,
+        region: 0,
+      },
 
-      city: 0,
-      region: 0,
-
+      closed: true,
       duration: 250,
+      height: 42,
     };
   },
+  computed: {
+    count() {
+      return Object.values(this.form).reduce((before, current) => {
+        return (before += current && 1);
+      }, 0);
+    },
+  },
   methods: {
+    parseCitiesResponse(response) {},
     parseRegionsResponse(response) {
+      // { id: 1, title: 'Tarapacá' } => { key: 'Tarapacá', value: 1 }
+
       return response.map(region => {
         let { id: value, title: key } = region;
 
@@ -92,14 +102,13 @@ export default {
       this.closed = true;
     },
     clear() {
-      this.city = 0;
-      this.region = 0;
+      this.form.city = this.form.region = 0;
     },
     enter(el, done) {
       if (!this.closed) {
         let height = el.offsetHeight;
 
-        el.style.height = `${42}px`;
+        el.style.height = `${this.height}px`;
 
         anime({
           targets: el,
@@ -124,7 +133,7 @@ export default {
       if (this.closed) {
         anime({
           targets: el,
-          height: 42,
+          height: this.height,
           opacity: 0,
           duration: this.duration,
           easing: 'easeInOutQuad',
@@ -196,7 +205,23 @@ export default {
         .material-icons
           margin-right: .25rem
 
-    .fields
+        span
+          width: 20px
+          height: 20px
+          margin-left: .5rem
+
+          text-align: center
+
+          color: #FFFFFF
+          border-radius: 50%
+          background-color: #00A2EC
+
+          font-size: small
+          line-height: 20px
+
+    form
+      height: 200px
+
       label
         margin-right: .75rem
 
