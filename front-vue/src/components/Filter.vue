@@ -2,12 +2,12 @@
   <div class="filter z-depth-2" v-if="fetched">
     <transition mode="out-in" @enter="enter" @leave="leave">
       <div class="filter-closed" @click="open" v-if="closed" key="filter-closed">
-        <i class="material-icons">tune</i> {{ $l.cFilter.name }}
+        <i class="material-icons">tune</i> {{ $l.cFilter.name }} <span class="counter z-depth-1" v-if="count > 0">{{ count }}</span>
       </div>
 
       <div class="filter-open" v-else key="filter-open">
         <div class="menu">
-          <button @click="close"><i class="material-icons">keyboard_arrow_down</i> {{ $l.cFilter.name }} <span class="z-depth-1" v-if="count > 0">{{ count }}</span></button>
+          <button @click="close"><i class="material-icons">keyboard_arrow_down</i> {{ $l.cFilter.name }} <span class="counter z-depth-1" v-if="count > 0">{{ count }}</span></button>
 
           <button @click="clear"><i class="material-icons">clear_all</i> {{ $l.cFilter.clear }}</button>
         </div>
@@ -205,20 +205,6 @@ export default {
         .material-icons
           margin-right: .25rem
 
-        span
-          width: 20px
-          height: 20px
-          margin-left: .5rem
-
-          text-align: center
-
-          color: #FFFFFF
-          border-radius: 50%
-          background-color: #00A2EC
-
-          font-size: small
-          line-height: 20px
-
     form
       height: 200px
 
@@ -233,4 +219,18 @@ export default {
 
         .select-wrapper
           flex: 1
+
+.counter
+  width: 20px
+  height: 20px
+  margin-left: .5rem
+
+  text-align: center
+
+  color: #FFFFFF
+  border-radius: 50%
+  background-color: #00A2EC
+
+  font-size: small
+  line-height: 20px
 </style>

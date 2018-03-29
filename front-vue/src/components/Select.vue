@@ -23,10 +23,11 @@
 </template>
 
 <script>
-// revisar stilos
-// scrolleable
-// aparecer en el centro
-// width
+/*
+TODO:
+  - <ul> en el centro de la pantalla
+  - <ul> scrolleable
+*/
 
 export default {
   props: {
