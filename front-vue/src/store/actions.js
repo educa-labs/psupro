@@ -6,7 +6,6 @@ export default {
       Vue.prototype.$API.search
         .search(payload.query, payload.filters, payload.image)
         .then(response => {
-          console.log(response);
           context.commit('updateHeavySearchResponse', { response });
 
           resolve();
@@ -21,5 +20,11 @@ export default {
   },
   selectLocale(context, payload) {
     context.commit('updateLocale', payload);
+  },
+  showOverlay(context, payload) {
+    context.commit('updateOverlay', { ...payload, show: true });
+  },
+  hideOverlay(context) {
+    context.commit('updateOverlay', { show: false });
   },
 };

@@ -13,4 +13,9 @@ export default {
   updateLocale(state, payload) {
     state.locale = state.locales[payload.locale];
   },
+  updateOverlay(state, payload) {
+    state.overlay.show = payload.show;
+    state.overlay.handleClick = payload.handleClick;
+    state.overlay.zIndex = payload.zIndex;
+  },
 };

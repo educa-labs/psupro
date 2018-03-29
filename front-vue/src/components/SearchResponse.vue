@@ -15,16 +15,20 @@
         </router-link>
       </template>
     </section>
+
+    <app-filter></app-filter>
   </div>
 </template>
 
 <script>
 import CareerCard from './CareerCard.vue';
+import Filter from './Filter.vue';
 import UniversityCard from './UniversityCard.vue';
 
 export default {
   components: {
     'app-career-card': CareerCard,
+    'app-filter': Filter,
     'app-university-card': UniversityCard,
   },
 };

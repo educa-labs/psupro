@@ -15,7 +15,7 @@ const API = {
       return Vue.http.get(`${API.url}/popular/universities`);
     },
   },
-  careers(id, config) {
+  careers(id, conig) {
     return new Promise((resolve, reject) => {
       Vue.http.get(`${API.url}/carreers/${id}`, config).then(response => {
         resolve(preprocessors.careers(response.body));
@@ -85,6 +85,20 @@ const API = {
         });
       });
     },
+  },
+  regions() {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`${API.url}/regions`).then(response => {
+        resolve(preprocessors.regions(response.body));
+      });
+    });
+  },
+  cities() {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`${API.url}/cities`).then(response => {
+        resolve(preprocessors.cities(response.body));
+      });
+    });
   },
 };
 

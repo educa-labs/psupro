@@ -1,90 +1,67 @@
 <template>
   <div class="select-wrapper">
     <input type="text" class="select-dropdown" readonly="true"
-      @click="handleInputClick"
-      @blur="handleBlur"
+      :value="_options[value].key"
+      @click="open = true"
+      @blur="open = false"
     >
 
+    <i class="material-icons">arrow_drop_down</i>
+
     <transition name="dropdown">
-      <ul class="z-depth-1"
-        :style="{ 'max-height': `${maxHeight}px` }"
-        v-show="open"
-        ref="ul"
-      >
+      <ul class="z-depth-1" @mousedown.prevent v-show="open">
+        <li class="disabled">{{ $l.cSelect.tip }}</li>
         <li
-          v-for="(value, key, index) in options"
-          :key="`option-${key}`"
-          :class="{ selected: selected === index }"
+          v-for="(value, index) in _options"
+          :key="`option-${index}`"
+          :class="{ selected: value === index}"
           @click="handleOptionClick(index)"
-        >{{ key }}</li>
+        >{{ value.key }}</li>
       </ul>
     </transition>
-
-    <select id="region">
-      <option value="Todas">Todas</option>
-      <option value="1">I Región de Tarapacá</option>
-    </select>
   </div>
 </template>
 
 <script>
+// revisar stilos
+// scrolleable
+// aparecer en el centro
+// width
+
 export default {
+  props: {
+    value: {
+      type: Number,
+      default: 0,
+    },
+    options: {
+      type: Array,
+      required: true,
+    },
+    default: {
+      type: String,
+    },
+  },
   data() {
     return {
-      open: false,
-      selected: null,
-      mounted: false,
-      maxHeight: 0,
+      _options: null,
 
-      options: {
-        Todas: 'Todas',
-        'I Región de Tarapacá': 1,
-      },
+      open: false,
     };
   },
-  computed: {
-    /*
-    maxHeight() {
-      if (!this.mounted) return;
-
-      let maxHeight = Array.from(this.$refs.ul.children).reduce(
-        (before, current) => {
-          return (before += current.offsetHeight);
-        },
-        0
-      );
-
-      return 100;
-    },
-    */
-  },
   methods: {
-    handleInputClick() {
-      this.open = true;
-
-      console.log('Open!');
-    },
-    handleBlur() {
-      this.open = false;
-    },
     handleOptionClick(index) {
-      this.selected = index;
+      this.open = false;
+
+      this.$emit('input', this._options[index].value);
     },
   },
-  mounted() {
-    this.mounted = true;
-  },
-  updated() {
-    let maxHeight = Array.from(this.$refs.ul.children).reduce(
-      (before, current) => {
-        return (before += current.offsetHeight);
-      },
-      0
-    );
+  created() {
+    this._options = JSON.parse(JSON.stringify(this.options));
 
-    console.log(maxHeight);
-
-    this.maxHeight = maxHeight;
+    if (this.default) {
+      this._options.unshift({ value: 0, key: this.default });
+    }
   },
 };
 </script>
@@ -96,16 +73,63 @@ select
 .select-wrapper
   position: relative
 
+  display: inline-block
+
+  input
+    position: relative
+    z-index: 1
+
+    display: inline-block
+
+    height: 3rem
+
+    padding: 0
+
+    cursor: pointer
+    user-select: none
+
+    border: none
+    outline: none
+
+    font-size: medium
+    line-height: 3rem
+  
+  .material-icons
+    position: absolute
+    z-index: 1
+    top: 0
+    right: 0
+    bottom: 0
+
+    width: 24px
+    height: 24px
+    margin: auto 0
+
+    color: #000000
+    background-color: #FFFFFF
+
+    font-size: 24px
+
   ul
     position: absolute
+    z-index: 1
+    bottom: 0
+    left: 0
 
-    overflow: hidden
+    overflow-y: scroll
+
+    max-height: 100px
+
+    margin: 0
 
     padding: 1rem 0
 
     list-style-type: none
 
+    transform-origin: left bottom
+
     color: #000000
+    background-color: #FFFFFF
 
     li
       padding: 14px 16px
@@ -117,16 +141,14 @@ select
     
     li:focus, li:hover
       background-color: rgba(0, 0, 0, 0.08)
+    
+    li.disabled
+      color: #9E9E9E
+      background-color: #FFFFFF
 
     &.dropdown-enter
-      max-height: 0 !important
+      transform: scale(0, 0)
 
     &.dropdown-enter-active
-      transition: max-height .1s
-
-    &.dropdown-leave-active
-      transition: max-height .1s
-
-    &.dropdown-leave-to
-      max-height: 0 !important
+      transition: transform .05s
 </style>

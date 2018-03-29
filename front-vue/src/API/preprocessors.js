@@ -40,4 +40,10 @@ export default {
       return { careers, universities };
     },
   },
+  regions(API_regions) {
+    return API_regions;
+  },
+  cities(API_cities) {
+    return API_cities;
+  },
 };

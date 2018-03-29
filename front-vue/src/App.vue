@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <transition name="fade">
-      <div class="overlay" v-if="$store.state.isSearchBarFocused"></div>
+      <div class="overlay"
+        :style="{ 'z-index': $store.state.overlay.zIndex }"
+        @click="$store.state.overlay.handleClick"
+        v-if="$store.state.overlay.show"
+      ></div>
     </transition>
 
     <header ref="header">
@@ -35,7 +39,6 @@ export default {
 
   .overlay
     position: absolute
-    z-index: 1000
     top: 0
     right: 0
     bottom: 0
