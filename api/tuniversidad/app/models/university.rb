@@ -25,7 +25,7 @@ class University < ApplicationRecord
     self.university_type.title
   end
 
-  index_name Rails.application.class.parent_name.underscore
+  index_name "universities"
   document_type self.name.downcase
 
   settings index: { number_of_shards: 1 } do 
