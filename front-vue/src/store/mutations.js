@@ -1,11 +1,11 @@
 import Vue from 'vue';
 
 export default {
+  updateLocale(state, payload) {
+    state.locale = state.locales[payload.locale];
+  },
   updateHeavySearchResponse(state, payload) {
     state.heavySearchResponse = payload.response;
-  },
-  updateIsSearchBarFocused(state, payload) {
-    state.isSearchBarFocused = payload.focus;
   },
   updateOverlay(state, payload) {
     state.overlay.show = payload.show;
@@ -14,8 +14,5 @@ export default {
   },
   updateHero(state, payload) {
     state.cHero.hidden = payload.hidden;
-  },
-  updateLocale(state, payload) {
-    state.locale = state.locales[payload.locale];
   },
 };

@@ -1,6 +1,13 @@
 import Vue from 'vue';
 
 export default {
+  selectLocale(context, payload) {
+    return new Promise(resolve => {
+      context.commit('updateLocale', payload);
+
+      resolve();
+    });
+  },
   fetchHeavySearch(context, payload) {
     return new Promise(resolve => {
       Vue.prototype.$API.search
@@ -11,9 +18,6 @@ export default {
           resolve();
         });
     });
-  },
-  updateIsSearchBarFocused(context, payload) {
-    context.commit('updateIsSearchBarFocused', payload);
   },
   showOverlay(context, payload) {
     return new Promise(resolve => {
@@ -30,12 +34,17 @@ export default {
     });
   },
   showHero(context) {
-    context.commit('updateHero', { hidden: false });
+    return new Promise(resolve => {
+      context.commit('updateHero', { hidden: false });
+
+      resolve();
+    });
   },
   hideHero(context) {
-    context.commit('updateHero', { hidden: true });
-  },
-  selectLocale(context, payload) {
-    context.commit('updateLocale', payload);
+    return new Promise(resolve => {
+      context.commit('updateHero', { hidden: true });
+
+      resolve();
+    });
   },
 };
