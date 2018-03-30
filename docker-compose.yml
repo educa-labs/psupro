@@ -34,6 +34,8 @@ services:
     depends_on:
       - db
       - elasticsearch
+    links:
+     - elasticsearch
     ports:
       - "3000:3000"
 
