@@ -2,15 +2,18 @@
   <div id="home">
     <app-trending></app-trending>
 
-    <section class="separator" style="background-image: url(https://images.pexels.com/photos/7095/people-coffee-notes-tea.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260)">
-      <div class="overlay"></div>
-    </section>
-
     <section class="news"></section>
   </div>
 </template>
 
 <script>
+/*
+TODO:
+  - ¿debería colocar un sombreado al hero?
+  - corregir alturas
+  - insipirarme
+*/
+
 import Trending from './Trending.vue';
 
 export default {

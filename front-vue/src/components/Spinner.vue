@@ -4,7 +4,10 @@
 
 <style lang="sass" scoped>
 .spinner
+  margin: 1rem 0
+
   animation: blink 3s infinite
+  text-align: center
 
   color: #7A7A7A
 

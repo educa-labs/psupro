@@ -15,16 +15,27 @@ export default {
   updateIsSearchBarFocused(context, payload) {
     context.commit('updateIsSearchBarFocused', payload);
   },
-  updateTest(context, payload) {
-    context.commit('updateTest', payload);
+  showOverlay(context, payload) {
+    return new Promise(resolve => {
+      context.commit('updateOverlay', { ...payload, show: true });
+
+      resolve();
+    });
+  },
+  hideOverlay(context) {
+    return new Promise(resolve => {
+      context.commit('updateOverlay', { show: false });
+
+      resolve();
+    });
+  },
+  showHero(context) {
+    context.commit('updateHero', { hidden: false });
+  },
+  hideHero(context) {
+    context.commit('updateHero', { hidden: true });
   },
   selectLocale(context, payload) {
     context.commit('updateLocale', payload);
-  },
-  showOverlay(context, payload) {
-    context.commit('updateOverlay', { ...payload, show: true });
-  },
-  hideOverlay(context) {
-    context.commit('updateOverlay', { show: false });
   },
 };

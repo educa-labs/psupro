@@ -1,12 +1,16 @@
+// Internal
 import Vue from 'vue'; // Vue
 import API from './API/API'; // VueResource
 import locales from './locales/locales'; // Locales
 import router from './router/router'; // VueRouter
 import store from './store/store'; // Vuex
-
 import './stylesheets'; // Stylesheets
 
+// External
+import Anime from 'animejs';
+
 Vue.prototype.$API = API;
+Vue.prototype.$Anime = Anime;
 Vue.prototype.$l = store.state.locale; // Abbreviation
 
 import App from './App.vue';

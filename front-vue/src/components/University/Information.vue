@@ -1,6 +1,6 @@
 <template>
   <div v-if="fetched" class="information">
-    <div class="description">{{ university.description }}</div>
+    <p class="description">{{ university.description }}</p>
 
     <div class="row">
       <div class="col-xs-12 col-sm-6">
@@ -31,6 +31,11 @@
 </template>
 
 <script>
+/*
+TODO:
+  - Parse table data
+  - Mostrar carreras
+*/
 export default {
   props: {
     id: { type: Number, required: true },
@@ -80,27 +85,35 @@ export default {
 
 <style lang="sass" scoped>
 .information
-  padding: .5rem
-
-  color: #7A7A7A
+  color: #000000
 
   .description
-    margin-bottom: 1rem
+    margin: 0 0 1rem
+
+    font-weight: 300
 
   table
     width: 100%
 
+    border-spacing: 0
+
     tr td
-      padding-top: .33rem
-      padding-bottom: .33rem
+      padding: .33rem .25rem
+
+      border-bottom: 1px solid #E0E0E0 // Gray - 300
+
+      &.key, &.value
+        width: 50%
+
+        font-weight: 300
 
       &.key
-        width: 40%
+        font-weight: 400
 
-        color: #000000
+      @media (min-width: 576px)
+        &.key
+          width: 40%
 
-        font-weight: 500
-      
-      &.value
-        width: 60%
+        &.value
+          width: 60%
 </style>

@@ -61,7 +61,7 @@ export default {
 .trending
   .universities
     display: grid
-    height: 50vh
+    min-height: 50vh
 
     padding: 1rem
 

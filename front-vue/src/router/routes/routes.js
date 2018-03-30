@@ -14,12 +14,12 @@ export default [
     component: Home,
     name: 'trending',
     beforeEnter: (to, from, next) => {
-      store.dispatch('updateTest', { test: false });
+      store.dispatch('showHero');
 
       next();
     },
     beforeLeave: (to, from, next) => {
-      store.dispatch('updateTest', { test: true });
+      store.dispatch('hideHero');
 
       next();
     },

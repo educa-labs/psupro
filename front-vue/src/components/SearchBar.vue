@@ -1,5 +1,5 @@
 <template>
-  <form class="search-bar z-depth-2" :class="{ active }"
+  <form class="search-bar z-depth-2" :class="{ active, focused: focus }"
     @click="$refs.input.focus()"
   >
     <div class="input">
@@ -18,10 +18,12 @@
     <transition name="dropdown"
       @before-enter="beforeEnter"
       @after-leave="afterLeave"
+      @enter="enter"
+      @leave="leave"
     >
       <div class="search-response" 
         @mousedown.prevent
-        v-if="$store.state.isSearchBarFocused"
+        v-if="focus"
       >
         <div v-if="response">
           <section v-if="response.universities.length > 0">
@@ -48,6 +50,7 @@
 
           <div v-if="response.universities.length === 0 && response.careers.length === 0">{{ $l.empty }}</div>
         </div>
+
         <app-spinner v-else></app-spinner>
       </div>
     </transition>
@@ -55,6 +58,16 @@
 </template>
 
 <script>
+/*
+TODO:
+  - <Navigator>
+  - Buscador recuerda búsqueda realizada
+  - Títulos de secciones
+  - Padding de sessiones
+  - Tamaños de fuentes
+  - Refactor
+*/
+
 export default {
   props: {
     delay: { type: Number, default: 250 },
@@ -66,6 +79,7 @@ export default {
       response: null,
 
       active: false,
+      focus: false,
     };
   },
   methods: {
@@ -77,10 +91,19 @@ export default {
       });
     },
     handleFocus() {
-      this.$store.dispatch('updateIsSearchBarFocused', { focus: true });
+      this.$store.dispatch('showOverlay', {
+        handleClick: () => {
+          this.$store.dispatch('hideOverlay');
+        },
+        zIndex: 1005,
+      });
+
+      this.focus = true;
     },
     handleBlur() {
-      this.$store.dispatch('updateIsSearchBarFocused', { focus: false });
+      this.$store.dispatch('showOverlay');
+
+      this.focus = false;
     },
     handleInput() {
       clearTimeout(this.searchTimeout);
@@ -90,7 +113,7 @@ export default {
       }, this.delay);
     },
     keypressHandler() {
-      this.$store.dispatch('updateIsSearchBarFocused', { focus: false });
+      this.handleBlur();
 
       let payload = { query: this.search, image: true };
       this.$store.dispatch('fetchHeavySearch', payload).then(() => {
@@ -102,6 +125,33 @@ export default {
     },
     afterLeave() {
       this.active = false;
+    },
+    enter(el, done) {
+      let height = el.offsetHeight;
+
+      el.style.height = 0 + 'px';
+
+      this.$Anime({
+        targets: el,
+        height: height,
+        duration: 250,
+        easing: 'easeInOutQuad',
+        complete: () => {
+          el.style.overflowY = 'scroll';
+          done();
+        },
+      });
+    },
+    leave(el, done) {
+      el.style.overflowY = 'hidden';
+
+      this.$Anime({
+        targets: el,
+        height: 0,
+        duration: 250,
+        easing: 'easeInOutQuad',
+        complete: done,
+      });
     },
   },
   created() {
@@ -156,11 +206,9 @@ export default {
     right: 0
     left: 0
 
-    overflow-y: scroll
-
-    height: 200px
-
     cursor: default
+
+    overflow-y: hidden
 
     border-top: 1px solid #F5F5F5
     border-bottom-right-radius: $border-radius
@@ -194,19 +242,13 @@ export default {
 
             color: #E0E0E0 // Grey - 300
 
-    &.dropdown-enter
-      height: 0
-
-    &.dropdown-enter-active
-      transition: all .25s ease
-
-    &.dropdown-leave-active
-      transition: all .25s ease
-
-    &.dropdown-leave-to
-      height: 0
-
 .search-bar.active
   border-bottom-right-radius: 0
   border-bottom-left-radius: 0
+
+.search-bar
+  transition: transform 250ms
+
+  &.focused
+    transform: scale(1.006)
 </style>

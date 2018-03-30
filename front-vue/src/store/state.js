@@ -8,8 +8,9 @@ export default {
     handleClick: () => {},
     zIndex: 1000,
   },
-  test: false,
-
+  cHero: {
+    hidden: false,
+  },
   locales,
   locale: locales.esCL,
 };

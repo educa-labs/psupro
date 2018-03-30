@@ -33,7 +33,7 @@ export default {
 <style lang="sass" scoped>
 #app
   $duration: .25s
-  $opacity: .75
+  $opacity: .66
 
   position: relative
 

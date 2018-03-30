@@ -68,14 +68,17 @@ export default {
   created() {
     this.fetch();
 
-    this.$store.dispatch('updateTest', { test: true }); // Temporal
+    this.$store.dispatch('hideHero'); // Temporal
   },
 };
 </script>
 
 <style lang="sass" scoped>
 .university-container
-  padding: 1rem
+  padding: 0
+
+  @media (min-width: 576px)
+    padding: 1rem
 
 .university
   .cover
