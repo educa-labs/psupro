@@ -1,11 +1,14 @@
 <template>
-  <div class="card career-card z-depth-1" v-if="fetched">
+  <div class="card career-card z-depth-1">
     <div class="card-content">
       <div class="image" :style="{ backgroundImage: `url(${career.image})` }"></div>
 
       <div class="information">
-        <div class="title">{{ career.title }}</div>
-        <div class="university-campus">{{ `${career.university_name} en ${career.campu_name}` }}</div>
+        {{ career.title }}
+
+        <div class="university-campus">
+          {{ `${career.university_name} ${$l.in} ${career.campu_name}` }}
+        </div>
       </div>
     </div>
   </div>
@@ -16,37 +19,27 @@ export default {
   props: {
     career: { type: Object, required: true },
   },
-  computed: {
-    fetched() {
-      // return this.career.image;
-
-      return true;
-    },
-  },
 };
 </script>
 
 <style lang="sass" scoped>
 .career-card
-  margin-bottom: 1em
+  margin-bottom: 1rem
 
   .card-content
     display: flex
     align-items: center
 
     .information
-      overflow: hidden
-
-      .title
-        margin-bottom: .25em
-
-        color: #000000
+      color: #000000
 
       .university-campus
+        margin-top: .25rem
+
         color: #7A7A7A
 
   .image
-    $gap: 1em
+    $gap: 1rem
     $size: 50px
 
     flex-shrink: 0

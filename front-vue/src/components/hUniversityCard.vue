@@ -51,25 +51,21 @@ export default {
       position: absolute
 
       z-index: 0
-      top: 50%
+      top: 0
       right: 0
       bottom: 0
       left: 0
 
-      opacity: .75
-      background: linear-gradient(transparent, #000000)
+      background: linear-gradient(transparent, #212121)
 
     .title
       z-index: 1
 
-      color: #FFFFFF
-
-      font-size: 20px
+      font-size: 1.25em
 
     .description
       z-index: 1
 
-      color: #FFFFFF
       margin-top: 1rem
 
       font-weight: 300

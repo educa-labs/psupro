@@ -6,29 +6,29 @@ import Home from './../../components/Home.vue';
 import careerRoutes from './career';
 import universityRoutes from './university';
 
-import SearchResponse from './../../components/SearchResponse.vue';
+import Search from './../../components/Search.vue';
 
 export default [
   {
     path: '/',
     component: Home,
-    name: 'trending',
-    beforeEnter: (to, from, next) => {
-      store.dispatch('showHero');
-
-      next();
-    },
-    beforeLeave: (to, from, next) => {
-      store.dispatch('hideHero');
-
-      next();
-    },
+    name: 'home',
   },
   careerRoutes,
   universityRoutes,
   {
     path: '/search',
-    component: SearchResponse,
+    component: Search,
     name: 'search',
+    beforeEnter: (to, from, next) => {
+      store.dispatch('hideHero');
+
+      next();
+    },
+    beforeLeave: (to, from, next) => {
+      store.dispatch('showHero');
+
+      next();
+    },
   },
 ];

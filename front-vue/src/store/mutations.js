@@ -13,6 +13,6 @@ export default {
     state.overlay.zIndex = payload.zIndex;
   },
   updateHero(state, payload) {
-    state.cHero.hidden = payload.hidden;
+    state.cHero.open = payload.open;
   },
 };

@@ -8,7 +8,7 @@ export default {
     zIndex: 1000,
   },
   cHero: {
-    hidden: false,
+    open: true,
   },
   locales,
   locale: locales.esCL,

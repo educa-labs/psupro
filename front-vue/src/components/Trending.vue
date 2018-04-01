@@ -45,7 +45,6 @@ export default {
       return universityCards;
     },
   },
-  watch: { $route: 'fetch' },
   methods: {
     fetch() {
       this.$store.dispatch('fetchHeavySearch', { query: '', image: true });
@@ -61,6 +60,7 @@ export default {
 .trending
   .universities
     display: grid
+
     min-height: 50vh
 
     padding: 1rem
@@ -82,6 +82,18 @@ export default {
       grid-template-columns: repeat(4, 1fr)
       grid-template-areas: "nth-1 nth-1 nth-1 nth-2" "nth-3 nth-3 nth-4 nth-4"
 
+      a:nth-child(1)
+        grid-area: nth-1
+
+      a:nth-child(2)
+        grid-area: nth-2
+
+      a:nth-child(3)
+        grid-area: nth-3
+
+      a:nth-child(4)
+        grid-area: nth-4
+
     @media (min-width: 1200px)
       grid-template-columns: 2fr repeat(2, 1fr)
       grid-template-areas: "nth-1 nth-2 nth-2" "nth-1 nth-3 nth-4"
@@ -94,19 +106,6 @@ export default {
 
         &:focus, &:hover
           transform: scale3d(1.012, 1.012, 1)
-
-      @media (min-width: 992px)
-        &:nth-child(1)
-          grid-area: nth-1
-
-        &:nth-child(2)
-          grid-area: nth-2
-
-        &:nth-child(3)
-          grid-area: nth-3
-
-        &:nth-child(4)
-          grid-area: nth-4
 
       &.fade-enter
         opacity: 0

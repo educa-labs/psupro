@@ -35,14 +35,14 @@ export default {
   },
   showHero(context) {
     return new Promise(resolve => {
-      context.commit('updateHero', { hidden: false });
+      context.commit('updateHero', { open: true });
 
       resolve();
     });
   },
   hideHero(context) {
     return new Promise(resolve => {
-      context.commit('updateHero', { hidden: true });
+      context.commit('updateHero', { open: false });
 
       resolve();
     });
