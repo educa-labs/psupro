@@ -20,19 +20,21 @@ services:
     ports:
       - "3000:3000"
 
-  # front:
-  #   container_name: front
-  #   build:
-  #     context: ./front
-  #   volumes:
-  #     - '.:/usr/src/app'
-  #     - '/usr/src/app/node_modules'
-  #   ports:
-  #     - '5000:5000'
-  #   environment:
-  #     - NODE_ENV=development
-  #   links:
-  #     - api
+  front-vue:
+    container_name: front-vue
+    build:
+      context: ./front-vue
+    volumes:
+      - '.:/usr/app'
+      - '/usr/app/front-vue/node_modules'
+    ports:
+      - '8080:8080'
+    expose:
+      - '8080'
+    environment:
+      - NODE_ENV=development
+    links:
+      - api
       
   # web:
   #   build:
