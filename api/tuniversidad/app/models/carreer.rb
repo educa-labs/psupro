@@ -1,5 +1,8 @@
 class Carreer < ApplicationRecord
 
+  include Elasticsearch::Model 
+  include Elasticsearch::Model::Callbacks
+
   validates_presence_of :university_id, :campu_id, :title
   belongs_to :university
   belongs_to :campu
@@ -32,7 +35,28 @@ class Carreer < ApplicationRecord
     not(self.weighing.language.nil? || self.weighing.math.nil?)
   end
 
-  # This makes the model searchable with solr.
+  index_name "carreers"
+  document_type self.name.downcase
+  
+  settings index: { number_of_shards: 1 } do 
+    mapping dynamic: false do 
+      indexes :title, analyzer: 'spanish'
+    end 
+  end
+
+  def search(query)
+    __elasticsearch__.search(
+      { query:
+        { multi_match: 
+          { query: query, 
+            fields: ['title'] 
+          } 
+        }
+      })
+  end
+
+
+# This makes the model searchable with solr.
 #   searchable do
 #     text :title
 #     text :university do
