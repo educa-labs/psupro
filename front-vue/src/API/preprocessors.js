@@ -1,6 +1,7 @@
 export default {
   careers(API_career) {
     return {
+      university_id: API_career.university_id,
       weighing: {
         language: { key: 'Lenguaje', value: API_career.weighing.language },
         mathematics: { key: 'Matemáticas', value: API_career.weighing.math },

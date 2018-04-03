@@ -100,6 +100,22 @@ const API = {
       });
     });
   },
+  test(id) {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`${API.url}/universities/${id}/carreers`).then(response => {
+        resolve(response.body);
+      });
+    });
+  },
+  campus: {
+    byUniversity(id) {
+      return new Promise((resolve, reject) => {
+        Vue.http.get(`${API.url}/universities/${id}/campus`).then(response => {
+          resolve(response.body);
+        });
+      });
+    },
+  },
 };
 
 export default API;
