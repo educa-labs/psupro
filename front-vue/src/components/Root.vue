@@ -36,14 +36,14 @@ export default {
 
 <style lang="sass" scoped>
 #root
-  $duration: .25s
-  $opacity: .66
-
   position: relative
 
   min-height: 100vh
 
 #root .overlay
+  $duration: .25s
+  $opacity: .66
+
   position: absolute
   top: 0
   right: 0
@@ -72,7 +72,7 @@ export default {
   bottom: 0
   left: 0
 
-  transition: transform 1s cubic-bezier(.55, 0, .1, 1), opacity 1s cubic-bezier(.55, 0, .1, 1)
+  transition: all .5s cubic-bezier(.55, 0, .1, 1)
 
   &.slide-left-enter, &.slide-right-leave-active 
     transform: translate(100%, 0)

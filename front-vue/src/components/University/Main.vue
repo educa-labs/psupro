@@ -61,8 +61,6 @@ export default {
   },
   created() {
     this.fetch();
-
-    this.$store.dispatch('closeHero'); // Temporal
   },
 };
 </script>
@@ -107,7 +105,6 @@ export default {
     .profile
       $size: 75px
 
-
       position: absolute
       z-index: 2
       right: #{$size / 2}
@@ -132,7 +129,6 @@ export default {
 
   .card-title
     $height: 75px
-
 
     z-index: 1
 

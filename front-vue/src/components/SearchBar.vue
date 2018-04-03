@@ -1,7 +1,6 @@
 <template>
   <form class="search-bar z-depth-2" :class="{ focused, opening }"
     @click="$refs.input.focus()"
-    v-if="visible"
   >
     <div class="input">
       <app-icon v-if="search.query.length === 0">search</app-icon>
@@ -61,8 +60,6 @@ export default {
 
       focused: false,
       opening: false,
-
-      routesVisible: ['home', 'search'],
     };
   },
   watch: {
@@ -81,9 +78,6 @@ export default {
         this.search.response.universities.length === 0 &&
         this.search.response.careers.length === 0
       );
-    },
-    visible() {
-      return this.routesVisible.includes(this.$route.name);
     },
   },
   methods: {
