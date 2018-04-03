@@ -10,10 +10,4 @@ export default {
   updateOverlay(state, payload) {
     state.overlay = Object.assign(state.overlay, payload);
   },
-  updateHeader(state, payload) {
-    state.header = Object.assign(state.header, payload);
-  },
-  updateHero(state, payload) {
-    state.cHero = Object.assign(state.cHero, payload);
-  },
 };

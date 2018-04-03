@@ -17,11 +17,14 @@ Vue.prototype.$l = store.state.locale; // Abbreviation
 
 import App from './App.vue';
 
-import Navigator from './components/Navigator.vue';
-Vue.component('app-navigator', Navigator);
+import Hero from './components/Hero.vue';
+Vue.component('app-hero', Hero);
 
 import Icon from './components/Icon.vue';
 Vue.component('app-icon', Icon);
+
+import Navigator from './components/Navigator.vue';
+Vue.component('app-navigator', Navigator);
 
 import Spinner from './components/Spinner.vue';
 Vue.component('app-spinner', Spinner);

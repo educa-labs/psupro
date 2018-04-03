@@ -7,27 +7,17 @@
       ></div>
     </transition>
 
-    <header :class="{ sticky: $store.state.header.sticky }" ref="header">
-      <app-hero></app-hero>
-    </header>
-
     <main ref="main">
       <transition :name="transition">
         <keep-alive><router-view class="child-view"></router-view></keep-alive>
       </transition>
     </main>
-
-    <footer ref="footer"></footer>
   </div>
 </template>
 
 <script>
-import Hero from './Hero.vue';
 
 export default {
-  components: {
-    'app-hero': Hero,
-  },
   data() {
     return {
       transition: 'slide-right',
@@ -51,35 +41,36 @@ export default {
 
   position: relative
 
-  .overlay
-    position: absolute
-    top: 0
-    right: 0
-    bottom: 0
-    left: 0
+  min-height: 100vh
 
-    opacity: $opacity
+#root .overlay
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
 
-    background-color: #000000
-  
-    &.fade-enter, &.fade-leave-to
-      opacity: 0
+  opacity: $opacity
 
-    &.fade-enter-active, &.fade-leave-active
-      transition: opacity $duration
-  
-  header.sticky
-    position: fixed
-    z-index: 1030
-    top: 0
-    right: 0
-    left: 0
+  background-color: #000000
 
-  header.sticky + main
-    padding-top: 146px
+  &.fade-enter, &.fade-leave-to
+    opacity: 0
+
+  &.fade-enter-active, &.fade-leave-active
+    transition: opacity $duration
+
+#root main
+  position: relative
+
+  height: 100%
 
 #root .child-view
   position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
 
   transition: transform 1s cubic-bezier(.55, 0, .1, 1), opacity 1s cubic-bezier(.55, 0, .1, 1)
 

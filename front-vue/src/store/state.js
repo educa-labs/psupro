@@ -13,10 +13,4 @@ export default {
     handleClick: null,
     zIndex: 1000,
   },
-  header: {
-    sticky: false,
-  },
-  cHero: {
-    open: true,
-  },
 };

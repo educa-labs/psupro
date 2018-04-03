@@ -2,6 +2,8 @@
   <div class="search">
     <app-navigator></app-navigator>
 
+    <app-hero class="closed"></app-hero>
+
     <section class="results" :style="{ 'padding-bottom': `${filterHeight}px` }" v-if="!$store.state.search.fetching">
       <template v-if="!emptySearchResponse">
         <h5 class="title">{{ $l.cSearch.results }}</h5>
@@ -69,6 +71,11 @@ export default {
 
 <style lang="sass" scoped>
 .search
+  .navigator
+    position: relative
+
+    padding-bottom: 0
+  
   .career-card, .university-card
     margin: 1rem
 </style>

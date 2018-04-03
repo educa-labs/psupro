@@ -40,32 +40,4 @@ export default {
       resolve();
     });
   },
-  stickHeader(context) {
-    return new Promise(resolve => {
-      context.commit('updateHeader', { sticky: true });
-
-      resolve();
-    });
-  },
-  unstickHeader(context) {
-    return new Promise(resolve => {
-      context.commit('updateHeader', { sticky: false });
-
-      resolve();
-    });
-  },
-  openHero(context) {
-    return new Promise(resolve => {
-      context.commit('updateHero', { open: true });
-
-      resolve();
-    });
-  },
-  closeHero(context) {
-    return new Promise(resolve => {
-      context.commit('updateHero', { open: false });
-
-      resolve();
-    });
-  },
 };
