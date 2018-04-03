@@ -8,15 +8,22 @@ export default {
       resolve();
     });
   },
-  fetchHeavySearch(context, payload) {
+  fetchSearchResponse(context, { query, filters, image }) {
     return new Promise(resolve => {
-      Vue.prototype.$API.search
-        .search(payload.query, payload.filters, payload.image)
-        .then(response => {
-          context.commit('updateHeavySearchResponse', { response });
+      context.commit('updateSearch', { fetching: true });
 
-          resolve();
-        });
+      Vue.prototype.$API.search.search(query, filters, image).then(response => {
+        context.commit('updateSearch', { query, response, fetching: false });
+
+        resolve();
+      });
+    });
+  },
+  clearSearchResponse(context) {
+    return new Promise(resolve => {
+      context.commit('updateSearch', { response: '' });
+
+      resolve();
     });
   },
   showOverlay(context, payload) {
@@ -33,14 +40,28 @@ export default {
       resolve();
     });
   },
-  showHero(context) {
+  stickHeader(context) {
+    return new Promise(resolve => {
+      context.commit('updateHeader', { sticky: true });
+
+      resolve();
+    });
+  },
+  unstickHeader(context) {
+    return new Promise(resolve => {
+      context.commit('updateHeader', { sticky: false });
+
+      resolve();
+    });
+  },
+  openHero(context) {
     return new Promise(resolve => {
       context.commit('updateHero', { open: true });
 
       resolve();
     });
   },
-  hideHero(context) {
+  closeHero(context) {
     return new Promise(resolve => {
       context.commit('updateHero', { open: false });
 

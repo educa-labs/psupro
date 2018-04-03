@@ -7,8 +7,8 @@
       ></div>
     </transition>
 
-    <header :class="{ sticky }" ref="header">
-      <app-hero ref="hero"></app-hero>
+    <header :class="{ sticky: $store.state.header.sticky }" ref="header">
+      <app-hero></app-hero>
     </header>
 
     <main ref="main">
@@ -29,27 +29,6 @@ export default {
   components: {
     'app-hero': Hero,
     'app-navigator': Navigator,
-  },
-  data() {
-    return {
-      sticky: false,
-    };
-  },
-  mounted() {
-    if (this.$refs.hero) {
-      let logo = this.$refs.hero.$refs.logo,
-        sticky = logo.offsetHeight + 16; // margin-bottom: 1rem
-
-      window.onscroll = () => {
-        if (window.pageYOffset >= sticky) {
-          logo.style.display = 'none';
-          this.$refs.header.classList.add('sticky');
-        } else {
-          logo.style.display = 'unset';
-          this.$refs.header.classList.remove('sticky');
-        }
-      };
-    }
   },
 };
 </script>
@@ -90,6 +69,6 @@ export default {
     right: 0
     left: 0
 
-    & + main
-      padding-top: 146px
+  header.sticky + main
+    padding-top: 146px
 </style>

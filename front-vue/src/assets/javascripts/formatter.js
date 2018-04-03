@@ -1,5 +1,5 @@
-import accounting from './assets/javascripts/accounting.min'; // AccountingJS
-import store from './store/store'; // Vuex
+import accounting from './accounting.min'; // AccountingJS
+import store from './../../store/store'; // Vuex
 
 accounting.settings = {
   currency: {

@@ -1,15 +1,22 @@
-import locales from './../locales/locales'; // Locales
+import locales from './../locales/locales';
 
 export default {
-  heavySearchResponse: null,
+  locales,
+  locale: locales.esCL,
+  search: {
+    query: '',
+    response: null,
+    fetching: false,
+  },
   overlay: {
     show: false,
-    handleClick: () => {},
+    handleClick: null,
     zIndex: 1000,
+  },
+  header: {
+    sticky: false,
   },
   cHero: {
     open: true,
   },
-  locales,
-  locale: locales.esCL,
 };

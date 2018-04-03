@@ -4,15 +4,16 @@ export default {
   updateLocale(state, payload) {
     state.locale = state.locales[payload.locale];
   },
-  updateHeavySearchResponse(state, payload) {
-    state.heavySearchResponse = payload.response;
+  updateSearch(state, payload) {
+    state.search = Object.assign(state.search, payload);
   },
   updateOverlay(state, payload) {
-    state.overlay.show = payload.show;
-    state.overlay.handleClick = payload.handleClick;
-    state.overlay.zIndex = payload.zIndex;
+    state.overlay = Object.assign(state.overlay, payload);
+  },
+  updateHeader(state, payload) {
+    state.header = Object.assign(state.header, payload);
   },
   updateHero(state, payload) {
-    state.cHero.open = payload.open;
+    state.cHero = Object.assign(state.cHero, payload);
   },
 };
