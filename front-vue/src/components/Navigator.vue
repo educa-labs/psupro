@@ -1,8 +1,6 @@
 <template>
-  <div id="navigator" v-if="visible">
-    <app-icon @click.native="$router.go(-1)">arrow_back</app-icon>
-    
-    {{ $l.cNavigator[this.$route.name] }}
+  <div class="navigator">
+    <app-icon @click.native="back">arrow_back</app-icon> {{ name }}
   </div>
 </template>
 
@@ -10,19 +8,22 @@
 export default {
   data() {
     return {
-      routesVisible: ['career', 'search'],
+      name: '',
     };
   },
-  computed: {
-    visible() {
-      return this.routesVisible.includes(this.$route.name);
+  methods: {
+    back() {
+      this.$router.go(-1);
     },
+  },
+  beforeMount() {
+    this.name = this.$l.cNavigator[this.$route.name];
   },
 };
 </script>
 
 <style lang="sass" scoped>
-#navigator
+.navigator
   display: flex
   align-items: center
 

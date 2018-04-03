@@ -8,11 +8,11 @@ export default {
       resolve();
     });
   },
-  fetchSearchResponse(context, { query, filters, image }) {
+  fetchSearchResponse(context, { query, filters }) {
     return new Promise(resolve => {
       context.commit('updateSearch', { fetching: true });
 
-      Vue.prototype.$API.search.search(query, filters, image).then(response => {
+      Vue.prototype.$API.search.search(query, filters, true).then(response => {
         context.commit('updateSearch', { query, response, fetching: false });
 
         resolve();

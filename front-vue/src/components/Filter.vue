@@ -15,12 +15,18 @@
         <form>
           <div class="field">
             <label for="region">{{ $l.cFilter.region }}</label>
-            <app-select id="region" v-model="form.region" :options="regions" :default="$l.cFilter.default"></app-select>
+            <app-select id="region" :options="regions" :default="$l.cFilter.default"
+              v-model="filters.region"
+              @input="fetchSearchResponse"
+            ></app-select>
           </div>
 
           <div class="field">
             <label for="city">{{ $l.cFilter.city }}</label>
-            <app-select id="city" v-model="form.city" :options="regions" :default="$l.cFilter.default"></app-select>
+            <app-select id="city" :options="regions" :default="$l.cFilter.default"
+              v-model="filters.city"
+              @input="fetchSearchResponse"
+            ></app-select>
           </div>
         </form>
       </div>
@@ -29,11 +35,12 @@
 </template>
 
 <script>
-import anime from 'animejs';
-
 import Select from './Select.vue';
 
 export default {
+  props: {
+    height: { type: Number, default: 42 },
+  },
   components: {
     'app-select': Select,
   },
@@ -44,19 +51,18 @@ export default {
       cities: null,
       regions: null,
 
-      form: {
+      filters: {
         city: 0,
         region: 0,
       },
 
       closed: true,
       duration: 250,
-      height: 42,
     };
   },
   computed: {
     count() {
-      return Object.values(this.form).reduce((before, current) => {
+      return Object.values(this.filters).reduce((before, current) => {
         return (before += current && 1);
       }, 0);
     },
@@ -86,6 +92,19 @@ export default {
         this.fetched = true;
       });
     },
+    fetchSearchResponse() {
+      this.close();
+
+      this.$store.dispatch('clearSearchResponse').then(() => {
+        let payload = {
+          query: this.$store.state.search.query,
+          filters: this.filters,
+          image: true,
+        };
+
+        this.$store.dispatch('fetchSearchResponse', payload);
+      });
+    },
     open() {
       this.$store.dispatch('showOverlay', {
         handleClick: () => {
@@ -102,7 +121,7 @@ export default {
       this.closed = true;
     },
     clear() {
-      this.form.city = this.form.region = 0;
+      this.filters.city = this.filters.region = 0;
     },
     enter(el, done) {
       if (!this.closed) {
@@ -110,7 +129,7 @@ export default {
 
         el.style.height = `${this.height}px`;
 
-        anime({
+        this.$a({
           targets: el,
           height: height,
           duration: this.duration,
@@ -120,7 +139,7 @@ export default {
       } else {
         el.style.opacity = 0;
 
-        anime({
+        this.$a({
           targets: el,
           opacity: 1,
           duration: Math.floor(this.duration / 2),
@@ -131,7 +150,7 @@ export default {
     },
     leave(el, done) {
       if (this.closed) {
-        anime({
+        this.$a({
           targets: el,
           height: this.height,
           opacity: 0,

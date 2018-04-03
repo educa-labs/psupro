@@ -12,9 +12,9 @@
     </header>
 
     <main ref="main">
-      <app-navigator></app-navigator>
-
-      <router-view></router-view>
+      <transition :name="transition">
+        <keep-alive><router-view class="child-view"></router-view></keep-alive>
+      </transition>
     </main>
 
     <footer ref="footer"></footer>
@@ -23,12 +23,25 @@
 
 <script>
 import Hero from './components/Hero.vue';
-import Navigator from './components/Navigator.vue';
 
 export default {
   components: {
     'app-hero': Hero,
-    'app-navigator': Navigator,
+  },
+  data() {
+    return {
+      transition: 'slide-right',
+    };
+  },
+  watch: {
+    $route: (to, from) => {
+      const toDepth = to.path.split('/').length;
+      const fromDepth = from.path.split('/').length;
+
+      this.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+
+      console.log(this.transition);
+    }
   },
 };
 </script>
@@ -71,4 +84,22 @@ export default {
 
   header.sticky + main
     padding-top: 146px
+
+  main
+    position: relative
+
+.child-view
+  position: absolute
+
+  transition: transform 1s cubic-bezier(.55, 0, .1, 1), opacity 1s cubic-bezier(.55, 0, .1, 1)
+
+.slide-left-enter, .slide-right-leave-active 
+  transform: translate(100%, 0)
+
+  opacity: 0
+
+.slide-left-leave-active, .slide-right-enter 
+  transform: translate(-100%, 0)
+
+  opacity: 0
 </style>

@@ -1,43 +1,49 @@
 <template>
-  <div class="career">
-    <section class="weighing">
-      <h5 class="title">Ponderación</h5>
+  <div class="career" v-if="fetched">
+    <app-navigator></app-navigator>
+
+    <section class="university"><div class="content">
+      <p class="description" ref="description">{{ university.description }}</p>
+    </div></section>
+
+    <section>
+      <h5 class="title">{{ $l.cCareer.weighing }}</h5>
 
       <div class="content">
-        <table>
-          <tbody>
-            <tr v-for="(value, key) in career.weighing" :key="key">
-              <td>{{ value.key }}</td>
-              <td>{{ value.value }}</td>
-            </tr>
+        <table><tbody>
+          <tr v-for="(value, key) in career.weighing" :key="key">
+            <td class="key">{{ value.key }}</td>
+            <td class="value">{{ value.value }}</td>
+          </tr>
 
-            <tr>
-              <td>{{ career.minScore.key }}</td>
-              <td>{{ career.minScore.value }}</td>
-            </tr>
-          </tbody>
-        </table>
+          <tr>
+            <td class="key">{{ career.minScore.key }}</td>
+            <td class="value">{{ career.minScore.value }}</td>
+          </tr>
+        </tbody></table>
       </div>
     </section>
 
-    <section class="information">
-      <h5 class="title">Información</h5>
+    <section>
+      <h5 class="title">{{ $l.cCareer.information }}</h5>
 
       <div class="content">
-        <table>
-          <tbody>
-            <tr v-for="(value, key) in career.information" :key="key">
-              <td>{{ value.key }}</td>
-              <td>{{ value.value }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <table><tbody>
+          <tr v-for="(value, key) in career.information" :key="key">
+            <td class="key">{{ value.key }}</td>
+            <td class="value">{{ value.value }}</td>
+          </tr>
+        </tbody></table>
       </div>
     </section>
   </div>
 </template>
 
 <script>
+import Ellipsis from 'ellipsis.js';
+
+let ellipsis = Ellipsis({ lines: 4 });
+
 export default {
   props: {
     id: { type: Number, required: true },
@@ -45,43 +51,36 @@ export default {
   data() {
     return {
       career: null,
+      university: {
+        description: '',
+      },
+
+      fetched: false,
     };
   },
-  watch: { $route: 'fetch' },
   methods: {
     fetch() {
       this.$API.careers(this.id).then(response => {
-        this.career = response;
+        this.career = this.$f.formatCareer(response);
+
+        this.$API.universities(this.career.university_id).then(response => {
+          this.university.description = response.description;
+
+          this.fetched = true;
+        });
       });
     },
   },
   created() {
     this.fetch();
   },
+  updated() {
+    if (this.fetched) ellipsis.add(this.$refs.description);
+  },
 };
 </script>
 
 <style lang="sass" scoped>
-.career
-  min-height: 100vh
-
-  background-color: rgb(245, 245, 245)
-
-  section
-    .title
-      padding: 1em 1rem .5em
-
-    .content
-      min-height: 100px
-
-      background-color: #ffffff
-
-      table
-        width: 100%
-
-        td
-          padding: .75em 1em
-        
-        td:first-child
-          width: 60%
+.career .description
+  padding: 1rem
 </style>

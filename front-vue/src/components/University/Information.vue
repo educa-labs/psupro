@@ -1,119 +1,126 @@
 <template>
-  <div v-if="fetched" class="information">
-    <p class="description">{{ university.description }}</p>
+  <div class="information" v-if="fetched">
+    <section class="university"><div class="content">
+      <div class="description">
+        <p ref="description">{{ university.description }}</p>
 
-    <div class="row">
+        <app-icon>chevron_right</app-icon>
+      </div>
+    </div></section>
+
+    <section class="row">
       <div class="col-xs-12 col-sm-6">
-        <table>
-          <tbody>
-            <tr v-for="(value, key) in university.first" :key="key">
-              <td class="key">{{ value.key }}</td>
-              <td class="value">{{ value.value }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <table><tbody>
+          <tr v-for="(value, key) in university.first" :key="key">
+            <td class="key">{{ value.key }}</td>
+            <td class="value">{{ value.value }}</td>
+          </tr>
+        </tbody></table>
       </div>
 
       <div class="col-xs-12 col-sm-6">
-        <table>
-          <tbody>
-            <tr v-for="(value, key) in university.second" :key="key">
-              <td class="key">{{ value.key }}</td>
-              <td class="value">{{ value.value }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <table><tbody>
+          <tr v-for="(value, key) in university.second" :key="key">
+            <td class="key">{{ value.key }}</td>
+            <td class="value">{{ value.value }}</td>
+          </tr>
+        </tbody></table>
       </div>
-    </div>
+    </section>
+
+    <section class="campus">
+      <h5 class="title">{{ $l.cUniversity.campus }}</h5>
+
+      <div class="content">
+        <div v-for="_campus in campus" :key="`campus-${_campus.id}`">
+          <app-icon>place</app-icon>
+
+          <div>{{ _campus.title }} <div class="address">{{ _campus.address }}</div></div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <app-spinner v-else></app-spinner>
 </template>
 
 <script>
-/*
-TODO:
-  - Parse table data
-  - Mostrar carreras
-*/
+import Ellipsis from 'ellipsis.js';
+
+let ellipsis = Ellipsis({ lines: 3 });
+
 export default {
   props: {
     id: { type: Number, required: true },
   },
   data() {
     return {
+      campus: null,
       university: null,
 
       fetched: false,
     };
   },
   methods: {
-    parse(API_university) {
-      return {
-        description: API_university.description,
-        first: {
-          type: { key: 'Tipo', value: 'Privada' },
-          initials: { key: 'Sigla', value: API_university.initials },
-          freeness: { key: 'Gratuidad', value: API_university.freeness },
-          foundation: { key: 'Fundación', value: API_university.foundation },
-          students: { key: 'Alumnos', value: API_university.students },
-        },
-        second: {
-          teachers: { key: 'Profesores', value: API_university.teachers },
-          degrees: { key: 'Grados', value: API_university.degrees },
-          postgraduates: {
-            key: 'Postgrados',
-            value: API_university.postgraduates,
-          },
-          doctorates: { key: 'Doctorados', value: API_university.doctorates },
-        },
-      };
-    },
     fetch() {
-      this.$API.universities(this.id).then(response => {
-        this.university = this.parse(response);
+      return new Promise(resolve => {
+        this.$API.universities(this.id).then(response => {
+          this.university = this.$f.formatUniversity(response);
 
-        this.fetched = true;
+          this.$API.campus.byUniversity(this.university.id).then(response => {
+            this.campus = response;
+
+            this.fetched = true;
+
+            resolve();
+          });
+        });
       });
     },
   },
-  created() {
-    this.fetch();
+  updated() {
+    if (this.fetched) ellipsis.add(this.$refs.description);
   },
 };
 </script>
 
 <style lang="sass" scoped>
 .information
-  color: #000000
+  margin: -1rem
 
-  .description
-    margin: 0 0 1rem
+  section
+    color: #7A7A7A
 
-    font-weight: 300
+  section.university
+    .description
+      display: flex
+      align-items: center
 
-  table
-    width: 100%
+      padding: 1rem
 
-    border-spacing: 0
+      border-bottom: 1px solid #F5F5F5
+    
+    .row
+      padding-top: .25rem
+      padding-bottom: .25rem
 
-    tr td
-      padding: .33rem .25rem
+  section.campus .content > div
+    display: flex
+    align-items: center
 
-      border-bottom: 1px solid #E0E0E0 // Gray - 300
+    padding: 1.25rem
 
-      &.key, &.value
-        width: 50%
+    color: #000000
 
-        font-weight: 300
+    border-bottom: 1px solid #F5F5F5
 
-      &.key
-        font-weight: 400
+    .icon
+      margin-right: 1.25rem
 
-      @media (min-width: 576px)
-        &.key
-          width: 40%
+      color: #00A2EC
+    
+    .address
+      color: #7A7A7A
 
-        &.value
-          width: 60%
+      font-size: .8em
 </style>

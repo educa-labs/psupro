@@ -1,5 +1,5 @@
 <template>
-  <form class="search-bar z-depth-2" :class="{ focused, opening, searching }"
+  <form class="search-bar z-depth-2" :class="{ focused, opening }"
     @click="$refs.input.focus()"
     v-if="visible"
   >
@@ -9,7 +9,7 @@
 
       <input type="text" :placeholder="$l.cSearchBar.placeholder"
         v-model="search.query"
-        @keypress.enter.prevent="fetchHeavySearch"
+        @keypress.enter.prevent="fetchHeavySearchResponse"
         @focus="focus" @blur="unfocus"
         ref="input"
       >
@@ -25,7 +25,7 @@
             <div>{{ $l.universities }}</div>
 
             <ul><li v-for="university in search.response.universities" :key="`university-${university.id}`">
-              <i class="material-icons">account_balance</i> {{ university.title }}
+              <app-icon>account_balance</app-icon> {{ university.title }}
             </li></ul>
           </section>
 
@@ -33,7 +33,7 @@
             <div>{{ $l.careers }}</div>
 
             <ul><li v-for="career in search.response.careers" :key="`career-${career.id}`">
-              <i class="material-icons">school</i> {{ career.title }}
+              <app-icon>school</app-icon> <span>{{ career.title }} <div>{{ 'Pontificia Universidad Católica de Chile' }}</div></span>
             </li></ul>
           </section>
 
@@ -61,7 +61,6 @@ export default {
 
       focused: false,
       opening: false,
-      searching: false,
 
       routesVisible: ['home', 'search'],
     };
@@ -71,7 +70,7 @@ export default {
       clearTimeout(this.search.timeout);
 
       this.search.timeout = setTimeout(
-        () => this.fetchLightSearch(),
+        () => this.fetchLightSearchResponse(),
         this.delay
       );
     },
@@ -88,25 +87,18 @@ export default {
     },
   },
   methods: {
-    fetchLightSearch() {
+    fetchLightSearchResponse() {
       this.search.response = null;
 
       this.$API.search.search(this.search.query).then(response => {
         this.search.response = response;
       });
     },
-    fetchHeavySearch() {
-      let payload = { query: this.search.query, image: true };
+    fetchHeavySearchResponse() {
+      this.$store.dispatch('fetchSearchResponse', { query: this.search.query });
+      this.$router.push({ name: 'search' });
 
-      this.$store.dispatch('fetchHeavySearch', payload).then(() => {
-        this.$router.push({ name: 'search' });
-
-        this.searching = false;
-      });
-
-      this.unfocus();
-
-      this.searching = true;
+      this.$refs.input.blur();
     },
     focus() {
       let payload = { handleClick: this.unfocus, zIndex: 1005 };
@@ -155,7 +147,7 @@ export default {
     },
   },
   created() {
-    this.fetchLightSearch();
+    this.fetchLightSearchResponse();
   },
 };
 </script>
@@ -168,6 +160,7 @@ export default {
   position: relative
   z-index: 1010
 
+  width: 100%
   height: $height
 
   border-radius: $border-radius
@@ -187,7 +180,7 @@ export default {
 
     cursor: pointer
 
-    .material-icons
+    .icon
       margin-right: $padding
 
       color: #757575
@@ -208,18 +201,8 @@ export default {
   border-bottom-right-radius: 0
   border-bottom-left-radius: 0
 
-.search-bar.searching
-  animation: loading 2s infinite
-
-  @keyframes loading
-    0%
-      opacity: 1
-    66% 
-      opacity: .75
-    100%
-      opacity: 1
-
 .search-response
+  $gap: 1rem
   $maxHeight: 200px
   $size: 24px
 
@@ -232,31 +215,41 @@ export default {
 
   max-height: $maxHeight
 
-  padding: 0 .75rem
+  padding: 0 $gap
 
   cursor: default
 
   border-top: 1px solid #F5F5F5
   background-color: #FFFFFF
 
-  section div:first-child
-    padding: .75rem 0 .75rem calc(#{$size} + .75rem)
+  section > div:first-child
+    padding: $gap 0
 
     color: #9E9E9E
+
+    font-size: .875em
 
   li
     display: flex
     align-items: center
 
-    margin-bottom: .75rem
+    margin-bottom: $gap
 
     color: #000000
 
-    font-weight: 300
-
-    .material-icons
+    .icon
       width: $size
       height: $size
 
-      margin-right: .75rem
+      margin-right: $gap
+
+      color: #BDBDBD
+
+    div
+      color: #9E9E9E
+
+      font-size: .8em
+
+  li:last-child
+    margin-bottom: 0
 </style>

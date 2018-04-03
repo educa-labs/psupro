@@ -1,29 +1,29 @@
 <template>
-  <transition name="fade">
-    <div class="university-container" v-if="fetched">
-      <div class="card university z-depth-1">
-        <div class="cover" :style="{ backgroundImage: `url(${university.cover})` }">
-          <a href=""><i class="material-icons" @click="$router.go(-1)">arrow_back</i></a>
+  <div class="university-container" v-if="fetched">
+    <div class="card university z-depth-1">
+      <div class="cover" :style="{ backgroundImage: `url(${university.cover})` }">
+        <app-icon @click.native="$router.go(-1)">arrow_back</app-icon>
 
-          <div class="profile z-depth-2"><div :style="{ backgroundImage: `url(${university.profile})` }"></div></div>
-        </div>
-
-        <div class="card-title">
-          <div>{{ university.title }} <br> {{ university.initials }}</div>
-        </div>
-
-        <app-tabs></app-tabs>
-
-        <div class="card-content">
-          <keep-alive>
-            <router-view></router-view>
-          </keep-alive>
-        </div>
+        <div class="profile z-depth-2"><div :style="{ backgroundImage: `url(${university.profile})` }"></div></div>
       </div>
-    </div> 
 
-    <app-spinner v-else></app-spinner>
-  </transition>
+      <div class="card-title">
+        <div>{{ university.title }} <br> {{ university.initials }}</div>
+      </div>
+
+      <app-tabs :id="university.id">
+        <app-tab :name="$l.cUniversity.information">
+          <app-information :id="university.id"></app-information>
+        </app-tab>
+
+        <app-tab :name="$l.cUniversity.careers">
+          <app-careers :id="university.id"></app-careers>
+        </app-tab>
+      </app-tabs>
+    </div>
+  </div> 
+
+  <app-spinner v-else></app-spinner>
 </template>
 
 <script>
@@ -39,14 +39,8 @@ export default {
   data() {
     return {
       university: null,
-      fetched: false,
 
-      esCL: {
-        tabs: {
-          information: 'Información',
-          careers: 'Carreras',
-        },
-      },
+      fetched: false,
     };
   },
   methods: {
@@ -68,7 +62,7 @@ export default {
   created() {
     this.fetch();
 
-    this.$store.dispatch('hideHero'); // Temporal
+    this.$store.dispatch('closeHero'); // Temporal
   },
 };
 </script>
@@ -80,24 +74,39 @@ export default {
   @media (min-width: 576px)
     padding: 1rem
 
+  &.fade-enter
+    opacity: 0
+    transform: scale(.1)
+
+  &.fade-enter-active
+    transition: transform 250ms, opacity 250ms
+
 .university
+  @media (max-width: 575.98px)
+    box-shadow: none
+      
   .cover
     $height: 300px
 
+
     position: relative
 
-    height: $height
+    height: 175px
+
+    @media (min-width: 576px)
+      height: $height
 
     background-position: center
     background-size: cover
 
-    a i
+    .icon
       position: absolute
       top: 1rem
       left: 1rem
 
     .profile
       $size: 75px
+
 
       position: absolute
       z-index: 2
@@ -124,6 +133,7 @@ export default {
   .card-title
     $height: 75px
 
+
     z-index: 1
 
     min-height: $height
@@ -135,10 +145,4 @@ export default {
       padding: 1rem
 
       font-size: large
-
-  &.fade-enter
-    opacity: 0
-
-  &.fade-enter-active
-    transition: opacity .25s ease
 </style>

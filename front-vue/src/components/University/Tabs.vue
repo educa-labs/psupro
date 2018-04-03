@@ -1,143 +1,190 @@
 <template>
   <div>
-    <ul class="tabs z-depth-1">
-      <li class="tab"
-        :class="{ active: active === 0 }"
-        @click="active = 0">
-        <a @click="$router.replace({ name: 'university' })">{{ 'Información' }}</a>
+    <ul class="tabs z-depth-1" ref="tabs">
+      <li class="tab" :class="{ active: active === 0 }" @click="active = 0">
+        <span>{{ $l.cUniversity.information }}</span>
       </li>
-
-      <li class="tab"
-        :class="{ active: active === 1 }"
-        @click="active = 1">
-        <a @click="$router.replace({ name: 'careers' })">{{ 'Carreras' }}</a>
+      <li class="tab" :class="{ active: active === 1 }" @click="active = 1">
+        <span>{{ $l.cUniversity.careers }}</span>
       </li>
 
       <li class="indicator" ref="indicator"></li>
     </ul>
 
-    <div class="card-content">
-      <transition :name="transitionName" mode="out-in">
-        <keep-alive><router-view></router-view></keep-alive>
-      </transition>
+    <div class="tabs-content" :class="{ animated: active !== previous }" ref="content">
+      <app-information :id="id" v-show="active === 0 || previous === 0"></app-information>
+      <app-careers     :id="id" v-show="active === 1 || previous === 1"></app-careers>
     </div>
   </div>
 </template>
 
 <script>
-import anime from 'animejs';
+import Careers from './Careers.vue';
+import Information from './Information.vue';
 
 export default {
+  components: {
+    'app-careers': Careers,
+    'app-information': Information,
+  },
+  props: {
+    id: { type: Number, required: true },
+  },
   data() {
     return {
       active: 0,
       tabs: null,
+      previous: 0,
 
       delay: 150,
       duration: 350,
       gap: 25,
-
-      transitionName: null,
     };
   },
   watch: {
     active(current, previous) {
-      if (current - previous > 0) {
-        this.transitionName = 'swipe-2';
-        this.animate('right');
+      let animation = null;
+      let enteringComponent = this.$children[current];
 
-        setTimeout(() => {
-          this.animate('left');
-        }, this.delay);
-      } else if (current - previous < 0) { // from right to left
-        this.transitionName = 'swipe-1';
-        this.animate('left');
+      if (current - previous > 0) animation = this.animateLeftToRight;
+      else if (current - previous < 0) animation = this.animateRightToLeft;
 
-        setTimeout(() => {
-          this.animate('right');
-        }, this.delay);
-      }
+      this.previous = previous;
+
+      if (!enteringComponent.fetched)
+        enteringComponent.fetch().then(() =>
+          animation(() => {
+            this.previous = current;
+          })
+        );
+      else animation(() => (this.previous = current));
     },
   },
   methods: {
-    right() {
-      let rightTabs = this.tabs.slice(this.active + 1, this.tabs.length);
+    get(property) {
+      let tabs = null;
+
+      if (property === 'right')
+        tabs = this.tabs.slice(this.active + 1, this.tabs.length);
+      else if (property === 'left') tabs = this.tabs.slice(0, this.active);
 
       return (
-        rightTabs.reduce((before, current) => {
+        tabs.reduce((before, current) => {
           return before + current.offsetWidth;
         }, 0) + this.gap
       );
     },
-    left() {
-      let leftTabs = this.tabs.slice(0, this.active);
-
-      return (
-        leftTabs.reduce((before, current) => {
-          return before + current.offsetWidth;
-        }, 0) + this.gap
-      );
-    },
-    animate(property) {
-      anime({
+    animateIndicator(property) {
+      this.$a({
         targets: this.$refs.indicator,
         duration: this.duration,
         easing: 'easeInOutQuad',
         ...(property === 'right'
-          ? { right: this.right() }
-          : { left: this.left() }),
+          ? { right: this.get('right') }
+          : { left: this.get('left') }),
       });
     },
-    setRightLeft() {
-      this.$refs.indicator.style.right = `${this.right()}px`;
-      this.$refs.indicator.style.left = `${this.left()}px`;
+    animateLeftToRight(callback = () => {}) {
+      this.animateIndicator('right');
+
+      this.$a({
+        targets: this.$refs.content,
+        duration: this.duration,
+        easing: 'easeInOutQuad',
+        translateX: '-100%',
+        complete: () => {
+          this.$refs.content.style.transform = null;
+
+          callback();
+        },
+      });
+
+      setTimeout(() => this.animateIndicator('left'), this.delay);
+    },
+    animateRightToLeft(callback = () => {}) {
+      this.$refs.content.style.transform = 'translateX(-100%)';
+
+      this.animateIndicator('left');
+
+      this.$a({
+        targets: this.$refs.content,
+        duration: this.duration,
+        easing: 'easeInOutQuad',
+        translateX: '0',
+        complete: () => {
+          this.$refs.content.style.transform = null;
+
+          callback();
+        },
+      });
+
+      setTimeout(() => this.animateIndicator('right'), this.delay);
+    },
+    adjust() {
+      this.$refs.indicator.style.right = `${this.get('right')}px`;
+      this.$refs.indicator.style.left = `${this.get('left')}px`;
     },
   },
   mounted() {
-    this.tabs = Array.from(this.$el.children).filter(li => {
-      return li.className.match(/\btab\b/);
-    });
+    this.tabs = Array.from(this.$refs.tabs.children).filter(li =>
+      li.className.match(/\btab\b/)
+    );
 
-    this.setRightLeft();
-    window.addEventListener('resize', this.setRightLeft);
+    window.addEventListener('resize', this.adjust);
+
+    this.adjust();
+
+    this.$children[this.active].fetch();
   },
 };
 </script>
 
 <style lang="sass" scoped>
 .tabs
+  position: relative
+  z-index: 1
+
   display: flex
 
-  padding: 0
+  height: 48px
+
+  background-color: #00ABF1
+  
+.tab
+  flex: 1
+
+  height: 48px
 
   text-align: center
 
-  background-color: rgb(0, 171, 241)
-  
-  li
-    flex: 1
+  text-transform: uppercase
 
-    a
-      padding: 0
+  line-height: 48px
 
-// From left to right
-// se debe mostrar cuando el número está a la izquierda
-.swipe-1-enter
-  transform: translateX(-100%)
+  & > span
+    transition: opacity .35s
 
-.swipe-1-enter-active, .swipe-1-leave-active
-  transition: transform 1s
+    opacity: .5
 
-.swipe-1-leave-to
-  transform: translateX(100%)
+  &.active > span
+    opacity: 1
 
-// From right to left
-.swipe-2-enter
-  transform: translateX(100%)
+.indicator 
+  position: absolute
+  bottom: 0
 
-.swipe-2-enter-active, .swipe-2-leave-active
-  transition: transform 1s
+  height: 2px
 
-.swipe-2-leave-to
-  transform: translateX(-100%)
+  background-color: #FFFFFF
+
+  will-change: left, right
+
+.tabs-content
+  & > *
+    padding: 1rem
+
+.tabs-content.animated
+  display: grid
+
+  grid-template-columns: 100% 100%
 </style>

@@ -17,6 +17,9 @@ Vue.prototype.$l = store.state.locale; // Abbreviation
 
 import App from './App.vue';
 
+import Navigator from './components/Navigator.vue';
+Vue.component('app-navigator', Navigator);
+
 import Icon from './components/Icon.vue';
 Vue.component('app-icon', Icon);
 
