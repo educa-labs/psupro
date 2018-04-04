@@ -1,7 +1,7 @@
-const preprocessors = {
+export default {
   careers(API_career) {
     return {
-      minScore: { key: 'Corte 2017', value: API_career.last_cut },
+      university_id: API_career.university_id,
       weighing: {
         language: { key: 'Lenguaje', value: API_career.weighing.language },
         mathematics: { key: 'Matemáticas', value: API_career.weighing.math },
@@ -9,6 +9,7 @@ const preprocessors = {
         nem: { key: 'NEM', value: API_career.weighing.NEM },
         ranking: { key: 'Ranking', value: API_career.weighing.ranking },
       },
+      minScore: { key: 'Corte 2017', value: API_career.last_cut },
       information: {
         area: { key: 'Área', value: API_career.area_title },
         vacancies: { key: 'Vacantes', value: API_career.openings },
@@ -20,11 +21,30 @@ const preprocessors = {
           value: API_career.employability,
         },
       },
+      image: null,
     };
   },
   universities(API_university) {
+    if (!API_university.cover) API_university.cover = null;
+    if (!API_university.profile) API_university.profile = null;
+
     return API_university;
   },
+  search: {
+    careers(API_careers) {
+      return API_careers;
+    },
+    universities(API_universities) {
+      return API_universities;
+    },
+    search(careers, universities) {
+      return { careers, universities };
+    },
+  },
+  regions(API_regions) {
+    return API_regions;
+  },
+  cities(API_cities) {
+    return API_cities;
+  },
 };
-
-export default preprocessors;

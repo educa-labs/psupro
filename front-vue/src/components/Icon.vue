@@ -1,5 +1,5 @@
 <template>
-  <router-view></router-view>
+  <i class="material-icons icon"><slot></slot></i>
 </template>
 
 <script>

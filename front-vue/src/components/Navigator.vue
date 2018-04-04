@@ -1,8 +1,6 @@
 <template>
-  <div id="navigator">
-    <button><i class="material-icons" @click="$router.go(-1)">arrow_back</i></button>
-    
-    <div class="name">{{ names[this.$route.name] }}</div>
+  <div class="navigator">
+    <app-icon @click.native="back">arrow_back</app-icon> {{ name }}
   </div>
 </template>
 
@@ -10,43 +8,42 @@
 export default {
   data() {
     return {
-      names: {
-        career: 'Carrera',
-        university: 'Universidad',
-      },
+      name: '',
     };
+  },
+  methods: {
+    back() {
+      this.$router.go(-1);
+    },
+  },
+  beforeMount() {
+    this.name = this.$l.cNavigator[this.$route.name];
   },
 };
 </script>
 
 <style lang="sass" scoped>
-#navigator
+.navigator
   display: flex
   align-items: center
 
-  margin-bottom: .5em
+  padding: 1rem
 
-  button
+  color: #FFFFFF
+
+  background-color: #00A2EC
+
+  font-size: 1.1em
+
+  .icon
     $size: 24px
 
     width: $size
     height: $size
 
-    margin-right: 1.5em
-    padding: 0
+    margin-right: 1.5rem
 
-    border: none
-    outline: none
-
-    background: none
-
-    i
-      color: #FFFFFF
-
-      font-size: $size
-
-  .name
     color: #FFFFFF
 
-    font-size: larger
+    font-size: $size
 </style>

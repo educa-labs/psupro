@@ -1,5 +1,5 @@
 <template>
-  <div class="card university-card z-depth-1" v-if="fetched">
+  <div class="card university-card z-depth-1">
     <div class="image" :style="{ backgroundImage: `url(${university.image})` }">
       <div class="overlay"></div>
 
@@ -7,36 +7,29 @@
     </div>
 
     <div class="card-content">
-      <div class="summary">{{ summary }}</div>
+      <div class="description" ref="description">{{ university.description }}</div>
     </div>
   </div>
 </template>
 
 <script>
+import Ellipsis from 'ellipsis.js';
+
+let ellipsis = Ellipsis({ lines: 3 });
+
 export default {
   props: {
     university: { type: Object, required: true },
   },
-  computed: {
-    fetched() {
-      return this.university.image;
-    },
-    summary() {
-      let description = this.university.description,
-        maxLength = 100;
-
-      if (description.length > maxLength)
-        return `${description.slice(0, maxLength)}...`;
-
-      return description;
-    },
+  mounted() {
+    ellipsis.add(this.$refs.description);
   },
 };
 </script>
 
 <style lang="sass" scoped>
 .university-card
-  margin-bottom: 1em
+  margin-bottom: 1rem
 
   .image
     $height: 100px
@@ -61,18 +54,18 @@ export default {
       left: 0
 
       opacity: .5
-      background-color: #000000
+      background-color: #212121
 
     .title
       z-index: 1
-      font-size: large
 
-      margin-bottom: 1em
-      margin-left: 1em
-      width: 50%
+      width: 66%
 
-      color: #FFFFFF
+      margin-bottom: 1rem
+      margin-left: 1rem
 
-  .summary
+      font-size: 1.25em
+
+  .description
     color: #7A7A7A
 </style>
