@@ -6,7 +6,7 @@ Vue.use(VueResource);
 import preprocessors from './preprocessors'; // Preprocessors
 
 const API = {
-  url: 'https://tuni.educalabs.cl',
+  url: 'http://localhost:3000',
   popular: {
     careers() {
       return Vue.http.get(`${API.url}/popular/carreers`);
