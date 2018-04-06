@@ -7,7 +7,10 @@ class Api::V1::SearchController < ApplicationController
       result = {}
       university_result = University.search(params[:text])
       result[:universities] = params[:minimize] ? university_result.map { |x| {id: x[:_source][:id], title: x[:_source][:title]} } : university_result.map { |x| x[:_source] }
-      carreer_result= Carreer.search(params[:text])
+      if params[:pictures]
+        result[:pictures] = University.profile_array(result[:universities].map { |x| x[:id]})
+      end
+      carreer_result = Carreer.search(params[:text])
       result[:carreers] = params[:minimize] ? carreer_result.map { |x| {id: x[:_source][:id], title: x[:_source][:title]} } : carreer_result.map { |x| x[:_source] }
       render json: result , status:200
     else
