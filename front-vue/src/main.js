@@ -5,6 +5,7 @@ import formatter from './assets/javascripts/formatter';
 import locales from './locales/locales'; // Locales
 import router from './router/router'; // VueRouter
 import store from './store/store'; // Vuex
+import './responsiveness'; // VueMQ
 import './stylesheets'; // Stylesheets
 
 // External
