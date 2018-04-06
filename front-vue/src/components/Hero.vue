@@ -32,7 +32,9 @@ export default {
   background-color: #00A2EC
 
   @media (min-width: 576px)
-    background-image: url($pattern)
+    min-height: 50%
+
+    // background-image: url($pattern)
 
 .hero > .logo
   width: 150px
@@ -42,6 +44,10 @@ export default {
 
   border-radius: 2px
   background-color: #FFFFFF
+
+.hero > .search-bar
+  @media (min-width: 576px)
+    max-width: 576px
 
 .hero.closed > .logo
   display: none
