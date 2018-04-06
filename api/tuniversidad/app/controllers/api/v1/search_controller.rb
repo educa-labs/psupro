@@ -6,10 +6,9 @@ class Api::V1::SearchController < ApplicationController
     if params[:text]
       result = {}
       university_result = University.search(params[:text])
-      result[:universities] = university_result.map { |x| x[:_source] }
+      result[:universities] = params[:minimize] ? university_result.map { |x| {id: x[:_source][:id], title: x[:_source][:title]} } : university_result.map { |x| x[:_source] }
       carreer_result= Carreer.search(params[:text])
-      result[:carreers] = carreer_result.map { |x| x[:_source] }
-
+      result[:carreers] = params[:minimize] ? carreer_result.map { |x| {id: x[:_source][:id], title: x[:_source][:title]} } : carreer_result.map { |x| x[:_source] }
       render json: result , status:200
     else
       render json:{errors:"no search params"}, status:422
