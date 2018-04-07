@@ -63,11 +63,13 @@ export default {
       this.$API.careers(this.id).then(response => {
         this.career = this.$f.formatCareer(response);
 
-        this.$API.universities(this.career.university_id).then(response => {
-          this.university.description = response.description;
+        this.$API
+          .universities(this.career.university_id)
+          .then(response => {
+            this.university.description = response.description;
 
-          this.fetched = true;
-        });
+            this.fetched = true;
+          });
       });
     },
   },

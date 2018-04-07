@@ -32,7 +32,7 @@
             <div>{{ $l.careers }}</div>
 
             <ul><li v-for="career in search.response.careers" :key="`career-${career.id}`">
-              <app-icon>school</app-icon> <span>{{ career.title }} <div>{{ 'Pontificia Universidad Católica de Chile' }}</div></span>
+              <app-icon>school</app-icon> <span>{{ career.title }} <div>{{ career.university_title }}</div></span>
             </li></ul>
           </section>
 
@@ -124,6 +124,7 @@ export default {
         duration: 250,
         easing: 'easeInOutQuad',
         complete: () => {
+          el.style.height = 'auto';
           el.style.overflowY = 'scroll';
 
           done();

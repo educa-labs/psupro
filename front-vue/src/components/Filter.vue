@@ -23,7 +23,7 @@
 
           <div class="field">
             <label for="city">{{ $l.cFilter.city }}</label>
-            <app-select id="city" :options="regions" :default="$l.cFilter.default"
+            <app-select id="city" :options="cities" :default="$l.cFilter.default"
               v-model="filters.city"
               @input="fetchSearchResponse"
             ></app-select>
@@ -68,8 +68,7 @@ export default {
     },
   },
   methods: {
-    parseCitiesResponse(response) {},
-    parseRegionsResponse(response) {
+    parseResponse(response) {
       // { id: 1, title: 'Tarapacá' } => { key: 'Tarapacá', value: 1 }
 
       return response.map(region => {
@@ -80,13 +79,11 @@ export default {
     },
     fetch() {
       Promise.all([
-        /*
         this.$API.cities().then(response => {
-          this.cities = response;
+          this.cities = this.parseResponse(response);
         }),
-        */
         this.$API.regions().then(response => {
-          this.regions = this.parseRegionsResponse(response);
+          this.regions = this.parseResponse(response);
         }),
       ]).then(() => {
         this.fetched = true;
