@@ -49,6 +49,9 @@ export default {
   @media (min-width: 576px)
     max-width: 576px
 
+.hero.closed
+  min-height: unset
+
 .hero.closed > .logo
   display: none
 

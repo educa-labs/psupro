@@ -1,5 +1,5 @@
 <template>
-  <div class="career" v-if="fetched">
+  <div class="career z-depth-1" v-if="fetched">
     <app-navigator></app-navigator>
 
     <section class="university"><div class="content">
@@ -81,6 +81,20 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.career .description
-  padding: 1rem
+.career
+  @media (max-width: 575.98px)
+    border-radius: 0
+
+    box-shadow: none
+
+  @media (min-width: 576px)
+    margin: 1rem 1rem 0
+
+  @media (min-width: 768px)
+    width: 768px
+
+    margin: 1rem auto 0
+
+  .description
+    padding: 1rem
 </style>

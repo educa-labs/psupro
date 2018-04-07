@@ -1,5 +1,7 @@
 <template>
   <div class="university-container" v-if="fetched">
+    <app-hero class="closed"></app-hero>
+
     <div class="card university z-depth-1">
       <div class="cover" :style="{ backgroundImage: `url(${university.cover})` }">
         <app-icon @click.native="$router.go(-1)">arrow_back</app-icon>
@@ -69,35 +71,40 @@ export default {
 .university-container
   z-index: 1060
 
-  padding: 0
-
-  @media (min-width: 576px)
-    padding: 1rem
-
   &.fade-enter
-    opacity: 0
     transform: scale(.1)
+
+    opacity: 0
 
   &.fade-enter-active
     transition: transform 250ms, opacity 250ms
 
 .university
   @media (max-width: 575.98px)
+    border-radius: 0
+
     box-shadow: none
-      
+
+  @media (min-width: 576px)
+    margin: 1rem 1rem 0
+
+  @media (min-width: 768px)
+    width: 768px
+
+    margin: 1rem auto 0
+  
   .cover
     $height: 300px
-
 
     position: relative
 
     height: 175px
 
-    @media (min-width: 576px)
-      height: $height
-
     background-position: center
     background-size: cover
+
+    @media (min-width: 576px)
+      height: $height
 
     .icon
       position: absolute
@@ -106,7 +113,6 @@ export default {
 
     .profile
       $size: 75px
-
 
       position: absolute
       z-index: 2
@@ -132,7 +138,6 @@ export default {
 
   .card-title
     $height: 75px
-
 
     z-index: 1
 
