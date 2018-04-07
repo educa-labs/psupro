@@ -15,9 +15,9 @@ class Api::V1::CarreersController < ApplicationController
   def index
     # Route universities/university_id/carreers
     if params[:university_id]
-      render json:Carreer.where(university_id: params[:university_id]).order("title ASC").includes(:campu,:weighing,:area)
+      render json:Carreer.where(university_id: params[:university_id]).order("title ASC").includes(:campu,:weighing,:area,:university)
     else
-      render json:Carreer.order("title ASC").includes(:campu,:weighing,:area)
+      render json:Carreer.order("title ASC").includes(:campu,:weighing,:area,:university)
     end
   end
 end

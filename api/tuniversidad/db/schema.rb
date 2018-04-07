@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180407145321) do
+ActiveRecord::Schema.define(version: 20180407164830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20180407145321) do
     t.integer  "visits",        default: 0
     t.boolean  "certification"
     t.string   "demre_id"
+    t.integer  "degree_type"
     t.index ["area_id"], name: "index_carreers_on_area_id", using: :btree
     t.index ["campu_id"], name: "index_carreers_on_campu_id", using: :btree
     t.index ["university_id"], name: "index_carreers_on_university_id", using: :btree
