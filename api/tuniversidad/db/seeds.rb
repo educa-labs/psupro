@@ -65,6 +65,7 @@ else
 
   # Universities
   boolean_hash = { 'Si' => true, 'No' => false }
+  type_hash = { 'Profesional' => 1, 'Tecnico' => 2 }
   covers = Dir[Rails.public_path.to_s +  '/images/seeds/cover']
   profiles = Dir[Rails.public_path.to_s +  '/images/seeds/profile']
 
@@ -143,6 +144,7 @@ else
       employability: row['Empleabilidad'],
       income: row['Ingreso'],
       admission: row['Admisión'],
+      degree_type: type_hash[row['Tipo']],
       #TODO importante !!! se debe agregar soporte para los dos cortes
       last_cut: row['Corte 2017'],
       description: row['Descripción']
