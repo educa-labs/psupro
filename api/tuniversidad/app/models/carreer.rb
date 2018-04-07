@@ -2,6 +2,7 @@ class Carreer < ApplicationRecord
 
   include Elasticsearch::Model 
   include Elasticsearch::Model::Callbacks
+  # searchkick
 
   validates_presence_of :university_id, :campu_id, :title
   belongs_to :university
@@ -45,20 +46,23 @@ class Carreer < ApplicationRecord
     end 
   end
 
-  def search(query,degree_type)
+  def search(query)
     __elasticsearch__.search(
       query: { 
-        bool: { filter: {
-                 term: {degree_type:degree_type}
-              },
-              must: {
-                  query_string: {
-                   query: query,
-                   fields: ['title','university.title'] 
-                  }
-                }
-              },
-      },)
+        bool: {
+          must: [
+            {
+              multi_match: {
+                query: query,
+                fields: ['title','university.title'] 
+              }
+            },
+              match: {
+                degree_type: 2
+            }
+          ]
+        },
+      })
   end
 
   def as_indexed_json(options={})
@@ -66,4 +70,6 @@ class Carreer < ApplicationRecord
       include: { university: { only: :title},
                })
   end
+
+
 end
