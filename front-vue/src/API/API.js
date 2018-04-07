@@ -8,11 +8,29 @@ import preprocessors from './preprocessors'; // Preprocessors
 const API = {
   url: 'http://localhost:3000',
   popular: {
-    careers() {
-      return Vue.http.get(`${API.url}/popular/carreers`);
+    careers(limit = 4) {
+      let params = { limit };
+
+      return new Promise((resolve, reject) => {
+        Vue.http
+          .get(`${API.url}/popular/carreers`, { params })
+          .then(response => {
+            resolve(response.body);
+          })
+          .catch(error => reject(error));
+      });
     },
-    universities() {
-      return Vue.http.get(`${API.url}/popular/universities`);
+    universities(limit = 4) {
+      let params = { limit };
+
+      return new Promise((resolve, reject) => {
+        Vue.http
+          .get(`${API.url}/popular/universities`, { params })
+          .then(response => {
+            resolve(response.body);
+          })
+          .catch(error => reject(error));
+      });
     },
   },
   careers(id, config) {
@@ -76,13 +94,16 @@ const API = {
         });
       });
     },
-    search(query, filters, image = false) {
+    search(query, filters = null, minimize = false, pictures = false) {
+      let params = { text: query, minimize, pictures };
+
       return new Promise((resolve, reject) => {
-        API.search.careers(query, filters, image).then(careers => {
-          API.search.universities(query, filters, image).then(universities => {
-            resolve(preprocessors.search.search(careers, universities));
-          });
-        });
+        Vue.http
+          .get(`${API.url}/search`, { params })
+          .then(response =>
+            resolve(preprocessors.search.search(response.body))
+          )
+          .catch(error => reject(error));
       });
     },
   },

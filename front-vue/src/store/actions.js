@@ -12,7 +12,7 @@ export default {
     return new Promise(resolve => {
       context.commit('updateSearch', { fetching: true });
 
-      Vue.prototype.$API.search.search(query, filters, true).then(response => {
+      Vue.prototype.$API.search.search(query, filters, false, true).then(response => {
         context.commit('updateSearch', { query, response, fetching: false });
 
         resolve();

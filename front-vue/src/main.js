@@ -1,7 +1,9 @@
+import './assets/javascripts/global'; // Global configuration
+
 // Internal
 import Vue from 'vue'; // Vue
 import API from './API/API'; // VueResource
-import formatter from './assets/javascripts/formatter';
+import formatter from './assets/javascripts/formatter'; // Formatter
 import locales from './locales/locales'; // Locales
 import router from './router/router'; // VueRouter
 import store from './store/store'; // Vuex

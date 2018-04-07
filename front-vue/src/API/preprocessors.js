@@ -37,8 +37,11 @@ export default {
     universities(API_universities) {
       return API_universities;
     },
-    search(careers, universities) {
-      return { careers, universities };
+    search(APISearch) {
+      return {
+        careers: APISearch.carreers,
+        universities: APISearch.universities,
+      };
     },
   },
   regions(API_regions) {
