@@ -41,18 +41,24 @@ class Carreer < ApplicationRecord
   settings index: { number_of_shards: 1 } do 
     mapping dynamic: false do 
       indexes :title, analyzer: 'spanish'
+      indexes :degree_type, type: :byte
     end 
   end
 
-  def search(query)
+  def search(query,degree_type)
     __elasticsearch__.search(
-      { query:
-        { multi_match: 
-          { query: query, 
-            fields: ['title','university.title'] 
-          } 
-        }
-      })
+      query: { 
+        bool: { filter: {
+                 term: {degree_type:degree_type}
+              },
+              must: {
+                  query_string: {
+                   query: query,
+                   fields: ['title','university.title'] 
+                  }
+                }
+              },
+      },)
   end
 
   def as_indexed_json(options={})
