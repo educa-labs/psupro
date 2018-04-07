@@ -35,16 +35,22 @@ const API = {
   },
   careers(id, config) {
     return new Promise((resolve, reject) => {
-      Vue.http.get(`${API.url}/carreers/${id}`, config).then(response => {
-        resolve(preprocessors.careers(response.body));
-      });
+      Vue.http
+        .get(`${API.url}/carreers/${id}`, config)
+        .then(response => {
+          resolve(preprocessors.careers(response.body));
+        })
+        .catch(error => reject(error));
     });
   },
   universities(id, config) {
     return new Promise((resolve, reject) => {
-      Vue.http.get(`${API.url}/universities/${id}`, config).then(response => {
-        resolve(preprocessors.universities(response.body));
-      });
+      Vue.http
+        .get(`${API.url}/universities/${id}`, config)
+        .then(response => {
+          resolve(preprocessors.universities(response.body));
+        })
+        .catch(error => reject(error));
     });
   },
   search: {
@@ -52,46 +58,52 @@ const API = {
       let body = { carreer: { text: query, ...filters } };
 
       return new Promise((resolve, reject) => {
-        Vue.http.post(`${API.url}/search`, body).then(response => {
-          let careers = response.body;
+        Vue.http
+          .post(`${API.url}/search`, body)
+          .then(response => {
+            let careers = response.body;
 
-          if (image) {
-            let promises = careers.map(career => {
-              return API.universities(career.university_id, {
-                params: { image: true },
-              }).then(response => {
-                career.image = response.profile;
+            if (image) {
+              let promises = careers.map(career => {
+                return API.universities(career.university_id, {
+                  params: { image: true },
+                }).then(response => {
+                  career.image = response.profile;
+                });
               });
-            });
 
-            Promise.all(promises).then(() => {
-              resolve(preprocessors.search.careers(careers));
-            });
-          } else resolve(preprocessors.search.careers(careers));
-        });
+              Promise.all(promises).then(() => {
+                resolve(preprocessors.search.careers(careers));
+              });
+            } else resolve(preprocessors.search.careers(careers));
+          })
+          .catch(error => reject(error));
       });
     },
     universities(query, filters, image = false) {
       let body = { university: { text: query, ...filters } };
 
       return new Promise((resolve, reject) => {
-        Vue.http.post(`${API.url}/search`, body).then(response => {
-          let universities = response.body;
+        Vue.http
+          .post(`${API.url}/search`, body)
+          .then(response => {
+            let universities = response.body;
 
-          if (image) {
-            let promises = universities.map(university => {
-              return API.universities(university.id, {
-                params: { image: true },
-              }).then(response => {
-                university.image = response.cover;
+            if (image) {
+              let promises = universities.map(university => {
+                return API.universities(university.id, {
+                  params: { image: true },
+                }).then(response => {
+                  university.image = response.cover;
+                });
               });
-            });
 
-            Promise.all(promises).then(() => {
-              resolve(preprocessors.search.universities(universities));
-            });
-          } else resolve(preprocessors.search.universities(universities));
-        });
+              Promise.all(promises).then(() => {
+                resolve(preprocessors.search.universities(universities));
+              });
+            } else resolve(preprocessors.search.universities(universities));
+          })
+          .catch(error => reject(error));
       });
     },
     search(query, filters = null, minimize = false, pictures = false) {
@@ -100,9 +112,7 @@ const API = {
       return new Promise((resolve, reject) => {
         Vue.http
           .get(`${API.url}/search`, { params })
-          .then(response =>
-            resolve(preprocessors.search.search(response.body))
-          )
+          .then(response => resolve(preprocessors.search.search(response.body)))
           .catch(error => reject(error));
       });
     },
