@@ -84,9 +84,11 @@ export default {
     fetchLightSearchResponse() {
       this.search.response = null;
 
-      this.$API.search.search(this.search.query).then(response => {
-        this.search.response = response;
-      });
+      this.$API.search
+        .search(this.search.query, null, true, false)
+        .then(response => {
+          this.search.response = response;
+        });
     },
     fetchHeavySearchResponse() {
       this.$store.dispatch('fetchSearchResponse', { query: this.search.query });

@@ -99,7 +99,6 @@ export default {
         let payload = {
           query: this.$store.state.search.query,
           filters: this.filters,
-          image: true,
         };
 
         this.$store.dispatch('fetchSearchResponse', payload);

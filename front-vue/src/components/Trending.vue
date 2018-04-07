@@ -1,5 +1,5 @@
 <template>
-  <section class="trending" v-if="$store.state.search.response">
+  <section class="trending" v-if="popular.universities">
     <template v-for="{ university, lines, delay } in universityCards">
       <transition name="fade-in" appear :key="`university-${university.id}`">
         <router-link 
@@ -24,9 +24,17 @@ export default {
     'app-career-card': CareerCard,
     'app-university-card': hUniversityCard,
   },
+  data() {
+    return {
+      popular: {
+        careers: null,
+        universities: null,
+      },
+    };
+  },
   computed: {
     universityCards() {
-      let universityCards = this.$store.state.search.response.universities
+      let universityCards = this.popular.universities
         .slice(0, 4)
         .map((university, index) => {
           return { university, delay: index / 2 };
@@ -42,7 +50,17 @@ export default {
   },
   methods: {
     fetch() {
-      this.$store.dispatch('fetchSearchResponse', { query: '', image: true });
+      /*
+      this.$API.popular.careers().then(response => {
+        put(response)
+      })
+      */
+
+      this.$API.popular.universities().then(response => {
+        put(response);
+
+        // this.popular.universities = response;
+      });
     },
   },
   created() {

@@ -64,7 +64,7 @@ export default {
       !this.$store.state.search.response &&
       !this.$store.state.search.fetching
     )
-      this.$store.dispatch('fetchSearchResponse', { query: '', image: true });
+      this.$store.dispatch('fetchSearchResponse', { query: '' });
   },
 };
 </script>
