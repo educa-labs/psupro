@@ -1,11 +1,9 @@
 class University < ApplicationRecord
 
-  include Elasticsearch::Model 
-  include Elasticsearch::Model::Callbacks
-
   validates_presence_of :website
   has_many :campus
   belongs_to :university_type
+  searchkick
 
   # Returns array of self's city ids.
   def cities
@@ -19,28 +17,6 @@ class University < ApplicationRecord
 
   def u_type
     self.university_type.title
-  end
-
-  index_name "universities"
-  document_type self.name.downcase
-
-  settings index: { number_of_shards: 1 } do 
-    mapping dynamic: false do 
-      indexes :nick, analyzer: 'spanish' 
-      indexes :title, analyzer: 'spanish'
-      indexes :initials, analyzer: 'spanish' 
-    end 
-  end
-
-  def search(query)
-    __elasticsearch__.search(
-      { query:
-        { multi_match: 
-          { query: query, 
-            fields: ['nick', 'title','initials'] 
-          } 
-        }
-      })
   end
 
 

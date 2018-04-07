@@ -1,8 +1,6 @@
 class Carreer < ApplicationRecord
 
-  include Elasticsearch::Model 
-  include Elasticsearch::Model::Callbacks
-  # searchkick
+  searchkick
 
   validates_presence_of :university_id, :campu_id, :title
   belongs_to :university
@@ -34,41 +32,6 @@ class Carreer < ApplicationRecord
   # Returns true if self doesn't have the minimum valid weighings.
   def weighing?
     not(self.weighing.language.nil? || self.weighing.math.nil?)
-  end
-
-  index_name "carreers"
-  document_type self.name.downcase
-  
-  settings index: { number_of_shards: 1 } do 
-    mapping dynamic: false do 
-      indexes :title, analyzer: 'spanish'
-      indexes :degree_type, type: :byte
-    end 
-  end
-
-  def search(query)
-    __elasticsearch__.search(
-      query: { 
-        bool: {
-          must: [
-            {
-              multi_match: {
-                query: query,
-                fields: ['title','university.title'] 
-              }
-            },
-              match: {
-                degree_type: 2
-            }
-          ]
-        },
-      })
-  end
-
-  def as_indexed_json(options={})
-    self.as_json(
-      include: { university: { only: :title},
-               })
   end
 
 
