@@ -24,10 +24,16 @@ export default {
     };
   },
   beforeRouteUpdate(to, from, next) {
-    const toDepth = to.path.split('/').length;
-    const fromDepth = from.path.split('/').length;
+    if (to.name === 'university' && from.name === 'home') {
+      this.transition = 'scale-in';
+    } else if (to.name === 'university' && from.name === 'career') {
+      this.transition = 'slide-right';
+    } else {
+      const toDepth = to.path.split('/').length;
+      const fromDepth = from.path.split('/').length;
 
-    this.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+      this.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+    }
 
     next();
   },
@@ -38,13 +44,11 @@ export default {
 #root
   position: relative
 
-  min-height: 100vh
-
 #root .overlay
   $duration: .25s
   $opacity: .66
 
-  position: absolute
+  position: fixed
   top: 0
   right: 0
   bottom: 0
@@ -63,7 +67,7 @@ export default {
 #root main
   position: relative
 
-  height: 100%
+  min-height: 100vh
 
 #root .child-view
   position: absolute
@@ -81,6 +85,11 @@ export default {
 
   &.slide-left-leave-active, &.slide-right-enter 
     transform: translate(-100%, 0)
+
+    opacity: 0
+  
+  &.scale-in-enter
+    transform: translateY(150px)
 
     opacity: 0
 </style>
