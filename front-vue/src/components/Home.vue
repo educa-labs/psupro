@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <app-hero :class="{ closed, sticky }"></app-hero>
+    <app-hero :class="{ closed, sticky }" v-if="['xs', 'sm'].includes($mq)"></app-hero>
 
     <app-trending></app-trending>
 

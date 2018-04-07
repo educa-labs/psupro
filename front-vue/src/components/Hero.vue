@@ -31,7 +31,7 @@ export default {
 
   background-color: #00A2EC
 
-  @media (min-width: 576px)
+  @media (min-width: 768px)
     min-height: 50%
 
     // background-image: url($pattern)
@@ -46,8 +46,8 @@ export default {
   background-color: #FFFFFF
 
 .hero > .search-bar
-  @media (min-width: 576px)
-    max-width: 576px
+  @media (min-width: 768px)
+    max-width: 768px
 
 .hero.closed
   min-height: unset

@@ -2,7 +2,7 @@
   <div class="search">
     <app-navigator></app-navigator>
 
-    <app-hero class="closed"></app-hero>
+    <app-hero class="closed" v-if="['xs', 'sm'].includes($mq)"></app-hero>
 
     <section class="results" :style="{ 'padding-bottom': `${filterHeight}px` }" v-if="!$store.state.search.fetching">
       <template v-if="!emptySearchResponse">
@@ -74,7 +74,8 @@ export default {
   .navigator
     position: relative
 
-    padding-bottom: 0
+    @media (max-width: 767.98px)
+      padding-bottom: 0
   
   .career-card, .university-card
     margin: 1rem

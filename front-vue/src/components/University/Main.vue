@@ -1,7 +1,5 @@
 <template>
   <div class="university-container" v-if="fetched">
-    <app-hero class="closed"></app-hero>
-
     <div class="card university z-depth-1">
       <div class="cover" :style="{ backgroundImage: `url(${university.cover})` }">
         <app-icon @click.native="$router.go(-1)">arrow_back</app-icon>

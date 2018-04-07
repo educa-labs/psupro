@@ -8,6 +8,10 @@
     </transition>
 
     <main ref="main">
+      <mq-layout mq="md+">
+        <app-hero :class="{ closed: $route.name !== 'home' }"></app-hero>
+      </mq-layout>
+
       <transition :name="transition">
         <keep-alive><router-view class="child-view"></router-view></keep-alive>
       </transition>
@@ -71,9 +75,7 @@ export default {
 
 #root .child-view
   position: absolute
-  top: 0
   right: 0
-  bottom: 0
   left: 0
 
   transition: all .5s cubic-bezier(.55, 0, .1, 1)
