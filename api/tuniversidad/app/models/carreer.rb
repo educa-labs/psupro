@@ -1,5 +1,6 @@
 class Carreer < ApplicationRecord
 
+
   searchkick language: "spanish"
   scope :search_import, -> { includes(:university) }
 
