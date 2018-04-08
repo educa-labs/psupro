@@ -1,3 +1,9 @@
+@import 'font'
+@import 'color'
+@import 'mixin'
+@import 'media'
+@import 'shadow'
+
 a
   text-decoration: none
 
@@ -31,20 +37,25 @@ section > .title
   padding: .75rem 1rem
 
   color: #7A7A7A
-
   background-color: #F5F5F5
 
   font-weight: 400
 
 section > .content
   color: #7A7A7A
-
   background-color: #FFFFFF
 
 input
+  width: %100
+
   border: none
   outline: none
   background-color: transparent
+
+  font-size: $f-medium
+
+  &::placeholder
+    color: c-gray(600)
 
 p
   margin: 0
@@ -68,9 +79,22 @@ ul
 
   list-style: none
 
+.card
+  overflow: hidden
+
+  border-radius: 2px
+  background-color: #FFFFFF
+
+  .card-content
+    padding: 1em
+
 .empty
   margin: 1rem 0
 
   text-align: center
 
   color: #7A7A7A
+
+.background-image
+  background-position: center
+  background-size: cover

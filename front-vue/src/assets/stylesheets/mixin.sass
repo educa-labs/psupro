@@ -1,0 +1,122 @@
+@mixin border-top($color, $width: 1px, $style: solid)
+  border-top: $width $style $color
+
+@mixin border-right($color, $width: 1px, $style: solid)
+  border-right: $width $style $color
+
+@mixin border-bottom($color, $width: 1px, $style: solid)
+  border-bottom: $width $style $color
+
+@mixin border-left($color, $width: 1px, $style: solid)
+  border-left: $width $style $color
+
+@mixin border-radius-top($border-radius, $strict: false)
+  border-top-left-radius: $border-radius
+  border-top-right-radius: $border-radius
+
+  @if $strict
+    border-bottom-right-radius: 0
+    border-bottom-left-radius: 0
+
+@mixin border-radius-bottom($border-radius, $strict: false)
+  border-bottom-right-radius: $border-radius
+  border-bottom-left-radius: $border-radius
+
+  @if $strict
+    border-top-left-radius: 0
+    border-top-right-radius: 0
+
+@mixin canvas($border-radius)
+  border-radius: $border-radius
+  background-color: $c-white
+
+@mixin circle($size)
+  width: $size
+  height: $size
+
+  border-radius: 50%
+
+  line-height: $size
+
+@mixin d-flex($align: false, $justify: false)
+  display: flex
+
+  @if $align
+    align-items: $align
+
+  @if $justify
+    justify-content: $justify
+
+@mixin icon($size, $margin-right: 0, $margin-left: 0)
+  width: $size
+  height: $size
+  margin-right: $margin-right
+  margin-left: $margin-left
+
+  font-size: $size
+  line-height: $size
+
+@mixin p-absolute($z-index: false, $top: false, $right: false, $bottom: false, $left: false)
+  position: absolute
+
+  @if $z-index
+    z-index: $z-index
+
+  @if $top
+    top: $top
+
+  @if $right
+    right: $right
+
+  @if $bottom
+    bottom: $bottom
+
+  @if $left
+    left: $left
+
+@mixin p-fixed($z-index: false, $top: false, $right: false, $bottom: false, $left: false)
+  position: fixed
+
+  @if $z-index
+    z-index: $z-index
+
+  @if $top
+    top: $top
+
+  @if $right
+    right: $right
+
+  @if $bottom
+    bottom: $bottom
+
+  @if $left
+    left: $left
+
+@mixin p-relative($z-index: false, $top: false, $right: false, $bottom: false, $left: false)
+  position: relative
+
+  @if $z-index
+    z-index: $z-index
+
+  @if $top
+    top: $top
+
+  @if $right
+    right: $right
+
+  @if $bottom
+    bottom: $bottom
+
+  @if $left
+    left: $left
+
+@mixin text-height($value)
+  height: $value
+
+  line-height: $value
+
+@mixin user-select($value)
+  -webkit-user-select: $value
+  -moz-user-select: $value
+  -ms-user-select: $value
+  user-select: $value

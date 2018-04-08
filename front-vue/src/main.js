@@ -7,8 +7,9 @@ import formatter from './assets/javascripts/formatter'; // Formatter
 import locales from './locales/locales'; // Locales
 import router from './router/router'; // VueRouter
 import store from './store/store'; // Vuex
+import './assets/stylesheets/grid.min.css'; // Grid Framework
+import './assets/stylesheets/main.sass'; // Stylesheets
 import './responsiveness'; // VueMQ
-import './stylesheets'; // Stylesheets
 
 // External
 import anime from 'animejs'; // AnimeJS
