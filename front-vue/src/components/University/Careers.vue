@@ -30,7 +30,7 @@ export default {
   methods: {
     fetch() {
       return new Promise(resolve => {
-        this.$API.test(this.id).then(response => {
+        this.$API.universities.careers(this.id).then(response => {
           this.careers = response;
 
           this.fetched = true;

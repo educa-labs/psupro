@@ -83,13 +83,13 @@ export default {
     },
     fetch() {
       Promise.all([
-        this.$API.cities().then(response => {
+        this.$API.constants.cities().then(response => {
           this.cities = this.format(response);
         }),
-        this.$API.degreeTypes().then(response => {
+        this.$API.constants.degreeTypes().then(response => {
           this.degreeTypes = this.format(response);
         }),
-        this.$API.regions().then(response => {
+        this.$API.constants.regions().then(response => {
           this.regions = this.format(response);
         }),
       ]).then(() => {

@@ -84,11 +84,9 @@ export default {
     fetchLightSearchResponse() {
       this.search.response = null;
 
-      this.$API.search
-        .search(this.search.query, null, true, false)
-        .then(response => {
-          this.search.response = response;
-        });
+      this.$API.search(this.search.query, null, true, false).then(response => {
+        this.search.response = response;
+      });
     },
     fetchHeavySearchResponse() {
       this.$store.dispatch('fetchSearchResponse', { query: this.search.query });
@@ -97,7 +95,7 @@ export default {
       this.$refs.input.blur();
     },
     focus() {
-      let payload = { handleClick: this.unfocus, zIndex: 1005 };
+      let payload = { method: this.unfocus, zIndex: 1005 };
 
       this.$store
         .dispatch('showOverlay', payload)
@@ -150,103 +148,77 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@import './../assets/stylesheets/main'
+
 .search-bar
-  $border-radius: 2px
-  $height: 48px
-
-  position: relative
-  z-index: 1010
-
   width: 100%
-  height: $height
+  height: 48px
 
-  border-radius: $border-radius
-  background-color: #FFFFFF
+  @include p-relative(1010)
 
   .input
     $padding: .75rem
 
-    display: flex
-    align-items: center
-
     box-sizing: border-box
-
     height: 100%
-
     padding: $padding
 
     cursor: pointer
 
+    @include d-flex(center)
+
     .icon
       margin-right: $padding
 
-      color: #757575
+      color: c-gray(600)
 
-    input
-      width: 100%
+.search-bar
+  $border-radius: 2px
 
-      font-size: 1em
-
-    input::placeholder
-      color: #757575
+  @include canvas($border-radius)
 
   .search-response
-    border-bottom-right-radius: $border-radius
-    border-bottom-left-radius: $border-radius
+    @include border-bottom-radius($border-radius, true)
 
-.search-bar.opening
-  border-bottom-right-radius: 0
-  border-bottom-left-radius: 0
+  &.opening
+    @include border-top-radius($border-radius, true)
 
 .search-response
   $gap: 1rem
-  $maxHeight: 200px
-  $size: 24px
-
-  position: absolute
-  z-index: 1010
-  right: 0
-  left: 0
 
   overflow-y: scroll
 
-  max-height: $maxHeight
-
+  max-height: 200px
   padding: 0 $gap
 
   cursor: default
 
-  border-top: 1px solid #F5F5F5
-  background-color: #FFFFFF
+  background-color: $c-white
+
+  @include border-top(c-gray(100))
+  @include p-absolute(1010, false, 0, false, 0)
 
   section > div:first-child
-    padding: $gap 0
+    margin: $gap 0
 
-    color: #9E9E9E
+    color: c-gray(500)
 
     font-size: .875em
 
   li
-    display: flex
-    align-items: center
-
     margin-bottom: $gap
 
-    color: #000000
+    color: $c-black
+
+    @include d-flex(center)
 
     .icon
-      width: $size
-      height: $size
+      color: c-gray(400)
 
-      margin-right: $gap
-
-      color: #BDBDBD
+      @include icon(24px, $gap)
 
     div
-      color: #9E9E9E
+      color: c-gray(500)
 
-      font-size: .8em
-
-  li:last-child
-    margin-bottom: 0
+      font-size: $f-small
 </style>

@@ -70,11 +70,13 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@import './../assets/stylesheets/main'
+
 .search
   .navigator
     position: relative
 
-    @media (max-width: 767.98px)
+    @include media-down(sm)
       padding-bottom: 0
   
   .career-card, .university-card

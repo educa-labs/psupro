@@ -1,41 +1,43 @@
 <template>
-  <div class="career z-depth-1" v-if="fetched">
-    <app-navigator></app-navigator>
+  <div class="career-container" v-if="fetched">
+    <div class="card career z-depth-1">
+      <app-navigator></app-navigator>
 
-    <section class="university"><div class="content">
-      <p class="description" ref="description">{{ university.description }}</p>
-    </div></section>
+      <section class="university"><div class="content">
+        <p class="description" ref="description">{{ university.description }}</p>
+      </div></section>
 
-    <section>
-      <h5 class="title">{{ $l.cCareer.weighing }}</h5>
+      <section>
+        <h5 class="title">{{ $l.cCareer.weighing }}</h5>
 
-      <div class="content">
-        <table><tbody>
-          <tr v-for="(value, key) in career.weighing" :key="key">
-            <td class="key">{{ value.key }}</td>
-            <td class="value">{{ value.value }}</td>
-          </tr>
+        <div class="content">
+          <table><tbody>
+            <tr v-for="(value, key) in career.weighing" :key="key">
+              <td class="key">{{ value.key }}</td>
+              <td class="value">{{ value.value }}</td>
+            </tr>
 
-          <tr>
-            <td class="key">{{ career.minScore.key }}</td>
-            <td class="value">{{ career.minScore.value }}</td>
-          </tr>
-        </tbody></table>
-      </div>
-    </section>
+            <tr>
+              <td class="key">{{ career.minScore.key }}</td>
+              <td class="value">{{ career.minScore.value }}</td>
+            </tr>
+          </tbody></table>
+        </div>
+      </section>
 
-    <section>
-      <h5 class="title">{{ $l.cCareer.information }}</h5>
+      <section>
+        <h5 class="title">{{ $l.cCareer.information }}</h5>
 
-      <div class="content">
-        <table><tbody>
-          <tr v-for="(value, key) in career.information" :key="key">
-            <td class="key">{{ value.key }}</td>
-            <td class="value">{{ value.value }}</td>
-          </tr>
-        </tbody></table>
-      </div>
-    </section>
+        <div class="content">
+          <table><tbody>
+            <tr v-for="(value, key) in career.information" :key="key">
+              <td class="key">{{ value.key }}</td>
+              <td class="value">{{ value.value }}</td>
+            </tr>
+          </tbody></table>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -63,7 +65,7 @@ export default {
       this.$API.careers(this.id).then(response => {
         this.career = this.$f.formatCareer(response);
 
-        this.$API
+        this.$API.universities
           .universities(this.career.university_id)
           .then(response => {
             this.university.description = response.description;
@@ -83,19 +85,26 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.career
-  @media (max-width: 575.98px)
-    border-radius: 0
+@import './../../assets/stylesheets/main'
 
+.career-container
+  $padding: 1rem
+
+  @include media-up(md)
+    padding: $padding
+
+  .career
+    @include media-up(md)
+      width: calc(#{$breakpoint-md} - 2 * #{$padding})
+
+.career
+  @include media-down(sm)
+    border-radius: 0
     box-shadow: none
 
-  @media (min-width: 576px)
-    margin: 1rem 1rem 0
-
-  @media (min-width: 768px)
-    width: 768px
-
-    margin: 1rem auto 0
+  @include media-up(md)
+    margin-right: auto
+    margin-left: auto
 
   .description
     padding: 1rem

@@ -1,10 +1,7 @@
 <template>
   <div id="root">
     <transition name="fade">
-      <div class="overlay" :style="{ 'z-index': $store.state.overlay.zIndex }"
-        @click="$store.state.overlay.handleClick"
-        v-if="$store.state.overlay.show"
-      ></div>
+      <app-overlay></app-overlay>
     </transition>
 
     <main ref="main">
@@ -20,8 +17,12 @@
 </template>
 
 <script>
+import Overlay from './Overlay.vue';
 
 export default {
+  components: {
+    'app-overlay': Overlay,
+  },
   data() {
     return {
       transition: 'slide-right',
@@ -45,28 +46,17 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@import './../assets/stylesheets/main'
+
 #root
   position: relative
 
 #root .overlay
-  $duration: .25s
-  $opacity: .66
-
-  position: fixed
-  top: 0
-  right: 0
-  bottom: 0
-  left: 0
-
-  opacity: $opacity
-
-  background-color: #000000
-
   &.fade-enter, &.fade-leave-to
     opacity: 0
 
   &.fade-enter-active, &.fade-leave-active
-    transition: opacity $duration
+    transition: opacity 1s
 
 #root main
   position: relative
@@ -93,5 +83,8 @@ export default {
   &.scale-in-enter
     transform: translateY(150px)
 
+    opacity: 0
+
+  &.scale-in-leave-active
     opacity: 0
 </style>

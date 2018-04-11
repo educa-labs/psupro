@@ -64,10 +64,10 @@ export default {
   methods: {
     fetch() {
       return new Promise(resolve => {
-        this.$API.universities(this.id).then(response => {
+        this.$API.universities.universities(this.id).then(response => {
           this.university = this.$f.formatUniversity(response);
 
-          this.$API.campus.byUniversity(this.university.id).then(response => {
+          this.$API.universities.campus(this.university.id).then(response => {
             this.campus = response;
 
             this.fetched = true;

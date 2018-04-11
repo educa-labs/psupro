@@ -45,18 +45,21 @@ export default {
   },
   methods: {
     fetch() {
-      this.$API.universities(this.id).then(response => {
-        this.university = response;
+      this.$API.universities
+        .universities(this.id)
+        .then(response => {
+          this.university = response;
 
-        this.$API
-          .universities(this.id, { params: { image: true } })
-          .then(response => {
-            this.university.cover = response.cover;
-            this.university.profile = response.profile;
+          this.$API.universities
+            .universities(this.id, { params: { image: true } })
+            .then(response => {
+              this.university.cover = response.cover;
+              this.university.profile = response.profile;
 
-            this.fetched = true;
-          });
-      });
+              this.fetched = true;
+            });
+        })
+        .catch(error => put(error));
     },
   },
   created() {
@@ -66,8 +69,10 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@import './../../assets/stylesheets/main'
+
 .university-container
-  z-index: 1060
+  $padding: 1rem
 
   &.fade-enter
     transform: scale(.1)
@@ -77,19 +82,22 @@ export default {
   &.fade-enter-active
     transition: transform 250ms, opacity 250ms
 
+  @include media-up(md)
+    padding: $padding
+
+  .career
+    @include media-up(md)
+      width: calc(#{$breakpoint-md} - 2 * #{$padding})
+
 .university
-  @media (max-width: 575.98px)
+  @include media-down(sm)
     border-radius: 0
 
     box-shadow: none
 
-  @media (min-width: 576px)
-    margin: 1rem 1rem 0
-
-  @media (min-width: 768px)
-    width: 768px
-
-    margin: 1rem auto 0
+  @include media-up(md)
+    margin-right: auto
+    margin-left: auto
   
   .cover
     $height: 300px

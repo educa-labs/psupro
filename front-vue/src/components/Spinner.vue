@@ -10,7 +10,7 @@
 
   text-align: center
 
-  color: #7A7A7A
+  color: c-gray(600)
 
 @keyframes spinner
   0%

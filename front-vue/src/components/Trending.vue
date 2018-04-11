@@ -50,16 +50,8 @@ export default {
   },
   methods: {
     fetch() {
-      /*
-      this.$API.popular.careers().then(response => {
-        put(response)
-      })
-      */
-
       this.$API.popular.universities().then(response => {
-        put(response);
-
-        // this.popular.universities = response;
+        this.popular.universities = response;
       });
     },
   },
