@@ -9,9 +9,11 @@
         <app-hero :class="{ closed: $route.name !== 'home' }"></app-hero>
       </mq-layout>
 
-      <transition :name="transition">
-        <keep-alive><router-view class="child-view"></router-view></keep-alive>
-      </transition>
+      <div class="content">
+        <transition :name="transition">
+          <keep-alive><router-view class="child-view"></router-view></keep-alive>
+        </transition>
+      </div>
     </main>
   </div>
 </template>
@@ -51,24 +53,27 @@ export default {
 #root
   position: relative
 
-#root .overlay
+#root > .overlay
   &.fade-enter, &.fade-leave-to
     opacity: 0
 
   &.fade-enter-active, &.fade-leave-active
     transition: opacity 1s
 
-#root main
-  position: relative
+#root > main
+  display: grid
 
   min-height: 100vh
 
-#root .child-view
-  position: absolute
-  right: 0
-  left: 0
+  grid-template-rows: auto 1fr
 
+#root > main > .content
+  position: relative
+
+#root > .child-view
   transition: all .5s cubic-bezier(.55, 0, .1, 1)
+
+  @include p-absolute(null, 0, 0, 0, 0)
 
   &.slide-left-enter, &.slide-right-leave-active 
     transform: translate(100%, 0)
