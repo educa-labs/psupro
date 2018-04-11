@@ -3,7 +3,8 @@ import VueResource from 'vue-resource';
 
 Vue.use(VueResource);
 
-import preprocessors from './preprocessors'; // Preprocessors
+// Preprocessors for each API endpoint
+import preprocessors from './preprocessors';
 
 const API = {
   url: 'http://localhost:3000',
@@ -43,107 +44,77 @@ const API = {
         .catch(error => reject(error));
     });
   },
-  universities(id, config) {
+  universities: {
+    universities(id, config) {
+      return new Promise((resolve, reject) => {
+        Vue.http
+          .get(`${API.url}/universities/${id}`, config)
+          .then(response => {
+            resolve(preprocessors.universities.universities(response.body));
+          })
+          .catch(error => reject(error));
+      });
+    },
+    campus(id) {
+      return new Promise((resolve, reject) => {
+        Vue.http
+          .get(`${API.url}/universities/${id}/campus`)
+          .then(response =>
+            resolve(preprocessors.universities.campus(response.body))
+          )
+          .catch(error => reject(error));
+      });
+    },
+    careers(id) {
+      return new Promise((resolve, reject) => {
+        Vue.http
+          .get(`${API.url}/universities/${id}/carreers`)
+          .then(response =>
+            resolve(preprocessors.universities.careers(response.body))
+          )
+          .catch(error => reject(error));
+      });
+    },
+  },
+  search(query, filters = null, minimize = false, pictures = false) {
+    let params = { text: query, minimize, pictures };
+
     return new Promise((resolve, reject) => {
       Vue.http
-        .get(`${API.url}/universities/${id}`, config)
-        .then(response => {
-          resolve(preprocessors.universities(response.body));
-        })
+        .get(`${API.url}/search`, { params })
+        .then(response => resolve(preprocessors.search(response.body)))
         .catch(error => reject(error));
     });
   },
-  search: {
-    careers(query, filters, image = false) {
-      let body = { carreer: { text: query, ...filters } };
-
+  constants: {
+    cities() {
       return new Promise((resolve, reject) => {
         Vue.http
-          .post(`${API.url}/search`, body)
-          .then(response => {
-            let careers = response.body;
-
-            if (image) {
-              let promises = careers.map(career => {
-                return API.universities(career.university_id, {
-                  params: { image: true },
-                }).then(response => {
-                  career.image = response.profile;
-                });
-              });
-
-              Promise.all(promises).then(() => {
-                resolve(preprocessors.search.careers(careers));
-              });
-            } else resolve(preprocessors.search.careers(careers));
-          })
+          .get(`${API.url}/cities`)
+          .then(response =>
+            resolve(preprocessors.constants.cities(response.body))
+          )
           .catch(error => reject(error));
       });
     },
-    universities(query, filters, image = false) {
-      let body = { university: { text: query, ...filters } };
+    degreeTypes() {
+      let API_response = [
+        { id: 1, title: 'Profesional' },
+        { id: 2, title: 'Técnica' },
+      ];
 
+      return new Promise((resolve, reject) =>
+        resolve(preprocessors.constants.degreeTypes(API_response))
+      );
+    },
+    regions() {
       return new Promise((resolve, reject) => {
         Vue.http
-          .post(`${API.url}/search`, body)
-          .then(response => {
-            let universities = response.body;
-
-            if (image) {
-              let promises = universities.map(university => {
-                return API.universities(university.id, {
-                  params: { image: true },
-                }).then(response => {
-                  university.image = response.cover;
-                });
-              });
-
-              Promise.all(promises).then(() => {
-                resolve(preprocessors.search.universities(universities));
-              });
-            } else resolve(preprocessors.search.universities(universities));
-          })
+          .get(`${API.url}/regions`)
+          .then(response =>
+            resolve(preprocessors.constants.regions(response.body))
+          )
           .catch(error => reject(error));
-      });
-    },
-    search(query, filters = null, minimize = false, pictures = false) {
-      let params = { text: query, minimize, pictures };
-
-      return new Promise((resolve, reject) => {
-        Vue.http
-          .get(`${API.url}/search`, { params })
-          .then(response => resolve(preprocessors.search.search(response.body)))
-          .catch(error => reject(error));
-      });
-    },
-  },
-  regions() {
-    return new Promise((resolve, reject) => {
-      Vue.http.get(`${API.url}/regions`).then(response => {
-        resolve(preprocessors.regions(response.body));
-      });
-    });
-  },
-  cities() {
-    return new Promise((resolve, reject) => {
-      Vue.http.get(`${API.url}/cities`).then(response => {
-        resolve(preprocessors.cities(response.body));
-      });
-    });
-  },
-  test(id) {
-    return new Promise((resolve, reject) => {
-      Vue.http.get(`${API.url}/universities/${id}/carreers`).then(response => {
-        resolve(response.body);
-      });
-    });
-  },
-  campus: {
-    byUniversity(id) {
-      return new Promise((resolve, reject) => {
-        Vue.http.get(`${API.url}/universities/${id}/campus`).then(response => {
-          resolve(response.body);
-        });
       });
     },
   },

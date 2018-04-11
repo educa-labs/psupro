@@ -1,53 +1,60 @@
+import API from './API';
+
 export default {
-  careers(API_career) {
+  careers(APICareer) {
     return {
-      university_id: API_career.university_id,
+      university_id: APICareer.university_id,
       weighing: {
-        language: { key: 'Lenguaje', value: API_career.weighing.language },
-        mathematics: { key: 'Matemáticas', value: API_career.weighing.math },
-        sciences: { key: 'Ciencias', value: API_career.weighing.science },
-        nem: { key: 'NEM', value: API_career.weighing.NEM },
-        ranking: { key: 'Ranking', value: API_career.weighing.ranking },
+        language: { key: 'Lenguaje', value: APICareer.weighing.language },
+        mathematics: { key: 'Matemáticas', value: APICareer.weighing.math },
+        sciences: { key: 'Ciencias', value: APICareer.weighing.science },
+        nem: { key: 'NEM', value: APICareer.weighing.NEM },
+        ranking: { key: 'Ranking', value: APICareer.weighing.ranking },
       },
-      minScore: { key: 'Corte 2017', value: API_career.last_cut },
+      minScore: { key: 'Corte 2017', value: APICareer.last_cut },
       information: {
-        area: { key: 'Área', value: API_career.area_title },
-        vacancies: { key: 'Vacantes', value: API_career.openings },
-        duration: { key: 'Duración', value: API_career.semesters },
-        tariff: { key: 'Arancel', value: API_career.price },
-        averageSalary: { key: 'Sueldo promedio', value: API_career.income },
+        area: { key: 'Área', value: APICareer.area_title },
+        vacancies: { key: 'Vacantes', value: APICareer.openings },
+        duration: { key: 'Duración', value: APICareer.semesters },
+        tariff: { key: 'Arancel', value: APICareer.price },
+        averageSalary: { key: 'Sueldo promedio', value: APICareer.income },
         employability: {
           key: 'Empleabilidad',
-          value: API_career.employability,
+          value: APICareer.employability,
         },
       },
       image: null,
     };
   },
-  universities(API_university) {
-    if (!API_university.cover) API_university.cover = null;
-    if (!API_university.profile) API_university.profile = null;
+  universities: {
+    universities(APIUniversity) {
+      if (!APIUniversity.cover) APIUniversity.cover = null;
+      if (!APIUniversity.profile) APIUniversity.profile = null;
 
-    return API_university;
-  },
-  search: {
-    careers(API_careers) {
-      return API_careers;
+      return APIUniversity;
     },
-    universities(API_universities) {
-      return API_universities;
+    campus(APICampus) {
+      return APICampus;
     },
-    search(APISearch) {
-      return {
-        careers: APISearch.carreers,
-        universities: APISearch.universities,
-      };
+    careers(APICareers) {
+      return APICareers;
     },
   },
-  regions(API_regions) {
-    return API_regions;
+  search(APISearch) {
+    return {
+      careers: APISearch.carreers,
+      universities: APISearch.universities,
+    };
   },
-  cities(API_cities) {
-    return API_cities;
+  constants: {
+    regions(APIRegions) {
+      return APIRegions;
+    },
+    degreeTypes(APIDegreeTypes) {
+      return APIDegreeTypes;
+    },
+    cities(APICities) {
+      return APICities;
+    },
   },
 };

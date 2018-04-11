@@ -1,34 +1,12 @@
 <template>
-  <div class="select-wrapper">
-    <input type="text" class="select-dropdown" readonly="true"
-      :value="_options[value].key"
-      @click="open = true"
-      @blur="open = false"
-    >
+  <div class="select">
+    <input type="text" readonly :value="_options[value].key" @click="open">
 
-    <i class="material-icons">arrow_drop_down</i>
-
-    <transition name="dropdown">
-      <ul class="z-depth-1" @mousedown.prevent v-show="open">
-        <li class="disabled">{{ $l.cSelect.tip }}</li>
-        <li
-          v-for="(value, index) in _options"
-          :key="`option-${index}`"
-          :class="{ selected: value === index}"
-          @click="handleOptionClick(index)"
-        >{{ value.key }}</li>
-      </ul>
-    </transition>
+    <app-icon>arrow_drop_down</app-icon>
   </div>
 </template>
 
 <script>
-/*
-TODO:
-  - <ul> en el centro de la pantalla
-  - <ul> scrolleable
-*/
-
 export default {
   props: {
     value: {
@@ -46,14 +24,19 @@ export default {
   data() {
     return {
       _options: null,
-
-      open: false,
     };
   },
   methods: {
+    open() {
+      this.$store.dispatch('mountOverlayComponent', {
+        is: 'app-select-options',
+        payload: {
+          options: this._options,
+          handleOptionClick: this.handleOptionClick,
+        },
+      });
+    },
     handleOptionClick(index) {
-      this.open = false;
-
       this.$emit('input', this._options[index].value);
     },
   },
@@ -68,88 +51,29 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-select
-  display: none
+@import './../assets/stylesheets/main'
 
-.select-wrapper
+.select
   position: relative
 
-  display: inline-block
+  cursor: pointer
 
   input
-    position: relative
-    z-index: 1
+    width: 100%
+    padding-right: 1rem
+    padding-left: 1rem
 
-    display: inline-block
+    @include canvas(2px, c-gray(100))
+    @include text-height(3rem)
+    @include user-select(none)
 
-    height: 3rem
+  .icon
+    margin-top: auto
+    margin-bottom: auto
 
-    padding: 0
+    color: $c-black
+    background-color: transparent
 
-    cursor: pointer
-    user-select: none
-
-    border: none
-    outline: none
-
-    font-size: medium
-    line-height: 3rem
-  
-  .material-icons
-    position: absolute
-    z-index: 1
-    top: 0
-    right: 0
-    bottom: 0
-
-    width: 24px
-    height: 24px
-    margin: auto 0
-
-    color: #000000
-    background-color: #FFFFFF
-
-    font-size: 24px
-
-  ul
-    position: absolute
-    z-index: 1
-    bottom: 0
-    left: 0
-
-    overflow-y: scroll
-
-    max-height: 100px
-
-    margin: 0
-
-    padding: 1rem 0
-
-    list-style-type: none
-
-    transform-origin: left bottom
-
-    color: #000000
-    background-color: #FFFFFF
-
-    li
-      padding: 14px 16px
-
-      cursor: pointer
-    
-    li.selected
-      background-color: rgba(0, 0, 0, 0.03)
-    
-    li:focus, li:hover
-      background-color: rgba(0, 0, 0, 0.08)
-    
-    li.disabled
-      color: #9E9E9E
-      background-color: #FFFFFF
-
-    &.dropdown-enter
-      transform: scale(0, 0)
-
-    &.dropdown-enter-active
-      transition: transform .05s
+    @include icon(24px, .5rem)
+    @include p-absolute(1, 0, 0, 0)
 </style>
