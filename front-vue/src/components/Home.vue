@@ -43,4 +43,8 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+#home
+  display: grid
+
+  grid-template-rows: auto 1fr
 </style>

@@ -93,9 +93,11 @@ export default {
         easing: 'easeInOutQuad',
         translateX: '-100%',
         complete: () => {
-          this.$refs.content.style.transform = null;
-
           callback();
+
+          setTimeout(() => {
+            this.$refs.content.style.transform = null;
+          }, 0);
         },
       });
 
@@ -112,9 +114,11 @@ export default {
         easing: 'easeInOutQuad',
         translateX: '0',
         complete: () => {
-          this.$refs.content.style.transform = null;
-
           callback();
+
+          setTimeout(() => {
+            this.$refs.content.style.transform = null;
+          }, 0);
         },
       });
 

@@ -85,7 +85,7 @@ export default {
   @include media-up(md)
     padding: $padding
 
-  .career
+  .university
     @include media-up(md)
       width: calc(#{$breakpoint-md} - 2 * #{$padding})
 

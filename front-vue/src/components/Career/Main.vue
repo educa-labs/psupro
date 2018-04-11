@@ -4,7 +4,9 @@
       <app-navigator></app-navigator>
 
       <section class="university"><div class="content">
-        <p class="description" ref="description">{{ university.description }}</p>
+        <app-expandible class="description">
+          <p>{{ university.description }}</p>
+        </app-expandible>
       </div></section>
 
       <section>
@@ -42,20 +44,19 @@
 </template>
 
 <script>
-import Ellipsis from 'ellipsis.js';
-
-let ellipsis = Ellipsis({ lines: 4 });
+import Expandible from './../Expandible.vue';
 
 export default {
+  components: {
+    'app-expandible': Expandible,
+  },
   props: {
     id: { type: Number, required: true },
   },
   data() {
     return {
       career: null,
-      university: {
-        description: '',
-      },
+      university: { description: '' },
 
       fetched: false,
     };
@@ -77,9 +78,6 @@ export default {
   },
   created() {
     this.fetch();
-  },
-  updated() {
-    if (this.fetched) ellipsis.add(this.$refs.description);
   },
 };
 </script>
@@ -107,5 +105,5 @@ export default {
     margin-left: auto
 
   .description
-    padding: 1rem
+    margin: 1rem
 </style>

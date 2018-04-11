@@ -11,7 +11,7 @@
 
       <div class="content">
         <transition :name="transition">
-          <keep-alive><router-view class="child-view"></router-view></keep-alive>
+          <router-view class="child-view"></router-view>
         </transition>
       </div>
     </main>
@@ -65,15 +65,18 @@ export default {
 
   min-height: 100vh
 
-  grid-template-rows: auto 1fr
+  grid-template-rows: 1fr
+
+  @include media-up(md)
+    grid-template-rows: auto 1fr
 
 #root > main > .content
   position: relative
 
-#root > .child-view
-  transition: all .5s cubic-bezier(.55, 0, .1, 1)
+#root .child-view
+  transition: all .4s cubic-bezier(.55, 0, .1, 1)
 
-  @include p-absolute(null, 0, 0, 0, 0)
+  @include p-absolute(null, null, 0, null, 0)
 
   &.slide-left-enter, &.slide-right-leave-active 
     transform: translate(100%, 0)
