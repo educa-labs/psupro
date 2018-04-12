@@ -19,6 +19,8 @@ For detailed explanation on how things work, consult the [docs for vue-loader](h
 
 # TODO
 
+- Estado inicial de `Tabs`. **DONE**
+- Utilizar filtros.
 - Corregir tamaño de componentes entre transiciones.
 - Terminar de mover estilos a SASS.
 - Componentes `Expandible`. **DONE**

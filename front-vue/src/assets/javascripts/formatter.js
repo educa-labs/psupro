@@ -18,34 +18,34 @@ accounting.settings = {
 
 const formatter = {
   ...accounting,
-  formatCareer(API_career) {
-    Object.values(API_career.weighing).forEach(
+  formatCareer(APICareer) {
+    Object.values(APICareer.weighing).forEach(
       weight => (weight.value = `${weight.value}%`)
     );
 
-    API_career.minScore.value = formatter.formatNumber(
-      API_career.minScore.value
+    APICareer.minScore.value = formatter.formatNumber(
+      APICareer.minScore.value
     );
-    API_career.information.vacancies.value = formatter.formatNumber(
-      API_career.information.vacancies.value
+    APICareer.information.vacancies.value = formatter.formatNumber(
+      APICareer.information.vacancies.value
     );
-    API_career.information.averageSalary.value = formatter.formatMoney(
-      API_career.information.averageSalary.value
+    APICareer.information.averageSalary.value = formatter.formatMoney(
+      APICareer.information.averageSalary.value
     );
-    API_career.information.tariff.value = formatter.formatMoney(
-      API_career.information.tariff.value
+    APICareer.information.tariff.value = formatter.formatMoney(
+      APICareer.information.tariff.value
     );
-    API_career.information.employability.value = `${
-      API_career.information.employability.value
+    APICareer.information.employability.value = `${
+      APICareer.information.employability.value
     }%`;
-    API_career.information.duration.value = `${
-      API_career.information.duration.value
+    APICareer.information.duration.value = `${
+      APICareer.information.duration.value
     } ${store.state.locale.cCareer.semesters}`.toLowerCase();
 
-    return API_career;
+    return APICareer;
   },
-  formatUniversity(API_university) {
-    let foundation = new Date(API_university.foundation).toLocaleDateString(
+  formatUniversity(APIUniversity) {
+    let foundation = new Date(APIUniversity.foundation).toLocaleDateString(
       store.state.locale.name,
       {
         day: 'numeric',
@@ -54,37 +54,37 @@ const formatter = {
       }
     );
 
-    let freeness = API_university.freeness ? 'Sí' : 'No';
+    let freeness = APIUniversity.freeness ? 'Sí' : 'No';
 
     return {
-      id: API_university.id,
-      description: API_university.description,
+      id: APIUniversity.id,
+      description: APIUniversity.description,
       first: {
-        type: { key: 'Tipo', value: 'Privada' },
-        initials: { key: 'Sigla', value: API_university.initials },
+        type: { key: 'Tipo', value: APIUniversity.u_type },
+        initials: { key: 'Sigla', value: APIUniversity.initials },
         freeness: { key: 'Gratuidad', value: freeness },
         foundation: { key: 'Fundación', value: foundation },
         students: {
           key: 'Alumnos',
-          value: formatter.formatNumber(API_university.students),
+          value: formatter.formatNumber(APIUniversity.students),
         },
       },
       second: {
         teachers: {
           key: 'Profesores',
-          value: formatter.formatNumber(API_university.teachers),
+          value: formatter.formatNumber(APIUniversity.teachers),
         },
         degrees: {
           key: 'Grados',
-          value: formatter.formatNumber(API_university.degrees),
+          value: formatter.formatNumber(APIUniversity.degrees),
         },
         postgraduates: {
           key: 'Postgrados',
-          value: formatter.formatNumber(API_university.postgraduates),
+          value: formatter.formatNumber(APIUniversity.postgraduates),
         },
         doctorates: {
           key: 'Doctorados',
-          value: formatter.formatNumber(API_university.doctorates),
+          value: formatter.formatNumber(APIUniversity.doctorates),
         },
       },
     };

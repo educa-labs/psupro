@@ -27,9 +27,15 @@ export default {
     };
   },
   universities: {
-    universities(APIUniversity) {
-      if (!APIUniversity.cover) APIUniversity.cover = null;
-      if (!APIUniversity.profile) APIUniversity.profile = null;
+    universities(APIUniversity, config) {
+      if (config && config.params && config.params.image) {
+        let university = APIUniversity.university;
+
+        university.cover = APIUniversity.cover;
+        university.profile = APIUniversity.profile;
+
+        return university;
+      }
 
       return APIUniversity;
     },

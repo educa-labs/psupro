@@ -39,18 +39,15 @@ export default {
   },
   methods: {
     fetch() {
-      this.$API.universities.universities(this.id).then(response => {
-        this.university = response;
+      let params = { image: true };
 
-        this.$API.universities
-          .universities(this.id, { params: { image: true } })
-          .then(response => {
-            this.university.cover = response.cover;
-            this.university.profile = response.profile;
+      this.$API.universities
+        .universities(this.id, { params })
+        .then(response => {
+          this.university = response;
 
-            this.fetched = true;
-          });
-      });
+          this.fetched = true;
+        });
     },
   },
   beforeRouteUpdate(to, from, next) {
