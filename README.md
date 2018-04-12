@@ -27,14 +27,7 @@ First you must install docker and docker-compose. Then run:
 sudo docker-compose build
 ```
 
-Then set up the database.
-
-```bash
-sudo docker-compose run api rails db:migrate
-sudo docker-compose run api rails db:seed
-```
-
-And we run our server:
+And we run our server to check everything is working:
 
 ```bash
 sudo docker-compose up
@@ -45,6 +38,22 @@ If elastic search crashes the following command might fix it:
 ```bash
 sudo sysctl -w vm.max_map_count=262144
 ```
+
+Then set up the database.
+
+```bash
+sudo docker-compose run api rails db:migrate
+sudo docker-compose run api rails db:seed
+```
+
+And set up the search indexes.
+
+```bash
+sudo docker-compose run api rails  searchkick:reindex CLASS=University
+sudo docker-compose run api rails  searchkick:reindex CLASS=Carreer
+```
+
+Now we run the server again and everything should be running.
 
 ## Deployment
 TODO

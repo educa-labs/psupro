@@ -85,6 +85,7 @@ else
       u.postgraduates =     row['Nro de post-grados'],
       u.doctorates =        row['Nro de doctorados'],
       u.description =       row['Descripción'],
+      u.level =             row['Nivel'],
       u.university_type_id =   university_types_hash[row['Tipo']].id,
       u.profile_picture = row['ID'],
       u.cover_picture = row['ID'],
