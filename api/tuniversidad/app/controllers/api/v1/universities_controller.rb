@@ -10,7 +10,7 @@ class Api::V1::UniversitiesController < ApplicationController
         u.save
         render json:u, status: 200
       else
-        render json:{cover:u.encoded_cover_picture,profile:u.encoded_profile_picture} # Return images.
+        render json:{university: u, cover:u.encoded_cover_picture,profile:u.encoded_profile_picture} # Return images.
       end
     else
       render json:{errors:"invalid id"}, status: 404
