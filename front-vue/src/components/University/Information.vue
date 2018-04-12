@@ -58,8 +58,6 @@ export default {
       university: null,
 
       fetched: false,
-
-      descriptionOpen: false,
     };
   },
   methods: {
@@ -79,15 +77,18 @@ export default {
       });
     },
   },
+  created() {
+    this.fetch();
+  },
 };
 </script>
 
 <style lang="sass" scoped>
-.information
-  margin: -1rem
+@import './../../assets/stylesheets/main'
 
+.information
   section
-    color: #7A7A7A
+    color: c-gray(600)
 
   section.university
     .description
@@ -98,21 +99,22 @@ export default {
       padding-bottom: .25rem
 
   section.campus .content > div
-    display: flex
-    align-items: center
+    $padding: 1.25rem
 
-    padding: 1.25rem
+    padding: $padding
 
-    color: #000000
-    border-bottom: 1px solid #F5F5F5
+    color: $c-black
+
+    @include d-flex(center)
+    @include border-bottom(c-gray(200))
 
     .icon
-      margin-right: 1.25rem
+      color: $c-main
 
-      color: #00A2EC
+      @include icon(24px, $padding)
     
     .address
-      color: #7A7A7A
+      color: c-gray(600)
 
-      font-size: .8em
+      font-size: $f-small
 </style>

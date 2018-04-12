@@ -40,8 +40,13 @@ export default {
       });
     },
   },
+  created() {
+    this.fetch();
+  },
 };
 </script>
 
 <style lang="sass" scoped>
+.careers
+  padding: 1rem
 </style>

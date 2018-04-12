@@ -11,15 +11,7 @@
         <div>{{ university.title }} <br> {{ university.initials }}</div>
       </div>
 
-      <app-tabs :id="university.id">
-        <app-tab :name="$l.cUniversity.information">
-          <app-information :id="university.id"></app-information>
-        </app-tab>
-
-        <app-tab :name="$l.cUniversity.careers">
-          <app-careers :id="university.id"></app-careers>
-        </app-tab>
-      </app-tabs>
+      <app-tabs :transition="transition"></app-tabs>
     </div>
   </div> 
 
@@ -41,26 +33,33 @@ export default {
       university: null,
 
       fetched: false,
+
+      transition: '',
     };
   },
   methods: {
     fetch() {
-      this.$API.universities
-        .universities(this.id)
-        .then(response => {
-          this.university = response;
+      this.$API.universities.universities(this.id).then(response => {
+        this.university = response;
 
-          this.$API.universities
-            .universities(this.id, { params: { image: true } })
-            .then(response => {
-              this.university.cover = response.cover;
-              this.university.profile = response.profile;
+        this.$API.universities
+          .universities(this.id, { params: { image: true } })
+          .then(response => {
+            this.university.cover = response.cover;
+            this.university.profile = response.profile;
 
-              this.fetched = true;
-            });
-        })
-        .catch(error => put(error));
+            this.fetched = true;
+          });
+      });
     },
+  },
+  beforeRouteUpdate(to, from, next) {
+    if (to.name === 'university' && from.name === 'careers')
+      this.transition = 'slide-right';
+    else if (to.name === 'careers' && from.name === 'university')
+      this.transition = 'slide-left';
+
+    next();
   },
   created() {
     this.fetch();
@@ -74,14 +73,6 @@ export default {
 .university-container
   $padding: 1rem
 
-  &.fade-enter
-    transform: scale(.1)
-
-    opacity: 0
-
-  &.fade-enter-active
-    transition: transform 250ms, opacity 250ms
-
   @include media-up(md)
     padding: $padding
 
@@ -92,7 +83,6 @@ export default {
 .university
   @include media-down(sm)
     border-radius: 0
-
     box-shadow: none
 
   @include media-up(md)
@@ -100,60 +90,40 @@ export default {
     margin-left: auto
   
   .cover
-    $height: 300px
-
-    position: relative
-
     height: 175px
 
-    background-position: center
-    background-size: cover
+    @include p-relative
+    @include background-image
 
-    @media (min-width: 576px)
-      height: $height
+    @include media-up(sm)
+      height: 300px
 
     .icon
-      position: absolute
-      top: 1rem
-      left: 1rem
+      @include p-absolute(null, 1rem, null, null, 1rem)
 
     .profile
       $size: 75px
 
-      position: absolute
-      z-index: 2
-      right: #{$size / 2}
-      bottom: -#{$size / 2}
+      background-color: $c-white
 
-      display: flex
-      align-items: center
-      justify-content: center
-
-      width: $size
-      height: $size
-
-      border-radius: 50%
-      background-color: #FFFFFF
+      @include p-absolute(2, unset, #{$size / 2}, -#{$size / 2}, unset)
+      @include d-flex(center, center)
+      @include circle($size) 
 
       & > div
-        width: 75%
-        height: 75%
-
-        background-position: center
-        background-size: cover
+        @include size(75%)
+        @include background-image
 
   .card-title
-    $height: 75px
-
     z-index: 1
 
-    min-height: $height
+    min-height: 75px
 
-    background-color: #00A2EC
+    background-color: $c-main
 
     & > div
       width: 50%
       padding: 1rem
 
-      font-size: large
+      font-size: $f-large
 </style>

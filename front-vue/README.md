@@ -22,4 +22,4 @@ For detailed explanation on how things work, consult the [docs for vue-loader](h
 - Corregir tamaño de componentes entre transiciones.
 - Terminar de mover estilos a SASS.
 - Componentes `Expandible`. **DONE**
-- `University` utilizando `<router-view>`.
+- `University` utilizando `<router-view>`. **DONE**
