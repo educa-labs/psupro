@@ -37,8 +37,20 @@ export default {
       transition: '',
     };
   },
+  watch: {
+    $route(to, from) {
+      if (to.name === 'university' && from.name === 'home') this.fetch();
+    },
+  },
   methods: {
+    reset() {
+      this.fetched = false;
+
+      this.transition = '';
+    },
     fetch() {
+      this.reset();
+
       let params = { image: true };
 
       this.$API.universities

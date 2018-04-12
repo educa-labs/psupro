@@ -61,8 +61,15 @@ export default {
       fetched: false,
     };
   },
+  watch: {
+    $route(to) {
+      if (to.name === 'career') this.fetch();
+    },
+  },
   methods: {
     fetch() {
+      this.fetched = false;
+
       this.$API.careers(this.id).then(response => {
         this.career = this.$f.formatCareer(response);
 

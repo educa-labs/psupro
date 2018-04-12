@@ -32,6 +32,8 @@ export default {
         { tab: this.$l.cUniversity.careers, name: 'careers' },
       ],
 
+      tabs: null,
+
       delay: 150,
       duration: 350,
       gap: 25,
@@ -47,12 +49,10 @@ export default {
   },
   methods: {
     get(property) {
-      let tabs = Array.from(this.$refs.tabs.children).filter(li =>
-        li.className.match(/\btab\b/)
-      );
+      let tabs = null;
 
-      if (property === 'right') tabs = tabs.slice(this.active + 1, tabs.length);
-      else if (property === 'left') tabs = tabs.slice(0, this.active);
+      if (property === 'right') tabs = this.tabs.slice(this.active + 1, this.tabs.length);
+      else if (property === 'left') tabs = this.tabs.slice(0, this.active);
 
       return (
         tabs.reduce((before, current) => {
@@ -94,11 +94,16 @@ export default {
     for (let [index, route] of this.routes.entries()) {
       if (route.name === this.$route.name) {
         this.active = index;
+
         break;
       }
     }
   },
   mounted() {
+    this.tabs = Array.from(this.$refs.tabs.children).filter(li =>
+      li.className.match(/\btab\b/)
+    );
+
     this.adjust();
 
     window.addEventListener('resize', this.adjust);

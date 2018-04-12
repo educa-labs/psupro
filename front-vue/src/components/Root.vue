@@ -11,7 +11,7 @@
 
       <div class="content">
         <transition :name="transition">
-          <router-view class="child-view"></router-view>
+          <keep-alive><router-view class="child-view"></router-view></keep-alive>
         </transition>
       </div>
     </main>
@@ -31,16 +31,16 @@ export default {
     };
   },
   beforeRouteUpdate(to, from, next) {
-    if (to.name === 'university' && from.name === 'home') {
-      this.transition = 'appear-top';
-    } else if (to.name === 'university' && from.name === 'career') {
+    if (to.name === 'home' && ['university', 'careers'].includes(from.name))
       this.transition = 'slide-right';
-    } else {
-      const toDepth = to.path.split('/').length;
-      const fromDepth = from.path.split('/').length;
-
-      this.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left';
-    }
+    else if (to.name === 'university' && from.name === 'home')
+      this.transition = 'appear-top';
+    else if (to.name === 'university' && from.name === 'career')
+      this.transition = 'slide-right';
+    else if (to.name === 'careers' && from.name === 'career')
+      this.transition = 'slide-right';
+    else if (to.name === 'career' && from.name === 'careers')
+      this.transition = 'slide-left';
 
     next();
   },

@@ -18,7 +18,7 @@ export default {
     'app-career-card': CareerCard,
   },
   props: {
-    id: { type: Number, required: true },
+    id: { type: Number },
   },
   data() {
     return {

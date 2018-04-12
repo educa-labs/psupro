@@ -50,7 +50,7 @@ export default {
     'app-expandible': Expandible,
   },
   props: {
-    id: { type: Number, default: 1 },
+    id: { type: Number },
   },
   data() {
     return {
