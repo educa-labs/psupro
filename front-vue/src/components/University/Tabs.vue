@@ -90,6 +90,14 @@ export default {
       }, 0);
     },
   },
+  created() {
+    for (let [index, route] of this.routes.entries()) {
+      if (route.name === this.$route.name) {
+        this.active = index;
+        break;
+      }
+    }
+  },
   mounted() {
     this.adjust();
 
