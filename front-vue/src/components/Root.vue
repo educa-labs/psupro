@@ -32,7 +32,7 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     if (to.name === 'university' && from.name === 'home') {
-      this.transition = 'scale-in';
+      this.transition = 'appear-top';
     } else if (to.name === 'university' && from.name === 'career') {
       this.transition = 'slide-right';
     } else {
@@ -73,7 +73,7 @@ export default {
 #root > main > .content
   position: relative
 
-#root .child-view
+#root > main > .content > .child-view
   transition: all .4s cubic-bezier(.55, 0, .1, 1)
 
   @include p-absolute(null, null, 0, null, 0)
@@ -88,11 +88,11 @@ export default {
 
     opacity: 0
   
-  &.scale-in-enter
+  &.appear-top-enter
     transform: translateY(150px)
 
     opacity: 0
 
-  &.scale-in-leave-active
+  &.appear-top-leave-active
     opacity: 0
 </style>
