@@ -1,7 +1,7 @@
 <template>
   <div class="card career-card z-depth-1">
     <div class="card-content">
-      <div class="image" :style="{ backgroundImage: `url(${career.image})` }"></div>
+      <div class="image" :style="{ backgroundImage: `url(${university.profile})` }"></div>
 
       <div class="information">
         {{ career.title }}
@@ -18,37 +18,35 @@
 export default {
   props: {
     career: { type: Object, required: true },
+    university: { type: Object, required: true },
   },
 };
 </script>
 
 <style lang="sass" scoped>
+@import './../assets/stylesheets/main'
+
 .career-card
-  margin-bottom: 1rem
+  margin: 0 auto 1rem
 
-  .card-content
-    display: flex
-    align-items: center
-
-    .information
-      color: #000000
-
-      .university-campus
-        margin-top: .25rem
-
-        color: #7A7A7A
+.career-card > .card-content
+  @include d-flex(center)
 
   .image
-    $gap: 1rem
-    $size: 50px
-
     flex-shrink: 0
 
-    width: $size
-    height: $size
+    @include background-image
+    @include icon(48px, 1rem)
 
-    margin-right: $gap
+  .information
+    text-transform: uppercase
 
-    background-position: center
-    background-size: cover
+    color: $c-black
+
+  .information > .university-campus
+    margin-top: .25rem
+
+    color: c-gray(600)
+
+    font-size: $f-small
 </style>

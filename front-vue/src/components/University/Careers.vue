@@ -3,7 +3,7 @@
     <router-link v-for="career in careers" :key="`career-${career.id}`"
       :to="{ name: 'career', params: { id: career.id } }"
     >
-      <app-career-card :career="career"></app-career-card>
+      <app-career-card :university="university" :career="career"></app-career-card>
     </router-link>
   </div>
 
@@ -30,13 +30,21 @@ export default {
   methods: {
     fetch() {
       return new Promise(resolve => {
-        this.$API.universities.careers(this.id).then(response => {
-          this.careers = response;
+        let params = { image: true };
 
-          this.fetched = true;
+        this.$API.universities
+          .universities(this.id, { params })
+          .then(university => {
+            this.university = university;
 
-          resolve();
-        });
+            this.$API.universities.careers(this.id).then(careers => {
+              this.careers = careers;
+
+              this.fetched = true;
+
+              resolve();
+            });
+          });
       });
     },
   },
@@ -47,6 +55,17 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@import './../../assets/stylesheets/main'
+
 .careers
-  padding: 1rem
+  padding: 2rem
+
+.careers > a > .career-card
+  transition: background-color 100ms
+
+  &:focus, &:hover
+    background-color: c-gray(100)
+
+.careers > a:last-child > .career-card
+  margin-bottom: 0
 </style>
