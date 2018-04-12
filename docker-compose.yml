@@ -8,12 +8,17 @@ services:
       - POSTGRES_PASSWORD=tuniversidad
   
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.3
     container_name: elasticsearch
     environment:
       - cluster.name=psupro-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - xpack.monitoring.enabled=false
+      - xpack.ml.enabled=false
+      - xpack.graph.enabled=false
+      - xpack.watcher.enabled=false
     ulimits:
       memlock:
         soft: -1
@@ -25,6 +30,8 @@ services:
 
   api:
     build: ./api/tuniversidad
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
     command: bin/rails server --port 3000 --binding 0.0.0.0
 
     volumes:

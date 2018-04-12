@@ -1,20 +1,47 @@
 class Api::V1::SearchController < ApplicationController
-  #before_action :authenticate_with_token!, only: [:create]
+  # before_action :authenticate_with_token!, only: [:create]
   respond_to :json
   
+  # /search?text=string&minimize=boolean&pictures=boolean&degree_type=integer
   def index
-    if params[:text]
+    if params[:text] # If we received a correct query.
       result = {}
-      university_result = University.search(params[:text])
-      minimize = ActiveModel::Type::Boolean.new.cast(params[:minimize])
-      result[:universities] = minimize ? university_result.map { |x| {id: x[:_source][:id], title: x[:_source][:title]} } : university_result.map { |x| x[:_source] }
+      where_university = {} # Filters for universities.
+      where_carreer = {} # Filters for carreers.
+      degree_type = [1,2].include?(params[:degree_type].to_i) ? params[:degree_type].to_i : nil # Input sanitize.
+      if degree_type # If degree type was given correctly
+        where_carreer[:degree_type] = degree_type  # We search on carreers with given degree type.
+        where_university[:level] = [0,degree_type] # We search on universities that have both types or just the asked type.
+      end
+
+      # University search
+      university_result = University.search(
+        params[:text],
+        fields: [:title, :description, :initials],
+        where: where_university
+        )
+      
+      minimize = ActiveModel::Type::Boolean.new.cast(params[:minimize]) # Casting param to boolean and result minimization if necessary.
+      result[:universities] = minimize ? university_result.map { |x| {id: x.id, title: x.title} } : university_result
+      
+      # Carreer search
+      carreer_result = Carreer.search(
+        params[:text],
+        fields: [:title,:description],
+        where: where_carreer,
+        includes: [:university] # To prevent n+1 query.
+        )
+      # Result minimization if necessary.
+      result[:carreers] = minimize ? carreer_result.map { |x| {id: x.id, title: x.title, university_title: x.university.title} } : carreer_result
+
+      # We add pictures if requested.
       if ActiveModel::Type::Boolean.new.cast(params[:pictures])
         result[:pictures] = University.profile_array(result[:universities].map { |x| x[:id]})
       end
-      carreer_result = Carreer.search(params[:text])
-      result[:carreers] = minimize ? carreer_result.map { |x| {id: x[:_source][:id], title: x[:_source][:title], university_title: x[:_source][:university][:title]} } : carreer_result.map { |x| x[:_source] }
+
       render json: result , status:200
     else
+
       render json:{errors:"no search params"}, status:422
     end
   end
