@@ -56,7 +56,7 @@ export default {
 
       filters: {
         city: 0,
-        degreeType: 0,
+        'degree_type': 0,
         region: 0,
       },
 

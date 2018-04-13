@@ -77,7 +77,7 @@ const API = {
     },
   },
   search(query, filters = null, minimize = false, pictures = false) {
-    let params = { text: query, minimize, pictures };
+    let params = { text: query, ...filters, minimize, pictures };
 
     return new Promise((resolve, reject) => {
       Vue.http
