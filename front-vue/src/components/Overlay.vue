@@ -25,8 +25,7 @@ export default {
 @import './../assets/stylesheets/main'
 
 .overlay
-  opacity: .66
-  background-color: $c-black
+  background-color: rgba(0, 0, 0, .66)
 
   @include p-fixed(null, 0, 0, 0, 0)
 </style>

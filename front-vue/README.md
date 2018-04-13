@@ -21,5 +21,3 @@ For detailed explanation on how things work, consult the [docs for vue-loader](h
 
 - Corregir tamaño de componentes entre transiciones.
 - Terminar de mover estilos a SASS.
-
-- Utilizar filtros (necesito que hielo termine lo suyo)
