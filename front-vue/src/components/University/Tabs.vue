@@ -119,7 +119,7 @@ $height: 48px
 .tabs
   height: $height
 
-  background-color: $c-main
+  background-color: lighten($c-main, 2%)
 
   @include p-relative(1)
   @include d-flex

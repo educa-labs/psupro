@@ -21,6 +21,9 @@ Vue.prototype.$l = store.state.locale; // Abbreviation
 
 import App from './App.vue';
 
+import BackButton from './components/BackButton.vue';
+Vue.component('app-back-button', BackButton);
+
 import Hero from './components/Hero.vue';
 Vue.component('app-hero', Hero);
 
