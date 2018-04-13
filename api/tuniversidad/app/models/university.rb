@@ -3,7 +3,20 @@ class University < ApplicationRecord
   validates_presence_of :website
   has_many :campus
   belongs_to :university_type
+  
   searchkick language: "spanish"
+
+  def search_data
+    {
+      title: title,
+      description: description,
+      initials: initials,
+      level: level,
+      cities: cities,
+      regions: regions
+    }
+  end
+
 
   # Returns array of self's city ids.
   def cities
