@@ -12,12 +12,12 @@ class Api::V1::MainController < ApplicationController
 
   # Gets 20 most popular universities
   def popular_universities
-    render json:University.order('visits DESC').includes(:university_type).limit(20)
+    render json:University.order('visits DESC').includes(:university_type).limit(params[:limit].to_i)
   end
 
   # Gets 20 most popular universities
   def popular_carreers
-    render json:Carreer.order('visits DESC').includes(:weighing,:area).limit(20)
+    render json:Carreer.order('visits DESC').includes(:weighing,:area).limit(params[:limit].to_i)
   end
 
   def validate_rut
