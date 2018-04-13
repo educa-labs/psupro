@@ -5,13 +5,14 @@
   >
     <slot></slot>
 
-    <app-icon>chevron_right</app-icon>
+    <app-icon v-if="expandible">chevron_right</app-icon>
   </div>
 </template>
 
 <script>
 export default {
   props: {
+    expandible: { type: Boolean, default: true },
     maxHeight: { type: Number, default: 100 },
   },
   data() {
@@ -22,6 +23,11 @@ export default {
   computed: {
     _maxHeight() {
       return this.open ? 'unset' : `${this.maxHeight}px`;
+    },
+  },
+  methods: {
+    toggleOpen() {
+      if (this.expandible) this.open = !this.open;
     },
   },
 };
@@ -35,8 +41,8 @@ export default {
 
   cursor: pointer
 
-  @include p-relative
   @include d-flex
+  @include p-relative
 
   .icon
     margin-top: auto

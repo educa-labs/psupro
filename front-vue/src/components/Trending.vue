@@ -1,5 +1,5 @@
 <template>
-  <section class="trending" v-if="popular.universities">
+  <section class="trending" v-if="fetched">
     <template v-for="{ university, lines, delay } in universityCards">
       <transition name="fade-in" appear :key="`university-${university.id}`">
         <router-link 
@@ -30,6 +30,8 @@ export default {
         careers: null,
         universities: null,
       },
+
+      fetched: false,
     };
   },
   computed: {
@@ -50,8 +52,28 @@ export default {
   },
   methods: {
     fetch() {
+      this.fetched = false;
+
       this.$API.popular.universities().then(response => {
-        this.popular.universities = response;
+        let params = { image: true };
+
+        Promise.all(
+          response.map(university => {
+            return new Promise(resolve => {
+              this.$API.universities
+                .universities(university.id, { params })
+                .then(_university => {
+                  university.image = _university.cover;
+
+                  resolve();
+                });
+            });
+          })
+        ).then(() => {
+          this.popular.universities = response;
+
+          this.fetched = true;
+        });
       });
     },
   },

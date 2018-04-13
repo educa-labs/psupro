@@ -114,7 +114,6 @@ export default {
       let height = el.offsetHeight;
 
       el.style.height = 0;
-      el.style.overflowY = 'hidden';
 
       this.$a({
         targets: el,
@@ -123,15 +122,12 @@ export default {
         easing: 'easeInOutQuad',
         complete: () => {
           el.style.height = 'auto';
-          el.style.overflowY = 'scroll';
 
           done();
         },
       });
     },
     leave(el, done) {
-      el.style.overflowY = 'hidden';
-
       this.$a({
         targets: el,
         height: 0,
