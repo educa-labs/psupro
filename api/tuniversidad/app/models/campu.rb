@@ -3,4 +3,5 @@ class Campu < ApplicationRecord
   belongs_to :city
   belongs_to :university
   has_many :carreers
+
 end
