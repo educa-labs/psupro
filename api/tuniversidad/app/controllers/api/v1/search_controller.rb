@@ -8,10 +8,24 @@ class Api::V1::SearchController < ApplicationController
       result = {}
       where_university = {} # Filters for universities.
       where_carreer = {} # Filters for carreers.
-      degree_type = [1,2].include?(params[:degree_type].to_i) ? params[:degree_type].to_i : nil # Input sanitize.
+      # Input sanitize.
+      degree_type = [1,2].include?(params[:degree_type].to_i) ? params[:degree_type].to_i : nil 
+      city_id = params[:city].to_i
+      region_id = params[:region].to_i
+
       if degree_type # If degree type was given correctly
         where_carreer[:degree_type] = degree_type  # We search on carreers with given degree type.
         where_university[:level] = [0,degree_type] # We search on universities that have both types or just the asked type.
+      end
+      
+      if city_id != 0 # If valid city_id
+        where_university[:cities] = city_id
+        where_carreer[:city_id] = city_id
+      end
+
+      if region_id != 0 # If valid region_id
+        where_university[:regions] = region_id
+        where_carreer[:region_id] = region_id
       end
 
       # University search

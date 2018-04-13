@@ -2,7 +2,17 @@ class Carreer < ApplicationRecord
 
 
   searchkick language: "spanish"
-  scope :search_import, -> { includes(:university) }
+  scope :search_import, -> { includes(:university,:campu) }
+
+  def search_data
+    {
+      title: title,
+      desciption: description,
+      degree_type: degree_type,
+      city_id: city_id,
+      region_id: region_id
+    }
+  end
 
   validates_presence_of :university_id, :campu_id, :title
   belongs_to :university
