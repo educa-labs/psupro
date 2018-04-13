@@ -1,5 +1,5 @@
 <template>
-  <button type="button" @click="back">
+  <button type="button" class="back-button" @click="back">
     <slot></slot>
   </button>
 </template>

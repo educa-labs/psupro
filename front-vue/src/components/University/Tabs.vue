@@ -51,7 +51,8 @@ export default {
     get(property) {
       let tabs = null;
 
-      if (property === 'right') tabs = this.tabs.slice(this.active + 1, this.tabs.length);
+      if (property === 'right')
+        tabs = this.tabs.slice(this.active + 1, this.tabs.length);
       else if (property === 'left') tabs = this.tabs.slice(0, this.active);
 
       return (
@@ -121,8 +122,8 @@ $height: 48px
 
   background-color: lighten($c-main, 2%)
 
-  @include p-relative(1)
   @include d-flex
+  @include p-relative(1)
   
 .tab
   flex: 1
@@ -149,15 +150,15 @@ $height: 48px
 
   background-color: $c-white
 
-  @include p-absolute(null, null, null, 0)
-
   will-change: left, right
+
+  @include p-absolute(null, null, null, 0)
 
 .tabs-content
   position: relative
 
 .tabs-content > .child-view
-  transition: all .5s cubic-bezier(.55, 0, .1, 1)
+  transition: all .4s cubic-bezier(.55, 0, .1, 1)
 
   @include p-absolute(null, null, 0)
 

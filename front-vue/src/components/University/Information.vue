@@ -98,15 +98,15 @@ export default {
       padding-top: .25rem
       padding-bottom: .25rem
 
-  section.campus .content > div
+  section.campus > .content > div
     $padding: 1.25rem
 
     padding: $padding
 
     color: $c-black
 
-    @include d-flex(center)
     @include border-bottom(c-gray(200))
+    @include d-flex(center)
 
     .icon
       color: $c-main

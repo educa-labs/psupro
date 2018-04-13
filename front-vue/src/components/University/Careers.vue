@@ -61,7 +61,7 @@ export default {
   padding: 2rem
 
 .careers > a > .career-card
-  transition: background-color 100ms
+  transition: background-color .1s
 
   &:focus, &:hover
     background-color: c-gray(100)
