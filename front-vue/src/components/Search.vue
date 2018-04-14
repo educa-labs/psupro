@@ -72,13 +72,18 @@ export default {
 <style lang="sass" scoped>
 @import './../assets/stylesheets/main'
 
-.search
-  .navigator
-    position: relative
+.search > .navigator
+  @include media-down(sm)
+    padding-bottom: 0
 
-    @include media-down(sm)
-      padding-bottom: 0
-  
+  @include p-relative
+    
+.search
   .career-card, .university-card
     margin: 1rem
+
+.search > .results > .empty
+  transform: translate(-50%, -50%)
+
+  @include p-absolute(null, 50%, unset, unset, 50%)
 </style>

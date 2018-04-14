@@ -74,6 +74,8 @@ export default {
   position: relative
 
 #root > main > .content > .child-view
+  min-height: 100%
+
   transition: all .4s cubic-bezier(.55, 0, .1, 1)
 
   @include p-absolute(null, null, 0, null, 0)
@@ -95,4 +97,13 @@ export default {
 
   &.appear-top-leave-active
     opacity: 0
+</style>
+
+<style lang="sass">
+@import './../assets/stylesheets/main'
+
+#root > main > .content > .child-view > .spinner
+  transform: translate(-50%, -50%)
+
+  @include p-absolute(null, 50%, unset, unset, 50%)
 </style>
