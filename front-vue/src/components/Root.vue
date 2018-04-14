@@ -105,5 +105,5 @@ export default {
 #root > main > .content > .child-view > .spinner
   transform: translate(-50%, -50%)
 
-  @include p-absolute(null, 50%, unset, unset, 50%)
+  @include p-absolute(unset, 50%, unset, unset, 50%)
 </style>

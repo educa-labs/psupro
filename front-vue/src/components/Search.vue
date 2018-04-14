@@ -82,8 +82,21 @@ export default {
   .career-card, .university-card
     margin: 1rem
 
+.search > .results
+  $padding: 1rem
+
+  @include canvas
+
+  @include media-up(md)
+    width: calc(#{$breakpoint-md} - 2 * #{$padding})
+    margin: $padding auto
+
+.search > .results > .title
+  @include media-up(md)
+    border-radius: 3px
+
 .search > .results > .empty
   transform: translate(-50%, -50%)
 
-  @include p-absolute(null, 50%, unset, unset, 50%)
+  @include p-absolute(unset, 50%, unset, unset, 50%)
 </style>
