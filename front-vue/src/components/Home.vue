@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <app-hero :class="{ closed, sticky }"></app-hero>
+    <app-hero :class="{ closed, sticky }" v-if="['xs', 'sm'].includes($mq)"></app-hero>
 
     <app-trending></app-trending>
 
@@ -24,15 +24,18 @@ export default {
     };
   },
   mounted() {
+    let breakpoints = ['xs', 'sm'];
     let threshold = 66; // height: 50px, margin-bottom: 1rem (16px)
 
     window.onscroll = () => {
-      if (window.pageYOffset > threshold && !this.closed) {
-        this.closed = true;
-        this.sticky = true;
-      } else if (window.pageYOffset <= threshold && this.closed) {
-        this.closed = false;
-        this.sticky = false;
+      if (breakpoints.includes(this.$mq)) {
+        if (window.pageYOffset > threshold && !this.closed) {
+          this.closed = true;
+          this.sticky = true;
+        } else if (window.pageYOffset <= threshold && this.closed) {
+          this.closed = false;
+          this.sticky = false;
+        }
       }
     };
   },
@@ -40,4 +43,8 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+#home
+  display: grid
+
+  grid-template-rows: auto 1fr
 </style>

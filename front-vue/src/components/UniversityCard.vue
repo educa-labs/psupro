@@ -1,6 +1,6 @@
 <template>
   <div class="card university-card z-depth-1">
-    <div class="image" :style="{ backgroundImage: `url(${university.image})` }">
+    <div class="background-image" :style="{ backgroundImage: `url(${university.image})` }">
       <div class="overlay"></div>
 
       <div class="title">{{ university.title }}</div>
@@ -28,44 +28,35 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@import './../assets/stylesheets/main'
+
 .university-card
   margin-bottom: 1rem
 
-  .image
-    $height: 100px
-
+  .background-image
     position: relative
 
-    display: flex
-    align-items: flex-end
+    height: 100px
 
-    height: $height
-
-    background-position: center
-    background-size: cover
+    @include d-flex(flex-end)
 
     .overlay
-      position: absolute
-
-      z-index: 0
-      top: 0
-      right: 0
-      bottom: 0
-      left: 0
-
       opacity: .5
-      background-color: #212121
+      background-color: c-gray(900)
+
+      @include p-absolute(0, 0, 0, 0, 0)
 
     .title
+      $margin: 1rem
+
       z-index: 1
 
       width: 66%
-
-      margin-bottom: 1rem
-      margin-left: 1rem
+      margin-bottom: $margin
+      margin-left: $margin
 
       font-size: 1.25em
 
   .description
-    color: #7A7A7A
+    color: c-gray(600)
 </style>

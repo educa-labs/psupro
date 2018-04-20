@@ -3,14 +3,19 @@
 </template>
 
 <style lang="sass" scoped>
+@import './../assets/stylesheets/main'
+
 .spinner
-  margin: 1rem 0
+  box-sizing: border-box
+  height: 100%
+  padding-top: 1rem
+  padding-bottom: 1rem
 
   animation: spinner 3s infinite
 
-  text-align: center
+  color: c-gray(600)
 
-  color: #7A7A7A
+  @include d-flex(center, center)
 
 @keyframes spinner
   0%

@@ -12,7 +12,7 @@ export default {
     return new Promise(resolve => {
       context.commit('updateSearch', { fetching: true });
 
-      Vue.prototype.$API.search.search(query, filters, true).then(response => {
+      Vue.prototype.$API.search(query, filters, false, true).then(response => {
         context.commit('updateSearch', { query, response, fetching: false });
 
         resolve();
@@ -35,7 +35,30 @@ export default {
   },
   hideOverlay(context) {
     return new Promise(resolve => {
+      context.commit('executeOverlayMethods');
       context.commit('updateOverlay', { show: false });
+
+      resolve();
+    });
+  },
+  mountOverlayComponent(context, payload) {
+    return new Promise(resolve => {
+      context.dispatch('unmountOverlayComponent').then(() => {
+        context.commit('updateOverlayComponent', payload);
+
+        context
+          .dispatch('showOverlay', {
+            method: () => {
+              context.dispatch('unmountOverlayComponent');
+            },
+          })
+          .then(resolve);
+      });
+    });
+  },
+  unmountOverlayComponent(context) {
+    return new Promise(resolve => {
+      context.commit('updateOverlayComponent', { is: '', payload: null });
 
       resolve();
     });

@@ -2,7 +2,7 @@
   <div class="search">
     <app-navigator></app-navigator>
 
-    <app-hero class="closed"></app-hero>
+    <app-hero class="closed" v-if="['xs', 'sm'].includes($mq)"></app-hero>
 
     <section class="results" :style="{ 'padding-bottom': `${filterHeight}px` }" v-if="!$store.state.search.fetching">
       <template v-if="!emptySearchResponse">
@@ -64,17 +64,20 @@ export default {
       !this.$store.state.search.response &&
       !this.$store.state.search.fetching
     )
-      this.$store.dispatch('fetchSearchResponse', { query: '', image: true });
+      this.$store.dispatch('fetchSearchResponse', { query: '' });
   },
 };
 </script>
 
 <style lang="sass" scoped>
+@import './../assets/stylesheets/main'
+
 .search
   .navigator
     position: relative
 
-    padding-bottom: 0
+    @include media-down(sm)
+      padding-bottom: 0
   
   .career-card, .university-card
     margin: 1rem

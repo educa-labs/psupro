@@ -1,11 +1,9 @@
 <template>
   <div class="information" v-if="fetched">
     <section class="university"><div class="content">
-      <div class="description">
-        <p ref="description">{{ university.description }}</p>
-
-        <app-icon>chevron_right</app-icon>
-      </div>
+      <app-expandible class="description">
+        <p>{{ university.description }}</p>
+      </app-expandible>
     </div></section>
 
     <section class="row">
@@ -45,13 +43,14 @@
 </template>
 
 <script>
-import Ellipsis from 'ellipsis.js';
-
-let ellipsis = Ellipsis({ lines: 3 });
+import Expandible from './../Expandible.vue';
 
 export default {
+  components: {
+    'app-expandible': Expandible,
+  },
   props: {
-    id: { type: Number, required: true },
+    id: { type: Number },
   },
   data() {
     return {
@@ -64,10 +63,10 @@ export default {
   methods: {
     fetch() {
       return new Promise(resolve => {
-        this.$API.universities(this.id).then(response => {
+        this.$API.universities.universities(this.id).then(response => {
           this.university = this.$f.formatUniversity(response);
 
-          this.$API.campus.byUniversity(this.university.id).then(response => {
+          this.$API.universities.campus(this.university.id).then(response => {
             this.campus = response;
 
             this.fetched = true;
@@ -78,49 +77,44 @@ export default {
       });
     },
   },
-  updated() {
-    if (this.fetched) ellipsis.add(this.$refs.description);
+  created() {
+    this.fetch();
   },
 };
 </script>
 
 <style lang="sass" scoped>
-.information
-  margin: -1rem
+@import './../../assets/stylesheets/main'
 
+.information
   section
-    color: #7A7A7A
+    color: c-gray(600)
 
   section.university
     .description
-      display: flex
-      align-items: center
-
-      padding: 1rem
-
-      border-bottom: 1px solid #F5F5F5
+      margin: 1rem
     
     .row
       padding-top: .25rem
       padding-bottom: .25rem
 
-  section.campus .content > div
-    display: flex
-    align-items: center
+  section.campus > .content > div
+    $padding: 1.25rem
 
-    padding: 1.25rem
+    padding: $padding
 
-    color: #000000
+    color: $c-black
 
-    border-bottom: 1px solid #F5F5F5
+    @include border-bottom(c-gray(200))
+    @include d-flex(center)
 
     .icon
-      margin-right: 1.25rem
+      color: $c-main
 
-      color: #00A2EC
+      @include icon(24px, $padding)
     
     .address
-      color: #7A7A7A
+      color: c-gray(600)
 
-      font-size: .8em
+      font-size: $f-small
 </style>

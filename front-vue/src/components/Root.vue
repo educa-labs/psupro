@@ -1,33 +1,46 @@
 <template>
   <div id="root">
     <transition name="fade">
-      <div class="overlay" :style="{ 'z-index': $store.state.overlay.zIndex }"
-        @click="$store.state.overlay.handleClick"
-        v-if="$store.state.overlay.show"
-      ></div>
+      <app-overlay></app-overlay>
     </transition>
 
     <main ref="main">
-      <transition :name="transition">
-        <keep-alive><router-view class="child-view"></router-view></keep-alive>
-      </transition>
+      <mq-layout mq="md+">
+        <app-hero :class="{ closed: $route.name !== 'home' }"></app-hero>
+      </mq-layout>
+
+      <div class="content">
+        <transition :name="transition">
+          <keep-alive><router-view class="child-view"></router-view></keep-alive>
+        </transition>
+      </div>
     </main>
   </div>
 </template>
 
 <script>
+import Overlay from './Overlay.vue';
 
 export default {
+  components: {
+    'app-overlay': Overlay,
+  },
   data() {
     return {
       transition: 'slide-right',
     };
   },
   beforeRouteUpdate(to, from, next) {
-    const toDepth = to.path.split('/').length;
-    const fromDepth = from.path.split('/').length;
-
-    this.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+    if (to.name === 'home' && ['university', 'careers'].includes(from.name))
+      this.transition = 'slide-right';
+    else if (to.name === 'university' && from.name === 'home')
+      this.transition = 'appear-top';
+    else if (to.name === 'university' && from.name === 'career')
+      this.transition = 'slide-right';
+    else if (to.name === 'careers' && from.name === 'career')
+      this.transition = 'slide-right';
+    else if (to.name === 'career' && from.name === 'careers')
+      this.transition = 'slide-left';
 
     next();
   },
@@ -35,44 +48,35 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@import './../assets/stylesheets/main'
+
 #root
   position: relative
 
-  min-height: 100vh
-
-#root .overlay
-  $duration: .25s
-  $opacity: .66
-
-  position: absolute
-  top: 0
-  right: 0
-  bottom: 0
-  left: 0
-
-  opacity: $opacity
-
-  background-color: #000000
-
+#root > .overlay
   &.fade-enter, &.fade-leave-to
     opacity: 0
 
   &.fade-enter-active, &.fade-leave-active
-    transition: opacity $duration
+    transition: opacity 1s
 
-#root main
+#root > main
+  display: grid
+
+  min-height: 100vh
+
+  grid-template-rows: 1fr
+
+  @include media-up(md)
+    grid-template-rows: auto 1fr
+
+#root > main > .content
   position: relative
 
-  height: 100%
+#root > main > .content > .child-view
+  transition: all .4s cubic-bezier(.55, 0, .1, 1)
 
-#root .child-view
-  position: absolute
-  top: 0
-  right: 0
-  bottom: 0
-  left: 0
-
-  transition: all .5s cubic-bezier(.55, 0, .1, 1)
+  @include p-absolute(null, null, 0, null, 0)
 
   &.slide-left-enter, &.slide-right-leave-active 
     transform: translate(100%, 0)
@@ -82,5 +86,13 @@ export default {
   &.slide-left-leave-active, &.slide-right-enter 
     transform: translate(-100%, 0)
 
+    opacity: 0
+  
+  &.appear-top-enter
+    transform: translateY(150px)
+
+    opacity: 0
+
+  &.appear-top-leave-active
     opacity: 0
 </style>

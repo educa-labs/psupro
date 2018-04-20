@@ -7,4 +7,11 @@ export default {};
 </script>
 
 <style lang="sass" scoped>
+@import './../assets/stylesheets/main'
+
+.icon
+  cursor: default
+
+  &.button
+    cursor: pointer
 </style>

@@ -16,6 +16,7 @@ export default {
     city: 'Ciudad',
     clear: 'Limpiar',
     default: 'Todas',
+    degreeType: 'Estudio',
     name: 'Filtro',
     region: 'Región',
   },

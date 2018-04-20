@@ -1,40 +1,38 @@
 <template>
-  <div>
+  <div class="tabs-container">
     <ul class="tabs z-depth-1" ref="tabs">
-      <li class="tab" :class="{ active: active === 0 }" @click="active = 0">
-        <span>{{ $l.cUniversity.information }}</span>
-      </li>
-      <li class="tab" :class="{ active: active === 1 }" @click="active = 1">
-        <span>{{ $l.cUniversity.careers }}</span>
+      <li v-for="(route, index) in routes" :key="`tab-${index}`"
+        class="tab" :class="{ active: active === index }"
+        @click="active = index"
+      >
+        <span>{{ route.tab }}</span>
       </li>
 
       <li class="indicator" ref="indicator"></li>
     </ul>
 
-    <div class="tabs-content" :class="{ animated: active !== previous }" ref="content">
-      <app-information :id="id" v-show="active === 0 || previous === 0"></app-information>
-      <app-careers     :id="id" v-show="active === 1 || previous === 1"></app-careers>
+    <div class="tabs-content" ref="content">
+      <transition :name="transition" @beforeEnter="setContentHeight">
+        <keep-alive><router-view class="child-view"></router-view></keep-alive>
+      </transition>
     </div>
   </div>
 </template>
 
 <script>
-import Careers from './Careers.vue';
-import Information from './Information.vue';
-
 export default {
-  components: {
-    'app-careers': Careers,
-    'app-information': Information,
-  },
   props: {
-    id: { type: Number, required: true },
+    transition: { type: String, required: true },
   },
   data() {
     return {
       active: 0,
+      routes: [
+        { tab: this.$l.cUniversity.information, name: 'university' },
+        { tab: this.$l.cUniversity.careers, name: 'careers' },
+      ],
+
       tabs: null,
-      previous: 0,
 
       delay: 150,
       duration: 350,
@@ -43,21 +41,10 @@ export default {
   },
   watch: {
     active(current, previous) {
-      let animation = null;
-      let enteringComponent = this.$children[current];
+      this.$router.replace({ name: this.routes[current].name });
 
-      if (current - previous > 0) animation = this.animateLeftToRight;
-      else if (current - previous < 0) animation = this.animateRightToLeft;
-
-      this.previous = previous;
-
-      if (!enteringComponent.fetched)
-        enteringComponent.fetch().then(() =>
-          animation(() => {
-            this.previous = current;
-          })
-        );
-      else animation(() => (this.previous = current));
+      if (current - previous > 0) this.animateIndicatorToRight();
+      else if (current - previous < 0) this.animateIndicatorToLeft();
     },
   },
   methods: {
@@ -74,6 +61,10 @@ export default {
         }, 0) + this.gap
       );
     },
+    adjust() {
+      this.$refs.indicator.style.right = `${this.get('right')}px`;
+      this.$refs.indicator.style.left = `${this.get('left')}px`;
+    },
     animateIndicator(property) {
       this.$a({
         targets: this.$refs.indicator,
@@ -84,82 +75,67 @@ export default {
           : { left: this.get('left') }),
       });
     },
-    animateLeftToRight(callback = () => {}) {
+    animateIndicatorToRight() {
       this.animateIndicator('right');
-
-      this.$a({
-        targets: this.$refs.content,
-        duration: this.duration,
-        easing: 'easeInOutQuad',
-        translateX: '-100%',
-        complete: () => {
-          this.$refs.content.style.transform = null;
-
-          callback();
-        },
-      });
 
       setTimeout(() => this.animateIndicator('left'), this.delay);
     },
-    animateRightToLeft(callback = () => {}) {
-      this.$refs.content.style.transform = 'translateX(-100%)';
-
+    animateIndicatorToLeft() {
       this.animateIndicator('left');
-
-      this.$a({
-        targets: this.$refs.content,
-        duration: this.duration,
-        easing: 'easeInOutQuad',
-        translateX: '0',
-        complete: () => {
-          this.$refs.content.style.transform = null;
-
-          callback();
-        },
-      });
 
       setTimeout(() => this.animateIndicator('right'), this.delay);
     },
-    adjust() {
-      this.$refs.indicator.style.right = `${this.get('right')}px`;
-      this.$refs.indicator.style.left = `${this.get('left')}px`;
+    setContentHeight(el) {
+      setTimeout(() => {
+        this.$refs.content.style.height = `${el.offsetHeight}px`;
+      }, 0);
     },
+  },
+  created() {
+    for (let [index, route] of this.routes.entries()) {
+      if (route.name === this.$route.name) {
+        this.active = index;
+
+        break;
+      }
+    }
   },
   mounted() {
     this.tabs = Array.from(this.$refs.tabs.children).filter(li =>
       li.className.match(/\btab\b/)
     );
 
-    window.addEventListener('resize', this.adjust);
-
     this.adjust();
 
-    this.$children[this.active].fetch();
+    window.addEventListener('resize', this.adjust);
   },
 };
 </script>
 
 <style lang="sass" scoped>
+@import './../../assets/stylesheets/main'
+
+$height: 48px
+
 .tabs
-  position: relative
-  z-index: 1
+  height: $height
 
-  display: flex
+  background-color: lighten($c-main, 2%)
 
-  height: 48px
-
-  background-color: #00ABF1
+  @include d-flex
+  @include p-relative(1)
   
 .tab
   flex: 1
 
-  height: 48px
-
+  cursor: pointer
   text-align: center
-
   text-transform: uppercase
 
-  line-height: 48px
+  font-weight: 500
+
+  @include text-height($height)
+  @include user-select(none)
 
   & > span
     transition: opacity .35s
@@ -169,22 +145,30 @@ export default {
   &.active > span
     opacity: 1
 
-.indicator 
-  position: absolute
-  bottom: 0
-
+.indicator
   height: 2px
 
-  background-color: #FFFFFF
+  background-color: $c-white
 
   will-change: left, right
 
+  @include p-absolute(null, null, null, 0)
+
 .tabs-content
-  & > *
-    padding: 1rem
+  position: relative
 
-.tabs-content.animated
-  display: grid
+.tabs-content > .child-view
+  transition: all .4s cubic-bezier(.55, 0, .1, 1)
 
-  grid-template-columns: 100% 100%
+  @include p-absolute(null, null, 0)
+
+  &.slide-left-enter, &.slide-right-leave-active 
+    transform: translate(100%, 0)
+
+    opacity: 0
+
+  &.slide-left-leave-active, &.slide-right-enter 
+    transform: translate(-100%, 0)
+
+    opacity: 0
 </style>

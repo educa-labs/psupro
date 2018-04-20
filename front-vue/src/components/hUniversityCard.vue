@@ -4,31 +4,31 @@
         <div class="overlay"></div>
 
         <div class="title">{{ university.title }}</div>
-        <div class="description" ref="description" v-if="lines > 0">{{ university.description }}</div>
+
+        <app-expandible class="description" :expandible="false" :maxHeight="75" v-if="lines > 0">
+          <p>{{ university.description }}</p>
+        </app-expandible>
       </div>
     </div>
 </template>
 
 <script>
-import Ellipsis from 'ellipsis.js';
+import Expandible from './Expandible.vue';
 
 export default {
+  components: {
+    'app-expandible': Expandible,
+  },
   props: {
     university: { type: Object, required: true },
     lines: { type: Number, default: 3 },
-  },
-  data() {
-    return {
-      ellipsis: Ellipsis({ lines: this.lines + 1 }),
-    };
-  },
-  mounted() {
-    this.ellipsis.add(this.$refs.description);
   },
 };
 </script>
 
 <style lang="sass" scoped>
+@import './../assets/stylesheets/main'
+
 .university-card
   .cover
     position: relative
@@ -69,4 +69,7 @@ export default {
       margin-top: 1rem
 
       font-weight: 300
+
+    .description::after
+      background: none
 </style>

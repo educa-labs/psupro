@@ -2,32 +2,34 @@
   <div class="filter z-depth-2" v-if="fetched">
     <transition mode="out-in" @enter="enter" @leave="leave">
       <div class="filter-closed" @click="open" v-if="closed" key="filter-closed">
-        <i class="material-icons">tune</i> {{ $l.cFilter.name }} <span class="counter z-depth-1" v-if="count > 0">{{ count }}</span>
+        <app-icon>tune</app-icon> {{ $l.cFilter.name }} <span class="counter z-depth-1" v-if="count > 0">{{ count }}</span>
       </div>
 
       <div class="filter-open" v-else key="filter-open">
         <div class="menu">
-          <button @click="close"><i class="material-icons">keyboard_arrow_down</i> {{ $l.cFilter.name }} <span class="counter z-depth-1" v-if="count > 0">{{ count }}</span></button>
+          <button @click="close"><app-icon>keyboard_arrow_down</app-icon> {{ $l.cFilter.name }} <span class="counter z-depth-1" v-if="count > 0">{{ count }}</span></button>
 
-          <button @click="clear"><i class="material-icons">clear_all</i> {{ $l.cFilter.clear }}</button>
+          <button @click="clear"><app-icon>clear_all</app-icon> {{ $l.cFilter.clear }}</button>
         </div>
 
         <form>
-          <div class="field">
-            <label for="region">{{ $l.cFilter.region }}</label>
-            <app-select id="region" :options="regions" :default="$l.cFilter.default"
-              v-model="filters.region"
-              @input="fetchSearchResponse"
-            ></app-select>
-          </div>
+          <label for="region">{{ $l.cFilter.region }}</label>
+          <app-select id="region" :options="regions" :default="$l.cFilter.default"
+            v-model="filters.region"
+            @input="fetchSearchResponse"
+          ></app-select>
 
-          <div class="field">
-            <label for="city">{{ $l.cFilter.city }}</label>
-            <app-select id="city" :options="regions" :default="$l.cFilter.default"
-              v-model="filters.city"
-              @input="fetchSearchResponse"
-            ></app-select>
-          </div>
+          <label for="city">{{ $l.cFilter.city }}</label>
+          <app-select id="city" :options="cities" :default="$l.cFilter.default"
+            v-model="filters.city"
+            @input="fetchSearchResponse"
+          ></app-select>
+
+          <label for="degree-type">{{ $l.cFilter.degreeType }}</label>
+          <app-select id="degree-type" :options="degreeTypes" :default="$l.cFilter.default"
+            v-model="filters.degreeType"
+            @input="fetchSearchResponse"
+          ></app-select>
         </form>
       </div>
     </transition>
@@ -49,10 +51,12 @@ export default {
       fetched: false,
 
       cities: null,
+      degreeTypes: null,
       regions: null,
 
       filters: {
         city: 0,
+        'degree_type': 0,
         region: 0,
       },
 
@@ -68,9 +72,8 @@ export default {
     },
   },
   methods: {
-    parseCitiesResponse(response) {},
-    parseRegionsResponse(response) {
-      // { id: 1, title: 'Tarapacá' } => { key: 'Tarapacá', value: 1 }
+    format(response) {
+      // { id: A, title: B } to { key: B, value: A }
 
       return response.map(region => {
         let { id: value, title: key } = region;
@@ -80,38 +83,31 @@ export default {
     },
     fetch() {
       Promise.all([
-        /*
-        this.$API.cities().then(response => {
-          this.cities = response;
+        this.$API.constants.cities().then(response => {
+          this.cities = this.format(response);
         }),
-        */
-        this.$API.regions().then(response => {
-          this.regions = this.parseRegionsResponse(response);
+        this.$API.constants.degreeTypes().then(response => {
+          this.degreeTypes = this.format(response);
+        }),
+        this.$API.constants.regions().then(response => {
+          this.regions = this.format(response);
         }),
       ]).then(() => {
         this.fetched = true;
       });
     },
     fetchSearchResponse() {
-      this.close();
-
       this.$store.dispatch('clearSearchResponse').then(() => {
         let payload = {
           query: this.$store.state.search.query,
           filters: this.filters,
-          image: true,
         };
 
         this.$store.dispatch('fetchSearchResponse', payload);
       });
     },
     open() {
-      this.$store.dispatch('showOverlay', {
-        handleClick: () => {
-          this.close();
-        },
-        zIndex: 1015,
-      });
+      this.$store.dispatch('showOverlay', { method: this.close, zIndex: 1015 });
 
       this.closed = false;
     },
@@ -121,7 +117,9 @@ export default {
       this.closed = true;
     },
     clear() {
-      this.filters.city = this.filters.region = 0;
+      Object.keys(this.filters).forEach(key => (this.filters[key] = 0));
+
+      this.fetchSearchResponse();
     },
     enter(el, done) {
       if (!this.closed) {
@@ -168,40 +166,33 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@import './../assets/stylesheets/main'
+
 .filter
-  position: fixed
-  z-index: 1020
-  right: 0
-  bottom: 0
-  left: 0
+  background-color: $c-white
 
-  background-color: #FFFFFF
-
-  @media (min-width: 576px)
-    right: 50%
-    left: 50%
-
-    width: 576px
+  @include media-up(sm)
+    width: $breakpoint-sm
 
     transform: translateX(-50%)
 
-    border-top-left-radius: 2px
-    border-top-right-radius: 2px
+    @include border-top-radius(2px)
+    @include position(null, 50%, null, 50%)
+
+  @include p-fixed(1020, null, 0, 0, 0)
 
   .filter-closed
-    display: flex
-    align-items: center
-    justify-content: center
-
     height: 42px
 
     cursor: pointer
-    user-select: none
 
-    color: #757575
+    color: c-gray(600)
 
-    .material-icons
-      margin-right: .75rem
+    @include d-flex(center, center)
+    @include user-select(none)
+
+    .icon
+      @include icon(24px, .75rem)
 
   .filter-open
     padding-right: 1rem
@@ -210,46 +201,42 @@ export default {
     transform-origin: bottom
 
     .menu
-      display: flex
-      align-items: center
-      justify-content: space-between
-
       height: 42px
 
-      button
-        color: #757575
+      @include d-flex(center, space-between)
 
-        font-size: medium
+      button
+        color: c-gray(600)
+
+        font-size: $f-medium
     
-        .material-icons
-          margin-right: .25rem
+        .icon
+          @include icon(24px, .25rem)
+
+      button:first-child
+        color: $c-black
 
     form
-      height: 200px
+      display: grid
+      align-items: center
+
+      grid-template-columns: auto 1fr
+      grid-row-gap: 1rem
 
       label
         margin-right: .75rem
 
-        color: #757575
+        color: c-gray(600)
 
-      .field
-        display: flex
-        align-items: center
-
-        .select-wrapper
-          flex: 1
-
-.counter
-  width: 20px
-  height: 20px
+.filter .counter
   margin-left: .5rem
 
   text-align: center
 
-  color: #FFFFFF
-  border-radius: 50%
-  background-color: #00A2EC
+  color: $c-white
+  background-color: $c-main
 
-  font-size: small
-  line-height: 20px
+  font-size: $f-small
+
+  @include circle(20px)
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="navigator">
-    <app-icon @click.native="back">arrow_back</app-icon> {{ name }}
+    <app-icon class="button" @click.native="back">arrow_back</app-icon> {{ name }}
   </div>
 </template>
 
@@ -23,27 +23,20 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@import './../assets/stylesheets/main'
+
 .navigator
-  display: flex
-  align-items: center
+  $padding: 1rem
 
-  padding: 1rem
+  padding: $padding
 
-  color: #FFFFFF
+  color: $c-white
+  background-color: $c-main
 
-  background-color: #00A2EC
+  font-size: $f-large
 
-  font-size: 1.1em
+  @include d-flex(center)
 
   .icon
-    $size: 24px
-
-    width: $size
-    height: $size
-
-    margin-right: 1.5rem
-
-    color: #FFFFFF
-
-    font-size: $size
+    @include icon(24px, $padding)
 </style>
