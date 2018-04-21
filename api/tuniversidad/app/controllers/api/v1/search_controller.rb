@@ -55,8 +55,6 @@ class Api::V1::SearchController < ApplicationController
 
         carreer_covers = University.profile_hash(carreer_result.map { |x| x["university_id"]})
 
-        carreer_covers = University.cover_hash(carreer_result.map { |x| x["university_id"]})
-
         result[:universities].each do |university|
           university[:profile] = profiles[university["id"]]
           university[:cover] = covers[university["id"]]
