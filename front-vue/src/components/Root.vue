@@ -33,8 +33,16 @@ export default {
   beforeRouteUpdate(to, from, next) {
     if (to.name === 'home' && ['university', 'careers'].includes(from.name))
       this.transition = 'slide-right';
-    else if (to.name === 'university' && from.name === 'home')
-      this.transition = 'appear-top';
+    else if (
+      ['career', 'university'].includes(to.name) &&
+      from.name === 'search'
+    )
+      this.transition = 'slide-left';
+    else if (
+      to.name === 'search' &&
+      ['career', 'university'].includes(from.name)
+    )
+      this.transition = 'slide-right';
     else if (to.name === 'university' && from.name === 'career')
       this.transition = 'slide-right';
     else if (to.name === 'careers' && from.name === 'career')
