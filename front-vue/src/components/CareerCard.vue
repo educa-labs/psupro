@@ -1,13 +1,13 @@
 <template>
   <div class="card career-card z-depth-1">
     <div class="card-content">
-      <div class="image" :style="{ 'background-image': `url(${university.profile})` }"></div>
+      <div class="image" :style="{ 'background-image': `url(${career.university_picture})` }"></div>
 
       <div class="information">
         {{ career.title }}
 
         <div class="university-campus">
-          {{ `${career.university_name} ${$l.in} ${career.campu_name}` }}
+          {{ `${career.university_title} ${$l.in} ${career.campu_name}` }}
         </div>
       </div>
     </div>
@@ -18,7 +18,6 @@
 export default {
   props: {
     career: { type: Object, required: true },
-    university: { type: Object, required: true },
   },
 };
 </script>

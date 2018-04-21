@@ -34,7 +34,7 @@ export default {
         university.cover = APIUniversity.cover;
         university.profile = APIUniversity.profile;
 
-        university.initials = 'PUC' // Temporal
+        university.initials = 'PUC'; // Temporal
 
         return university;
       }
