@@ -36,7 +36,7 @@ class Api::V1::SearchController < ApplicationController
         )
       
       minimize = ActiveModel::Type::Boolean.new.cast(params[:minimize]) # Casting param to boolean and result minimization if necessary.
-      result[:universities] = minimize ? university_result.map { |x| {id: x.id, title: x.title} } : university_result
+      result[:universities] = minimize ? university_result.map { |x| {id: x.id, title: x.title} } : university_result.map {|x| x.as_json}
       
       # Carreer search
       carreer_result = Carreer.search(
@@ -46,11 +46,22 @@ class Api::V1::SearchController < ApplicationController
         includes: [:university] # To prevent n+1 query.
         )
       # Result minimization if necessary.
-      result[:carreers] = minimize ? carreer_result.map { |x| {id: x.id, title: x.title, university_title: x.university.title} } : carreer_result
+      result[:carreers] = minimize ? carreer_result.map { |x| {id: x.id, title: x.title, university_title: x.university.title, university_id:x.university.id} } : carreer_result.map {|x| x.as_json}
 
       # We add pictures if requested.
       if ActiveModel::Type::Boolean.new.cast(params[:pictures])
-        result[:pictures] = University.profile_array(result[:universities].map { |x| x[:id]})
+        profiles = University.profile_hash(result[:universities].map { |x| x["id"]})
+        covers = University.cover_hash(result[:universities].map { |x| x["id"]})
+        carreer_covers = University.cover_hash(carreer_result.map { |x| x["university_id"]})
+
+
+        result[:universities].each do |university|
+          university[:profile] = profiles[university["id"]]
+          university[:cover] = covers[university["id"]]
+        end
+        result[:carreers].each do |carreer|
+          carreer[:university_picture] = carreer_covers[carreer["university_id"]]
+        end
       end
 
       render json: result , status:200
