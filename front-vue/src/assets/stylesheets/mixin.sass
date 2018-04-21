@@ -1,0 +1,134 @@
+@mixin background-image
+  background-position: center
+  background-size: cover
+
+@mixin border-top($color, $width: 1px, $style: solid)
+  border-top: $width $style $color
+
+@mixin border-right($color, $width: 1px, $style: solid)
+  border-right: $width $style $color
+
+@mixin border-bottom($color, $width: 1px, $style: solid)
+  border-bottom: $width $style $color
+
+@mixin border-left($color, $width: 1px, $style: solid)
+  border-left: $width $style $color
+
+@mixin border-top-radius($border-radius, $only: false)
+  border-top-left-radius: $border-radius
+  border-top-right-radius: $border-radius
+
+  @if $only
+    border-bottom-right-radius: 0
+    border-bottom-left-radius: 0
+
+@mixin border-bottom-radius($border-radius, $only: false)
+  border-bottom-right-radius: $border-radius
+  border-bottom-left-radius: $border-radius
+
+  @if $only
+    border-top-left-radius: 0
+    border-top-right-radius: 0
+
+@mixin browser($browsers: Mozilla)
+  @each $browser in $browsers
+    html[data-browser*="#{$browser}"] &
+      @content
+
+@mixin canvas($border-radius: 2px, $background-color: $c-white)
+  border-radius: $border-radius
+  background-color: $background-color
+
+@mixin circle($size)
+  width: $size
+  height: $size
+
+  border-radius: 50%
+
+  line-height: $size
+
+  @include browser
+    text-indent: -1px
+
+@mixin d-flex($align: null, $justify: null)
+  display: flex
+
+  @if $align
+    align-items: $align
+
+  @if $justify
+    justify-content: $justify
+
+@mixin icon($size, $margin-right: null, $margin-left: null)
+  width: $size
+  height: $size
+
+  font-size: $size
+  line-height: $size
+
+  @if $margin-right
+    margin-right: $margin-right
+
+  @if $margin-left
+    margin-left: $margin-left
+
+@mixin p-absolute($z-index: null, $a: null, $b: null, $c: null, $d: null)
+  position: absolute
+
+  @include position($a, $b, $c, $d)
+
+  @if $z-index
+    z-index: $z-index
+
+@mixin p-fixed($z-index: null, $a: null, $b: null, $c: null, $d: null)
+  position: fixed
+
+  @include position($a, $b, $c, $d)
+
+  @if $z-index
+    z-index: $z-index
+
+@mixin p-relative($z-index: null, $a: null, $b: null, $c: null, $d: null)
+  position: relative
+
+  @include position($a, $b, $c, $d)
+
+  @if $z-index
+    z-index: $z-index
+
+@mixin position($a: null, $b: null, $c: null, $d: null)
+  @if not ($a == null) and $b == null and $c == null and $d == null
+    top: $a
+    right: $a
+    bottom: $a
+    left: $a
+  @else if not ($a == null and $b == null) and $c == null and $d == null
+    top: $a
+    right: $b
+    bottom: $a
+    left: $b
+  @else if not ($a == null and $b == null and $c == null) and $d == null
+    top: $a
+    right: $b
+    bottom: $c
+    left: $b
+  @else 
+    top: $a
+    right: $b
+    bottom: $c
+    left: $d
+
+@mixin size($size)
+  width: $size
+  height: $size
+
+@mixin text-height($value)
+  height: $value
+
+  line-height: $value
+
+@mixin user-select($value)
+  -webkit-user-select: $value
+  -moz-user-select: $value
+  -ms-user-select: $value
+  user-select: $value

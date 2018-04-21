@@ -5,22 +5,73 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_DB=tuniversidad_development
-      - POSTGRES_PASSWORD=123456
+      - POSTGRES_PASSWORD=tuniversidad
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.3
+    container_name: elasticsearch
+    environment:
+      - cluster.name=psupro-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - xpack.monitoring.enabled=false
+      - xpack.ml.enabled=false
+      - xpack.graph.enabled=false
+      - xpack.watcher.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
 
-  app:
-    build: .
-    command: bundle exec puma -C config/puma.rb
+  api:
+    build: ./api/tuniversidad
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    command: bin/rails server --port 3000 --binding 0.0.0.0
+
     volumes:
       - .:/app
     expose:
       - "3000"
     depends_on:
       - db
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile-nginx
+      - elasticsearch
     links:
-      - app
+     - elasticsearch
     ports:
-      - "80:80"
+      - "3000:3000"
+
+  front-vue:
+    container_name: front-vue
+    build:
+      context: ./front-vue
+    volumes:
+      - '.:/usr/app'
+      - '/usr/app/front-vue/node_modules'
+    ports:
+      - '8080:8080'
+    expose:
+      - '8080'
+    environment:
+      - NODE_ENV=development
+    links:
+      - api
+
+volumes:
+  esdata1:
+    driver: local
+
+      
+  # web:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile-nginx
+  #   links:
+  #     - api
+  #   ports:
+  #     - "80:80"

@@ -6,7 +6,7 @@ FROM nginx
 RUN apt-get update -qq && apt-get -y install apache2-utils
 
 # establish where Nginx should look for files
-ENV RAILS_ROOT=/app
+ENV RAILS_ROOT=/app/api/tuniversidad
 
 # Set our working directory inside the image
 WORKDIR /app
@@ -18,14 +18,14 @@ RUN mkdir log
 COPY public public/
 
 # Copy Nginx config template
-COPY tuniversidad/tuniversidad/config/nginx.conf /tmp/docker_example.nginx
+COPY nginx.conf /tmp/docker_example.nginx
 
 # substitute variable references in the Nginx config template for real values from the environment
 # put the final config in its place
 RUN envsubst '$RAILS_ROOT' < /tmp/docker_example.nginx > /etc/nginx/conf.d/default.conf
 RUN rm -rf /etc/nginx/sites-available/default
-ADD tuniversidad/tuniversidad/config/nginx.conf /etc/nginx/sites-enabled/nginx.conf
-ADD tuniversidad/tuniversidad/config/nginx.conf /etc/nginx/sites-available/tuniversidad
+ADD nginx.conf /etc/nginx/sites-enabled/nginx.conf
+ADD nginx.conf /etc/nginx/sites-available/tuniversidad
 
 EXPOSE 80
 
