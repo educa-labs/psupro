@@ -3,7 +3,7 @@ class Carreer < ApplicationRecord
 
   searchkick language: "spanish"
   scope :search_import, -> { includes(:university,:campu) }
-
+  attr_accessor :render_picture
   def search_data
     {
       title: title,
@@ -25,7 +25,7 @@ class Carreer < ApplicationRecord
   delegate :city, to: :campu
   delegate :title, to: :area, prefix: true
 
-  def university_name
+  def university_title
     self.university.title
   end
 
@@ -46,5 +46,8 @@ class Carreer < ApplicationRecord
     not(self.weighing.language.nil? || self.weighing.math.nil?)
   end
 
+  def area_picture
+    self.area.encoded_picture
+  end
 
 end

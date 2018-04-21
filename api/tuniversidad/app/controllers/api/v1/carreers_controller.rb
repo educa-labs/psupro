@@ -2,10 +2,11 @@ class Api::V1::CarreersController < ApplicationController
   #before_action :authenticate_with_token!, only: [:show,:index]
 
   def show
-    ca = Carreer.find_by(id:params[:id])
+    ca = Carreer.where(id:params[:id]).includes(:campu,:weighing,:area,:university).limit(1).first
     if ca
       ca.visits +=1 # Update visits count for most popular route.
       ca.save
+      ca.render_picture = true
       render json:ca, status:200
     else
       render json: {errors: "invalid id"}, status:404
