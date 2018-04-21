@@ -6,4 +6,11 @@ class CarreerSerializer < ActiveModel::Serializer
   belongs_to :university
 
   has_one :weighing
+
+  attribute :area_picture, if: :render_picture?
+
+  def render_picture?
+    object.render_picture
+  end
+
 end
