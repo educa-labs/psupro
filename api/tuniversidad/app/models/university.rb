@@ -43,9 +43,14 @@ class University < ApplicationRecord
     "data:image/#{self.cover_extension};base64,#{File.open('public/images/universities/cover/' + self.cover_picture,'rb').read}"
   end
 
-  def self.profile_array(ids)
+  def self.profile_hash(ids)
     universities = where(id:ids)
-    return universities.map { |x| {id: x.id, picture:x.encoded_profile_picture}}
+    return universities.map { |x| [x.id,x.encoded_profile_picture]}.to_h
+  end
+
+  def self.cover_hash(ids)
+    universities = where(id:ids)
+    return universities.map { |x| [x.id,x.encoded_cover_picture]}.to_h
   end
   # Creates file with base64 profile image data.
   def save_profile_picture(data)
