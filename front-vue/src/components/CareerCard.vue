@@ -1,7 +1,7 @@
 <template>
   <div class="card career-card z-depth-1">
     <div class="card-content">
-      <div class="image" :style="{ backgroundImage: `url(${university.profile})` }"></div>
+      <div class="image" :style="{ 'background-image': `url(${university.profile})` }"></div>
 
       <div class="information">
         {{ career.title }}

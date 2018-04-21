@@ -25,7 +25,7 @@ export default {
   },
   mounted() {
     let breakpoints = ['xs', 'sm'];
-    let threshold = 66; // height: 50px, margin-bottom: 1rem (16px)
+    let threshold = 64; // height: 48px, margin-bottom: 1rem (16px)
 
     window.onscroll = () => {
       if (breakpoints.includes(this.$mq)) {
