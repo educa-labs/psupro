@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <app-navigator></app-navigator>
+    <app-navigator :buttons="{ back: false }" v-if="['xs', 'sm'].includes($mq)"></app-navigator>
 
     <app-hero class="closed" v-if="['xs', 'sm'].includes($mq)"></app-hero>
 
