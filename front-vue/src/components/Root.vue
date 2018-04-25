@@ -33,8 +33,16 @@ export default {
   beforeRouteUpdate(to, from, next) {
     if (to.name === 'home' && ['university', 'careers'].includes(from.name))
       this.transition = 'slide-right';
-    else if (to.name === 'university' && from.name === 'home')
-      this.transition = 'appear-top';
+    else if (
+      ['career', 'university'].includes(to.name) &&
+      from.name === 'search'
+    )
+      this.transition = 'slide-left';
+    else if (
+      to.name === 'search' &&
+      ['career', 'university'].includes(from.name)
+    )
+      this.transition = 'slide-right';
     else if (to.name === 'university' && from.name === 'career')
       this.transition = 'slide-right';
     else if (to.name === 'careers' && from.name === 'career')
@@ -74,6 +82,8 @@ export default {
   position: relative
 
 #root > main > .content > .child-view
+  min-height: 100%
+
   transition: all .4s cubic-bezier(.55, 0, .1, 1)
 
   @include p-absolute(null, null, 0, null, 0)
@@ -95,4 +105,13 @@ export default {
 
   &.appear-top-leave-active
     opacity: 0
+</style>
+
+<style lang="sass">
+@import './../assets/stylesheets/main'
+
+#root > main > .content > .child-view > .spinner
+  transform: translate(-50%, -50%)
+
+  @include p-absolute(unset, 50%, unset, unset, 50%)
 </style>

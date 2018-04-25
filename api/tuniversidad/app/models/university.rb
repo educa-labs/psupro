@@ -3,7 +3,7 @@ class University < ApplicationRecord
   validates_presence_of :website
   has_many :campus
   belongs_to :university_type
-
+  
   searchkick language: "spanish"
 
   def search_data

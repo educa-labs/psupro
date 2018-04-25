@@ -1,11 +1,17 @@
 <template>
   <div class="navigator">
-    <app-icon class="button" @click.native="back">arrow_back</app-icon> {{ name }}
+    <app-icon class="button" @click.native="back" v-if="buttons.back">arrow_back</app-icon> {{ name }}
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    buttons: {
+      type: Object,
+      default: { back: true },
+    },
+  },
   data() {
     return {
       name: '',

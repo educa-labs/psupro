@@ -23,7 +23,7 @@
           <section v-if="search.response.universities.length > 0">
             <div>{{ $l.universities }}</div>
 
-            <ul><li v-for="university in search.response.universities" :key="`university-${university.id}`">
+            <ul><li v-for="university in search.response.universities.slice(0, 5)" :key="`university-${university.id}`">
               <app-icon>account_balance</app-icon> {{ university.title }}
             </li></ul>
           </section>
@@ -31,7 +31,7 @@
           <section v-if="search.response.careers.length > 0">
             <div>{{ $l.careers }}</div>
 
-            <ul><li v-for="career in search.response.careers" :key="`career-${career.id}`">
+            <ul><li v-for="career in search.response.careers.slice(0, 5)" :key="`career-${career.id}`">
               <app-icon>school</app-icon> <span>{{ career.title }} <div>{{ career.university_title }}</div></span>
             </li></ul>
           </section>
@@ -193,6 +193,11 @@ export default {
 
   @include border-top(c-gray(100))
   @include p-absolute(1010, false, 0, false, 0)
+
+  @include media-up(md)
+    overflow-y: hidden
+
+    max-height: unset
 
   section > div:first-child
     margin: $gap 0

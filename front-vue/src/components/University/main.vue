@@ -83,20 +83,17 @@ export default {
   $padding: 1rem
 
   @include media-up(md)
-    padding: $padding
+    padding: 0 $padding
 
   .university
     @include media-up(md)
       width: calc(#{$breakpoint-md} - 2 * #{$padding})
+      margin: $padding auto
 
 .university
   @include media-down(sm)
     border-radius: 0
     box-shadow: none
-
-  @include media-up(md)
-    margin-right: auto
-    margin-left: auto
 
 .university > .cover
   height: 175px
@@ -114,7 +111,7 @@ export default {
 
   & > .profile
     $size: 75px
-  
+
     background-color: $c-white
 
     @include circle($size) 

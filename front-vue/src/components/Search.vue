@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <app-navigator></app-navigator>
+    <app-navigator :buttons="{ back: false }" v-if="['xs', 'sm'].includes($mq)"></app-navigator>
 
     <app-hero class="closed" v-if="['xs', 'sm'].includes($mq)"></app-hero>
 
@@ -72,13 +72,31 @@ export default {
 <style lang="sass" scoped>
 @import './../assets/stylesheets/main'
 
-.search
-  .navigator
-    position: relative
+.search > .navigator
+  @include media-down(sm)
+    padding-bottom: 0
 
-    @include media-down(sm)
-      padding-bottom: 0
-  
+  @include p-relative
+    
+.search
   .career-card, .university-card
     margin: 1rem
+
+.search > .results
+  $padding: 1rem
+
+  @include canvas
+
+  @include media-up(md)
+    width: calc(#{$breakpoint-md} - 2 * #{$padding})
+    margin: $padding auto
+
+.search > .results > .title
+  @include media-up(md)
+    border-radius: 3px
+
+.search > .results > .empty
+  transform: translate(-50%, -50%)
+
+  @include p-absolute(unset, 50%, unset, unset, 50%)
 </style>

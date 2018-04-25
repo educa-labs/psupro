@@ -1,6 +1,6 @@
 <template>
     <div class="card university-card z-depth-1">
-      <div class="cover" :style="{ backgroundImage: `url(${university.image})` }">
+      <div class="cover" :style="{ 'background-image': `url(${university.image})` }">
         <div class="overlay"></div>
 
         <div class="title">{{ university.title }}</div>
