@@ -24,42 +24,42 @@ sisrec = Newton(np.array([i for i in range(1, 12)]), 'newton/forest/serialized',
                 MODEL_CACHE, 4, 5)
 
 
-@app.route("/get_prediction", methods=["GET", "POST", "PUT"])
-def get_predicition():
-    # Para evitar problemas con Chrome
-    # resp.headers['Access-Control-Allow-Origin'] = '*'
-    # Data viene en formato json -> {}
-    # {uid}
+# @app.route("/get_prediction", methods=["GET", "POST", "PUT"])
+# def get_predicition():
+#     # Para evitar problemas con Chrome
+#     # resp.headers['Access-Control-Allow-Origin'] = '*'
+#     # Data viene en formato json -> {}
+#     # {uid}
 
-    if request.method == "GET":
-        result = 'GET request is not allowed'
+#     if request.method == "GET":
+#         result = 'GET request is not allowed'
 
-    elif request.method == "POST":
-        # Diccionario de data que viene en el request
-        data = request.get_json(force=True)
-        # token = request.headers["authorization"]
-        # Verificar autenticacion
-        # Instancia de base de datos
-        # db = DB()
+#     elif request.method == "POST":
+#         # Diccionario de data que viene en el request
+#         data = request.get_json(force=True)
+#         # token = request.headers["authorization"]
+#         # Verificar autenticacion
+#         # Instancia de base de datos
+#         # db = DB()
 
-        prediction_model = get_best(np.array(data["days"]), np.array(data["scores"]))
-        # Variables de Retorno
-        if prediction_model is not None:
-            result = {
-                "probability": 1 - prediction_model.posterior_cdf(data["query_score"], np.array([data["query_day"], ])),
-                "r_score": prediction_model.score(),
-                "prediction": int(prediction_model.posterior_mean(np.array([data["query_day"], ])))}
-            status = 200
-        else:
-            #result = {"r_score": prediction_model.score()}
-            status = 422
-            # db.conn.close()
+#         prediction_model = get_best(np.array(data["days"]), np.array(data["scores"]))
+#         # Variables de Retorno
+#         if prediction_model is not None:
+#             result = {
+#                 "probability": 1 - prediction_model.posterior_cdf(data["query_score"], np.array([data["query_day"], ])),
+#                 "r_score": prediction_model.score(),
+#                 "prediction": int(prediction_model.posterior_mean(np.array([data["query_day"], ])))}
+#             status = 200
+#         else:
+#             #result = {"r_score": prediction_model.score()}
+#             status = 422
+#             # db.conn.close()
 
-    elif request.method == "PUT":
-        result = 'PUT request is not allowed'
+#     elif request.method == "PUT":
+#         result = 'PUT request is not allowed'
 
-    resp = Response(json.dumps(result), status=status, mimetype='application/json')
-    return resp
+#     resp = Response(json.dumps(result), status=status, mimetype='application/json')
+#     return resp
 
 
 # @app.route("/get_recommendations", methods=["POST"])
