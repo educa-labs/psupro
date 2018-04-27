@@ -10,7 +10,7 @@ import sys
 import itertools
 
 # Mainlib
-from score_regressor import get_best
+#from score_regressor import get_best
 from newton import Newton
 from newton.knn import *
 from newton.forest import *
