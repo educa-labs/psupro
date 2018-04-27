@@ -28,10 +28,27 @@ services:
     ports:
       - 9200:9200
 
+  flask:
+    build: ./scores-ms
+    container_name: flask
+    volumes:
+      - ./flask_app:/flask_app
+    ports:
+      - "5000:5000"
+    expose:
+      - "5000"
+    depends_on:
+    - db
+    environment:
+      - FLASK_APP=main.py
+      - FLASK_DEBUG=1
+    command:  flask run --host=0.0.0.0 --port=5000
+
   api:
     build: ./api/tuniversidad
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - FLASK_URL=http://flask:5000
     command: bin/rails server --port 3000 --binding 0.0.0.0
 
     volumes:
@@ -43,6 +60,7 @@ services:
       - elasticsearch
     links:
      - elasticsearch
+     - flask
     ports:
       - "3000:3000"
 
