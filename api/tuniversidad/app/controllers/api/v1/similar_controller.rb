@@ -8,7 +8,7 @@ class Api::V1::SimilarController < ApplicationController
     k = params[:k].to_i
     request_result = request_similar(carreer_id,k)
     
-    render json:Carreer.where(id:request_result), status:200
+    render json:Carreer.where(id:request_result).includes(:campu,:weighing,:area,:university,university:[:university_type]), status:200
   end
 
 end

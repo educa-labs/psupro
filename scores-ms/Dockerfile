@@ -1,6 +1,5 @@
-FROM ubuntu:latest
+FROM python:3.6.5-stretch
 RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
 RUN mkdir /app
 WORKDIR /app
 # TODO: copy all neded files and serialized models 
