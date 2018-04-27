@@ -18,7 +18,7 @@ module RecommendationHelper
 
   # Returns k carreers similar to carreer of id carreer_id.
   def request_similar(carreer_id,k)
-    url = 'newton.tuniversidad.cl/get_nn' # Newton URL.
+    url = "#{ENV["FLASK_URL"]}/get_nn" # Newton URL.
     payload = {carreers: carreer_id, k:k}
     request_result = RestClient.post(url,payload.to_json, {content_type: :json, accept: :json})
     request_result = JSON.parse(request_result)['result']["0"] # Parsing of newton output.
