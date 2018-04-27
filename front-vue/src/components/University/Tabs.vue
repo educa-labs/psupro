@@ -157,7 +157,7 @@ $height: 48px
 .tabs-content
   position: relative
 
-.tabs-content > .child-view
+.tabs-content > .child-view:not(.spinner)
   transition: all .4s cubic-bezier(.55, 0, .1, 1)
 
   @include p-absolute(null, null, 0)

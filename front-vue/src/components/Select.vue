@@ -75,5 +75,5 @@ export default {
     background-color: transparent
 
     @include icon(24px, .5rem)
-    @include p-absolute(1, 0, 0, 0)
+    @include p-absolute(1, 0, 0, 0, unset)
 </style>

@@ -50,7 +50,9 @@ const API = {
         Vue.http
           .get(`${API.url}/universities/${id}`, config)
           .then(response => {
-            resolve(preprocessors.universities.universities(response.body, config));
+            resolve(
+              preprocessors.universities.universities(response.body, config)
+            );
           })
           .catch(error => reject(error));
       });

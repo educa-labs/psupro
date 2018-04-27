@@ -6,16 +6,13 @@
 @import './../assets/stylesheets/main'
 
 .spinner
-  box-sizing: border-box
-  height: 100%
-  padding-top: 1rem
-  padding-bottom: 1rem
+  padding-top: 2rem
+  padding-bottom: 2rem
 
   animation: spinner 3s infinite
+  text-align: center
 
   color: c-gray(600)
-
-  @include d-flex(center, center)
 
 @keyframes spinner
   0%

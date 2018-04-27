@@ -1,6 +1,6 @@
 <template>
   <div class="card university-card z-depth-1">
-    <div class="background-image" :style="{ backgroundImage: `url(${university.image})` }">
+    <div class="cover" :style="{ 'background-image': `url(${university.cover})` }">
       <div class="overlay"></div>
 
       <div class="title">{{ university.title }}</div>
@@ -33,7 +33,7 @@ export default {
 .university-card
   margin-bottom: 1rem
 
-  .background-image
+  .cover
     position: relative
 
     height: 100px
