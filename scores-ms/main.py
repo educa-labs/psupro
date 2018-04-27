@@ -62,19 +62,19 @@ def get_predicition():
     return resp
 
 
-@app.route("/get_recommendations", methods=["POST"])
-def get_recommendations():
-    data = request.get_json(force=True)
-    area = data['area_id']
-    # if area == 11:
-    #     return Response(json.dumps({"errors": "not available yet"}), status=501, mimetype='application/json')
-    # scores deberia ser array de arrays
-    scores = np.array(data['scores'])
-    recs = sisrec.get_recs(area, scores)
-    result = build_dict(recs)
-    # print(recs)
-    # print(result)
-    return Response(json.dumps(result), status=200, mimetype='application/json')
+# @app.route("/get_recommendations", methods=["POST"])
+# def get_recommendations():
+#     data = request.get_json(force=True)
+#     area = data['area_id']
+#     # if area == 11:
+#     #     return Response(json.dumps({"errors": "not available yet"}), status=501, mimetype='application/json')
+#     # scores deberia ser array de arrays
+#     scores = np.array(data['scores'])
+#     recs = sisrec.get_recs(area, scores)
+#     result = build_dict(recs)
+#     # print(recs)
+#     # print(result)
+#     return Response(json.dumps(result), status=200, mimetype='application/json')
 
 
 @app.route("/get_nn", methods=["POST"])
@@ -87,18 +87,18 @@ def get_nn():
     return Response(json.dumps(result), status=200, mimetype='application/json')
 
 
-@app.route("/get_classification", methods=["POST"])
-def get_classification():
-    data = request.get_json(force=True)
-    area_id = data['area_id']
-    n_results = data['n_results']
-    # if area_id == 11:
-    #     return Response(json.dumps({"errors": "not available yet"}), status=501, mimetype='application/json')
-    # scores deberia ser array de arrays
-    scores = np.array(data['scores'])
-    classifications = sisrec.predict(area_id, scores, n_results)
-    result = {'result': {i: [int(x) for x in classifications[i]] for i in range(len(scores))}}
-    return Response(json.dumps(result), status=200, mimetype='application/json')
+# @app.route("/get_classification", methods=["POST"])
+# def get_classification():
+#     data = request.get_json(force=True)
+#     area_id = data['area_id']
+#     n_results = data['n_results']
+#     # if area_id == 11:
+#     #     return Response(json.dumps({"errors": "not available yet"}), status=501, mimetype='application/json')
+#     # scores deberia ser array de arrays
+#     scores = np.array(data['scores'])
+#     classifications = sisrec.predict(area_id, scores, n_results)
+#     result = {'result': {i: [int(x) for x in classifications[i]] for i in range(len(scores))}}
+#     return Response(json.dumps(result), status=200, mimetype='application/json')
 
 
 def build_dict(res):
