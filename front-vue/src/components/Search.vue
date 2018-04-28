@@ -4,31 +4,23 @@
 
     <app-hero class="closed" v-if="['xs', 'sm'].includes($mq)"></app-hero>
 
-    <section class="results" :style="{ 'padding-bottom': `${filterHeight}px` }" v-if="!$store.state.search.fetching">
+    <section class="results" :style="{ 'padding-bottom': `${filterHeight}px` }">
       <template v-if="!emptySearchResponse">
         <h5 class="title">{{ $l.cSearch.results }}</h5>
 
-        <router-link
-          v-for="career in $store.state.search.response.careers"
-          :to="{ name: 'career', params: { id: career.id } }"
-          :key="`career-${career.id}`"
+        <router-link v-for="(card, index) in response" :key="`card-${index}`"
+          :to="{ name: card.name, params: card.params}"
         >
-          <app-career-card :career="career"></app-career-card>
+          <component :is="card.component" v-bind="card.props"></component>
         </router-link>
 
-        <router-link
-          v-for="university in $store.state.search.response.universities"
-          :key="`university-${university.id}`"
-          :to="{ name: 'university', params: { id: university.id } }"
-        >
-          <app-university-card :university="university"></app-university-card>
-        </router-link>
+        <app-spinner v-if="fetching"></app-spinner>
+
+        <button @click="fetch($route.query.query, page + 1)">Ver más</button>
       </template>
 
       <div class="empty" v-else>{{ $l.empty }}</div>
     </section>
-
-    <app-spinner v-else></app-spinner>
 
     <app-filter :height="filterHeight"></app-filter>
   </div>
@@ -47,24 +39,56 @@ export default {
   },
   data() {
     return {
+      response: [],
+      page: 0,
+
+      fetching: false,
+
       filterHeight: 42,
     };
   },
   computed: {
     emptySearchResponse() {
-      let response = this.$store.state.search.response;
+      return !this.fetching && this.response.length === 0;
+    },
+  },
+  methods: {
+    fetch(query, page) {
+      this.fetching = true;
 
-      return (
-        response.universities.length === 0 && response.careers.length === 0
-      );
+      this.$store
+        .dispatch('fetchSearchResponse', { query, page })
+        .then(response => {
+          this.response.push(
+            ...response.careers.map(career => {
+              return {
+                name: 'career',
+                params: { id: career.id },
+                component: 'app-career-card',
+                props: { career },
+              };
+            })
+          );
+
+          this.response.push(
+            ...response.universities.map(university => {
+              return {
+                name: 'university',
+                params: { id: university.id },
+                component: 'app-university-card',
+                props: { university },
+              };
+            })
+          );
+
+          this.page += 1;
+
+          this.fetching = false;
+        });
     },
   },
   created() {
-    if (
-      !this.$store.state.search.response &&
-      !this.$store.state.search.fetching
-    )
-      this.$store.dispatch('fetchSearchResponse', { query: '' });
+    this.fetch(this.$route.query.query, this.$route.query.page);
   },
 };
 </script>
