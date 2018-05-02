@@ -88,12 +88,10 @@ const API = {
         .catch(error => reject(error));
     });
   },
-  search(query, filters = null, minimize = false, pictures = false, page = 0, page_size = 3) {
-    let params = { text: query, ...filters, minimize, pictures, page, page_size };
-
+  search(parameters) {
     return new Promise((resolve, reject) => {
       Vue.http
-        .get(`${API.url}/search`, { params })
+        .get(`${API.url}/search`, { params: parameters })
         .then(response => resolve(preprocessors.search(response.body)))
         .catch(error => reject(error));
     });

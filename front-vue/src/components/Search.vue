@@ -15,8 +15,6 @@
         </router-link>
 
         <app-spinner v-if="fetching"></app-spinner>
-
-        <button @click="fetch($route.query.query, page + 1)">Ver más</button>
       </template>
 
       <div class="empty" v-else>{{ $l.empty }}</div>
@@ -41,8 +39,10 @@ export default {
     return {
       response: [],
       page: 0,
+      pageSize: 5,
 
       fetching: false,
+      onLastPage: false,
 
       filterHeight: 42,
     };
@@ -52,43 +52,81 @@ export default {
       return !this.fetching && this.response.length === 0;
     },
   },
+  watch: {
+    $route(to, from) {
+      if (to.name === 'search') this.fetch();
+    },
+  },
   methods: {
     fetch(query, page) {
       this.fetching = true;
 
       this.$store
-        .dispatch('fetchSearchResponse', { query, page })
+        .dispatch('fetchSearchResponse', {
+          query,
+          page,
+          page_size: this.pageSize,
+        })
         .then(response => {
-          this.response.push(
-            ...response.careers.map(career => {
-              return {
-                name: 'career',
-                params: { id: career.id },
-                component: 'app-career-card',
-                props: { career },
-              };
-            })
-          );
+          if (
+            response.careers.length === 0 &&
+            response.universities.length === 0
+          ) {
+            this.fetching = false;
+            this.onLastPage = true;
+          } else {
+            this.response.push(
+              ...response.careers.map(career => {
+                return {
+                  name: 'career',
+                  params: { id: career.id },
+                  component: 'app-career-card',
+                  props: { career },
+                };
+              })
+            );
 
-          this.response.push(
-            ...response.universities.map(university => {
-              return {
-                name: 'university',
-                params: { id: university.id },
-                component: 'app-university-card',
-                props: { university },
-              };
-            })
-          );
+            this.response.push(
+              ...response.universities.map(university => {
+                return {
+                  name: 'university',
+                  params: { id: university.id },
+                  component: 'app-university-card',
+                  props: { university },
+                };
+              })
+            );
 
-          this.page += 1;
+            this.page = page;
 
-          this.fetching = false;
+            this.fetching = false;
+          }
         });
+    },
+    fetchDefaultPage() {
+      this.fetch(this.$route.query.query, 0);
+    },
+    fetchNextPage() {
+      this.fetch(this.$route.query.query, this.page + 1);
+    },
+    getOffsetHeight() {
+      let heroOffsetHeight = ['xs', 'sm'].includes(this.$mq) ? 0 : 80;
+
+      return this.$el.offsetHeight + heroOffsetHeight;
     },
   },
   created() {
-    this.fetch(this.$route.query.query, this.$route.query.page);
+    this.fetchDefaultPage();
+
+    window.onscroll = () => {
+      if (!this.onLastPage) {
+        let windowBottomOffset = window.innerHeight + window.scrollY;
+
+        if (windowBottomOffset === this.getOffsetHeight()) {
+          this.fetchNextPage();
+        }
+      }
+    };
   },
 };
 </script>
@@ -105,6 +143,10 @@ export default {
 .search
   .career-card, .university-card
     margin: 1rem
+    
+    @include media-up(md)
+      margin-right: 0
+      margin-left: 0
 
 .search > .results
   $padding: 1rem

@@ -89,15 +89,10 @@ export default {
       });
     },
     fetchHeavySearchResponse() {
-      /*
-      enviar query en params.
-      cuando search nace, usa los params para busqueda.
-      let payload = { query: this.search.query };
-
-      this.$store.dispatch('fetchSearchResponse', payload);
-      */
-
-      this.$router.push({ name: 'search', query: { query: this.search.query, page: 0 } });
+      this.$router.push({
+        name: 'search',
+        query: { query: this.search.query },
+      });
 
       this.$refs.input.blur();
     },
