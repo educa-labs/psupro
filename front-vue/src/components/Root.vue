@@ -49,6 +49,8 @@ export default {
       this.transition = 'slide-right';
     else if (to.name === 'career' && from.name === 'careers')
       this.transition = 'slide-left';
+    else if (to.name === 'university' && from.name === 'home')
+      this.transition = 'appear-top';
 
     next();
   },

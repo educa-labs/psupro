@@ -8,6 +8,7 @@ export default {
   universities: 'Universidades',
 
   cCareer: {
+    campus: 'Campus',
     information: 'Información',
     semesters: 'Semestres',
     similarCareers: 'Carreras Similares',
@@ -31,7 +32,7 @@ export default {
     results: 'Resultados',
   },
   cSearchBar: {
-    placeholder: 'Búsqueda según carrera, universidad o ciudad',
+    placeholder: 'Búsqueda según carrera o universidad',
   },
   cSelect: {
     tip: 'Escoge una opción',

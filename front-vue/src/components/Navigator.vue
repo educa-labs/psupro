@@ -1,6 +1,6 @@
 <template>
   <div class="navigator">
-    <app-icon class="button" @click.native="back" v-if="buttons.back">arrow_back</app-icon> {{ name }}
+    <app-back-button v-if="buttons.back"></app-back-button> {{ name }}
   </div>
 </template>
 
@@ -16,11 +16,6 @@ export default {
     return {
       name: '',
     };
-  },
-  methods: {
-    back() {
-      this.$router.go(-1);
-    },
   },
   beforeMount() {
     this.name = this.$l.cNavigator[this.$route.name];

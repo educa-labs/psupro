@@ -88,12 +88,24 @@ export default {
   display: grid
 
   min-height: 50vh
-
   padding: 1rem
 
   grid-gap: 1rem
-  grid-template-rows: repeat(4, 1fr)
-  grid-template-columns: 1fr
+  grid-template-rows: 2fr repeat(2, 1fr)
+  grid-template-columns: repeat(2, 1fr)
+  grid-template-areas: "nth-1 nth-1" "nth-2 nth-2" "nth-3 nth-4"
+
+  a:nth-child(1)
+    grid-area: nth-1
+
+  a:nth-child(2)
+    grid-area: nth-2
+
+  a:nth-child(3)
+    grid-area: nth-3
+
+  a:nth-child(4)
+    grid-area: nth-4
 
   @media (min-width: 576px)
     padding: 1rem 5%
@@ -107,18 +119,6 @@ export default {
     grid-template-rows: repeat(2, 1fr)
     grid-template-columns: repeat(4, 1fr)
     grid-template-areas: "nth-1 nth-1 nth-1 nth-2" "nth-3 nth-3 nth-4 nth-4"
-
-    a:nth-child(1)
-      grid-area: nth-1
-
-    a:nth-child(2)
-      grid-area: nth-2
-
-    a:nth-child(3)
-      grid-area: nth-3
-
-    a:nth-child(4)
-      grid-area: nth-4
 
   @media (min-width: 1200px)
     grid-template-columns: 2fr repeat(2, 1fr)

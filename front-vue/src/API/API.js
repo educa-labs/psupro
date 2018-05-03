@@ -142,6 +142,17 @@ const API = {
       });
     },
   },
+  news: {
+    news() {
+      return new Promise((resolve, reject) => {
+        Vue.http
+          .get(`${API.url}/news`)
+          .then(response => resolve(response.body))
+          .catch(error => reject(error));
+      });
+    },
+    newsImage(id) {},
+  },
 };
 
 export default API;

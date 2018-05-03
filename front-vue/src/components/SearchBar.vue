@@ -1,10 +1,8 @@
 <template>
-  <form class="search-bar z-depth-2" :class="{ focused, opening }"
-    @click="$refs.input.focus()"
-  >
+  <form class="search-bar z-depth-2" :class="{ focused, opening }">
     <div class="input">
-      <app-icon v-if="search.query.length === 0">search</app-icon>
-      <app-icon @click.native="search.query = ''" v-else>arrow_back</app-icon>
+      <app-back-button v-if="$route.name === 'search'"></app-back-button>
+      <app-icon v-else>search</app-icon>
 
       <input type="text" :placeholder="$l.cSearchBar.placeholder"
         v-model="search.query"
@@ -12,6 +10,12 @@
         @focus="focus" @blur="unfocus"
         ref="input"
       >
+
+      <app-icon
+        @click.native="search.query = ''"
+        @mousedown.native.prevent
+        v-if="search.query.length !== 0"
+      >clear</app-icon>
     </div>
 
     <transition
@@ -161,14 +165,13 @@ export default {
     height: 100%
     padding: $padding
 
-    cursor: pointer
-
     @include d-flex(center)
 
     .icon
-      margin-right: $padding
-
       color: c-gray(600)
+
+    .icon:first-child
+      margin-right: $padding
 
 .search-bar
   $border-radius: 2px

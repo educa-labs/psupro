@@ -30,11 +30,9 @@
       <h5 class="title">{{ $l.cUniversity.campus }}</h5>
 
       <div class="content">
-        <div v-for="_campus in campus" :key="`campus-${_campus.id}`">
-          <app-icon>place</app-icon>
-
-          <div>{{ _campus.title }} <div class="address">{{ _campus.address }}</div></div>
-        </div>
+        <app-campus v-for="_campus in campus" :key="`campus-${_campus.id}`"
+          :campus="_campus"
+        ></app-campus>
       </div>
     </section>
   </div>
@@ -43,10 +41,12 @@
 </template>
 
 <script>
+import Campus from './../Campus.vue';
 import Expandible from './../Expandible.vue';
 
 export default {
   components: {
+    'app-campus': Campus,
     'app-expandible': Expandible,
   },
   props: {
@@ -98,23 +98,9 @@ export default {
       padding-top: .25rem
       padding-bottom: .25rem
 
-  section.campus > .content > div
-    $padding: 1.25rem
+  section.campus > .content > .campus
+    transition: background-color .1s
 
-    padding: $padding
-
-    color: $c-black
-
-    @include border-bottom(c-gray(200))
-    @include d-flex(center)
-
-    .icon
-      color: $c-main
-
-      @include icon(24px, $padding)
-    
-    .address
-      color: c-gray(600)
-
-      font-size: $f-small
+    &:focus, &:hover
+      background-color: c-gray(100)
 </style>

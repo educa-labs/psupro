@@ -36,16 +36,26 @@
         </tbody></table>
       </div>
     </section>
+
+    <section>
+      <h5 class="title">{{ $l.cCareer.campus }}</h5>
+
+      <div class="content">
+        <app-campus :campus="campus"></app-campus>
+      </div>
+    </section>
   </div>
 
   <app-spinner v-else></app-spinner>
 </template>
 
 <script>
+import Campus from './../Campus.vue';
 import Expandible from './../Expandible.vue';
 
 export default {
   components: {
+    'app-campus': Campus,
     'app-expandible': Expandible,
   },
   props: {
@@ -56,6 +66,7 @@ export default {
     return {
       career: null,
       // career: this.$parent.$parent.career,
+      campus: null,
 
       fetched: false,
     };
@@ -64,10 +75,15 @@ export default {
     fetch() {
       this.fetched = false;
 
-      this.$API.careers(this.id).then(response => {
-        this.career = this.$f.formatCareer(response);
-
-        put(this.career)
+      Promise.all([
+        this.$API.careers(this.id).then(response => {
+          this.career = this.$f.formatCareer(response);
+        }),
+        this.$API.campus(this.career.campus_id).then(response => {
+          this.campus = response;
+        }),
+      ]).then(() => {
+        put(this.career);
 
         this.fetched = true;
       });
