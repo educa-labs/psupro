@@ -1,54 +1,27 @@
 <template>
   <div class="career-container" v-if="fetched">
     <div class="card career z-depth-1">
-      <app-navigator></app-navigator>
+      <div class="cover" :style="{ backgroundImage: `url(${'http://www.urosario.edu.co/getattachment/4f0337a7-7d99-4f73-a202-6f39cf785b79/Egresados-Rosaristas-de-la-Escuela-de-Medicina-y'})` }">
+        <app-back-button><app-icon>arrow_back</app-icon></app-back-button>
+      </div>
 
-      <section class="university"><div class="content">
-        <app-expandible class="description">
-          <p>{{ university.description }}</p>
-        </app-expandible>
-      </div></section>
+      <div class="card-title">
+        <div>{{ career.title }} PUC</div>
+      </div>
 
-      <section>
-        <h5 class="title">{{ $l.cCareer.weighing }}</h5>
-
-        <div class="content">
-          <table><tbody>
-            <tr v-for="(value, key) in career.weighing" :key="key">
-              <td class="key">{{ value.key }}</td>
-              <td class="value">{{ value.value }}</td>
-            </tr>
-
-            <tr>
-              <td class="key">{{ career.minScore.key }}</td>
-              <td class="value">{{ career.minScore.value }}</td>
-            </tr>
-          </tbody></table>
-        </div>
-      </section>
-
-      <section>
-        <h5 class="title">{{ $l.cCareer.information }}</h5>
-
-        <div class="content">
-          <table><tbody>
-            <tr v-for="(value, key) in career.information" :key="key">
-              <td class="key">{{ value.key }}</td>
-              <td class="value">{{ value.value }}</td>
-            </tr>
-          </tbody></table>
-        </div>
-      </section>
+      <app-tabs :transition="transition"></app-tabs>
     </div>
-  </div>
+  </div> 
+
+  <app-spinner v-else></app-spinner>
 </template>
 
 <script>
-import Expandible from './../Expandible.vue';
+import Tabs from './Tabs.vue';
 
 export default {
   components: {
-    'app-expandible': Expandible,
+    'app-tabs': Tabs,
   },
   props: {
     id: { type: Number, required: true },
@@ -56,32 +29,45 @@ export default {
   data() {
     return {
       career: null,
-      university: { description: '' },
 
       fetched: false,
+
+      transition: '',
     };
   },
   watch: {
-    $route(to) {
-      if (to.name === 'career') this.fetch();
+    $route(to, from) {
+      // if (to.name === 'university' && from.name === 'home') this.fetch();
     },
   },
   methods: {
-    fetch() {
+    reset() {
       this.fetched = false;
 
-      this.$API.careers(this.id).then(response => {
-        this.career = this.$f.formatCareer(response);
-
-        this.$API.universities
-          .universities(this.career.university_id)
-          .then(response => {
-            this.university.description = response.description;
-
-            this.fetched = true;
-          });
-      });
+      this.transition = '';
     },
+    fetch() {
+      this.reset();
+
+      let params = { image: true };
+
+      this.$API.careers(this.id, { params })
+        .then(response => {
+          this.career = response;
+          
+          put(this.career)
+
+          this.fetched = true;
+        });
+    },
+  },
+  beforeRouteUpdate(to, from, next) {
+    if (to.name === 'career' && from.name === 'similar-careers')
+      this.transition = 'slide-right';
+    else if (to.name === 'similar-careers' && from.name === 'career')
+      this.transition = 'slide-left';
+
+    next();
   },
   created() {
     this.fetch();
@@ -96,21 +82,44 @@ export default {
   $padding: 1rem
 
   @include media-up(md)
-    padding: $padding
+    padding: 0 $padding
 
   .career
     @include media-up(md)
       width: calc(#{$breakpoint-md} - 2 * #{$padding})
+      margin: $padding auto
 
 .career
   @include media-down(sm)
     border-radius: 0
     box-shadow: none
 
-  @include media-up(md)
-    margin-right: auto
-    margin-left: auto
+.career > .cover
+  height: 175px
 
-  .description
-    margin: 1rem
+  @include media-up(sm)
+    height: 300px
+
+  @include background-image
+  @include p-relative
+
+  & > .back-button
+    color: $c-white
+
+    @include p-absolute(null, 1rem, null, null, 1rem)
+
+.career > .card-title
+  z-index: 1
+
+  background-color: $c-main
+
+  & > div
+    width: 66%
+    padding: 1rem 2rem
+
+    font-size: $f-large
+    font-weight: 500
+    
+    & > div
+      font-weight: 400
 </style>

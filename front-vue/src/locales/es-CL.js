@@ -10,6 +10,7 @@ export default {
   cCareer: {
     information: 'Información',
     semesters: 'Semestres',
+    similarCareers: 'Carreras Similares',
     weighing: 'Ponderación',
   },
   cFilter: {
