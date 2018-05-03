@@ -16,7 +16,7 @@
           <label for="region">{{ $l.cFilter.region }}</label>
           <app-select id="region" :options="regions" :default="$l.cFilter.default"
             v-model="filters.region"
-            @input="fetchSearchResponse"
+            @input="fetchSearchResponse2"
           ></app-select>
 
           <label for="city">{{ $l.cFilter.city }}</label>
@@ -56,7 +56,7 @@ export default {
 
       filters: {
         city: 0,
-        'degree_type': 0,
+        degree_type: 0,
         region: 0,
       },
 
@@ -105,6 +105,9 @@ export default {
 
         this.$store.dispatch('fetchSearchResponse', payload);
       });
+    },
+    fetchSearchResponse2() {
+      this.$emit('filter', this.filters);
     },
     open() {
       this.$store.dispatch('showOverlay', { method: this.close, zIndex: 1015 });

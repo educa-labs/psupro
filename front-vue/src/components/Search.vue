@@ -5,7 +5,7 @@
     <app-hero class="closed" v-if="['xs', 'sm'].includes($mq)"></app-hero>
 
     <section class="results" :style="{ 'padding-bottom': `${filterHeight}px` }">
-      <template v-if="!emptySearchResponse">
+      <template v-if="!isResponseEmpty">
         <h5 class="title">{{ $l.cSearch.results }}</h5>
 
         <router-link v-for="(card, index) in response" :key="`card-${index}`"
@@ -20,7 +20,7 @@
       <div class="empty" v-else>{{ $l.empty }}</div>
     </section>
 
-    <app-filter :height="filterHeight"></app-filter>
+    <app-filter @filter="setFilter" :height="filterHeight"></app-filter>
   </div>
 </template>
 
@@ -38,76 +38,122 @@ export default {
   data() {
     return {
       response: [],
-      page: 0,
-      pageSize: 5,
+      filters: null,
+      page: -1,
+      pageSize: 10,
+      onLastPage: false,
 
       fetching: false,
-      onLastPage: false,
 
       filterHeight: 42,
     };
   },
   computed: {
-    emptySearchResponse() {
+    isResponseEmpty() {
       return !this.fetching && this.response.length === 0;
     },
   },
   watch: {
     $route(to, from) {
-      if (to.name === 'search') this.fetch();
+      if (to.name === 'search') {
+        this.response = [];
+        this.filters = null;
+        this.page = 0;
+        this.onLastPage = false;
+        this.fetching = false;
+
+        this.fetchNextPage();
+      }
     },
   },
   methods: {
-    fetch(query, page) {
-      this.fetching = true;
-
-      this.$store
-        .dispatch('fetchSearchResponse', {
-          query,
-          page,
-          page_size: this.pageSize,
-        })
-        .then(response => {
-          if (
-            response.careers.length === 0 &&
-            response.universities.length === 0
-          ) {
-            this.fetching = false;
-            this.onLastPage = true;
-          } else {
-            this.response.push(
-              ...response.careers.map(career => {
-                return {
-                  name: 'career',
-                  params: { id: career.id },
-                  component: 'app-career-card',
-                  props: { career },
-                };
-              })
-            );
-
-            this.response.push(
-              ...response.universities.map(university => {
-                return {
-                  name: 'university',
-                  params: { id: university.id },
-                  component: 'app-university-card',
-                  props: { university },
-                };
-              })
-            );
-
-            this.page = page;
-
-            this.fetching = false;
-          }
-        });
+    isSearchResponseEmpty(response) {
+      return (
+        response.careers.length === 0 && response.universities.length === 0
+      );
     },
-    fetchDefaultPage() {
-      this.fetch(this.$route.query.query, 0);
+    mergeSearchResponse(response) {
+      this.response.push(
+        ...response.careers.map(career => {
+          return {
+            name: 'career',
+            params: { id: career.id },
+            component: 'app-career-card',
+            props: { career },
+          };
+        })
+      );
+
+      this.response.push(
+        ...response.universities.map(university => {
+          return {
+            name: 'university',
+            params: { id: university.id },
+            component: 'app-university-card',
+            props: { university },
+          };
+        })
+      );
+    },
+    fetch(query, filters = {}, page) {
+      return new Promise((resolve, reject) => {
+        let payload = { query, filters, page, page_size: this.pageSize };
+
+        this.$store
+          .dispatch('fetchSearchResponse', payload)
+          .then(response => {
+            if (this.isSearchResponseEmpty(response)) {
+              put('Vacío!', page, {...filters})
+              this.onLastPage = true;
+
+              if (this.page > page) this.page = page - 1;
+
+              resolve();
+            } else {
+              put(response);
+
+              this.mergeSearchResponse(response);
+
+              resolve();
+            }
+          })
+          .catch(error => reject(error));
+      });
     },
     fetchNextPage() {
-      this.fetch(this.$route.query.query, this.page + 1);
+      return new Promise((resolve, reject) => {
+        let nextPage = this.page + 1;
+
+        this.fetching = true;
+
+        this.fetch(this.$route.query.query, this.filters, nextPage)
+          .then(() => {
+            this.page = nextPage;
+
+            this.fetching = false;
+
+            resolve();
+          })
+          .catch(error => reject(error));
+      });
+    },
+    refetchAll() {
+      this.response = [];
+      this.onLastPage = false;
+
+      let promises = [];
+
+      for (let i = 1; i < this.page + 1; i++)
+        promises.push(this.fetch(this.$route.query.query, this.filters, i));
+
+      this.fetching = true;
+
+      Promise.all(promises).then(() => (this.fetching = false));
+    },
+    setFilter(filters) {
+      this.filters = filters;
+
+      this.refetchAll();
     },
     getOffsetHeight() {
       let heroOffsetHeight = ['xs', 'sm'].includes(this.$mq) ? 0 : 80;
@@ -116,10 +162,10 @@ export default {
     },
   },
   created() {
-    this.fetchDefaultPage();
+    this.fetchNextPage();
 
     window.onscroll = () => {
-      if (!this.onLastPage) {
+      if (!this.fetching && !this.onLastPage) {
         let windowBottomOffset = window.innerHeight + window.scrollY;
 
         if (windowBottomOffset === this.getOffsetHeight()) {
