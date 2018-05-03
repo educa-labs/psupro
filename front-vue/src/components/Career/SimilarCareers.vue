@@ -32,19 +32,36 @@ export default {
       return new Promise(resolve => {
         let params = { image: true };
 
-        this.$API.universities
-          .universities(1, { params })
-          .then(university => {
-            this.university = university;
+        this.$API
+          .similar({ id: this.id, k: 5 })
+          .then(response => {
+            put(response);
 
-            this.$API.universities.careers(1).then(careers => {
-              this.careers = careers;
+            /*
+            this.careers = response;
 
-              this.fetched = true;
+            this.fetched = true;
 
-              resolve();
-            });
+            resolve();
+            */
+          })
+          .catch(error => {
+            put(error);
           });
+
+        /*
+        this.$API.universities.universities(1, { params }).then(university => {
+          this.university = university;
+
+          this.$API.universities.careers(1).then(careers => {
+            this.careers = careers;
+
+            this.fetched = true;
+
+            resolve();
+          });
+        });
+        */
       });
     },
   },

@@ -44,6 +44,20 @@ const API = {
         .catch(error => reject(error));
     });
   },
+  similar(parameters) {
+    return new Promise((resolve, reject) => {
+      Vue.http
+        .get(`${API.url}/similar`, { params: parameters })
+        .then(response => {
+          resolve(
+            response.body.map(APICareer => {
+              preprocessors.careers(APICareer);
+            })
+          );
+        })
+        .catch(error => reject(error));
+    });
+  },
   universities: {
     universities(id, config) {
       return new Promise((resolve, reject) => {
