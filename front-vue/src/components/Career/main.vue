@@ -6,7 +6,7 @@
       </div>
 
       <div class="card-title">
-        <div>{{ career.title }} PUC</div>
+        <div>{{ career.title }} {{ career.university.initials }}</div>
       </div>
 
       <app-tabs :transition="transition"></app-tabs>
