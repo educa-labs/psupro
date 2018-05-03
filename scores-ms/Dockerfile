@@ -1,11 +1,13 @@
-FROM ubuntu:latest
+FROM python:3.6.5-stretch
 RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
 RUN mkdir /app
 WORKDIR /app
-COPY ./score_predict ./score_predict
-COPY ./db.py ./db.py
 # TODO: copy all neded files and serialized models 
+COPY ./newton ./newton
+COPY ./score_regressor ./score_regressor
+COPY ./db.py ./db.py
+COPY ./main.py ./main.py
+COPY ./requirements.txt ./requirements.txt
+COPY ./wsgi.py ./wsgi.py
+
 RUN pip install -r requirements.txt
-ENTRYPOINT ["python3"]
-CMD ["app.py"]
