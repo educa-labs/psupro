@@ -72,25 +72,26 @@ else
   universities_hash = {}
   read_tsv('universidades.tsv').each do |row|
     University.create! do |u|
-      u.id =                row['ID'],
-      u.foundation =        row['Fundación'].to_datetime,
-      u.website =           row['Sitio web'],
-      u.freeness =          boolean_hash[row['Gratuidad']],
-      u.motto =             row['Lema'],
+      u.id =                row['ID']
+      u.foundation =        row['Fundación'].to_datetime
+      u.website =           row['Sitio web']
+      u.freeness =          boolean_hash[row['Gratuidad']]
+      u.motto =             row['Lema']
       u.title =             row['Nombre']
-      u.initials =          row['Sigla'],
-      u.students =          row['Nro de Alumnos'],
-      u.teachers =          row['Nro de Profesores'],
-      u.degrees =           row['Numero de grados'],
-      u.postgraduates =     row['Nro de post-grados'],
-      u.doctorates =        row['Nro de doctorados'],
-      u.description =       row['Descripción'],
-      u.level =             row['Nivel'],
-      u.university_type_id =   university_types_hash[row['Tipo']].id,
-      u.profile_picture = row['ID'],
-      u.cover_picture = row['ID'],
-      u.profile_extension = "png",
+      u.initials =          row['Sigla']
+      u.students =          row['Nro de Alumnos']
+      u.teachers =          row['Nro de Profesores']
+      u.degrees =           row['Numero de grados']
+      u.postgraduates =     row['Nro de post-grados']
+      u.doctorates =        row['Nro de doctorados']
+      u.description =       row['Descripción']
+      u.level =             row['Nivel']
+      u.university_type_id =   university_types_hash[row['Tipo']].id
+      u.profile_picture = row['ID']
+      u.cover_picture = row['ID']
+      u.profile_extension = "png"
       u.cover_extension = "png"
+      puts u.initials
       puts "/images/seeds/cover/#{u.cover_picture}.#{u.cover_extension}"
       encode_picture(Rails.public_path.to_s + "/images/seeds/cover/#{u.cover_picture}.#{u.cover_extension}","universities/cover/#{row['ID']}")
       encode_picture(Rails.public_path.to_s + "/images/seeds/profile/#{u.profile_picture}.#{u.profile_extension}","universities/profile/#{row['ID']}")
