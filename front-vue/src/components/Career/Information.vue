@@ -60,12 +60,10 @@ export default {
   },
   props: {
     id: { type: Number },
-    // career: { type: Object, required: true },
   },
   data() {
     return {
       career: null,
-      // career: this.$parent.$parent.career,
       campus: null,
 
       fetched: false,
@@ -75,17 +73,14 @@ export default {
     fetch() {
       this.fetched = false;
 
-      Promise.all([
-        this.$API.careers(this.id).then(response => {
-          this.career = this.$f.formatCareer(response);
-        }),
+      this.$API.careers(this.id).then(response => {
+        this.career = this.$f.formatCareer(response);
+
         this.$API.campus(this.career.campus_id).then(response => {
           this.campus = response;
-        }),
-      ]).then(() => {
-        put(this.career);
 
-        this.fetched = true;
+          this.fetched = true;
+        });
       });
     },
   },

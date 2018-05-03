@@ -8,6 +8,7 @@ export default {
       university_id: APICareer.university_id,
       description: APICareer.description,
       campus_id: APICareer.campu_id,
+      id: APICareer.id,
       weighing: {
         language: { key: 'Lenguaje', value: APICareer.weighing.language },
         mathematics: { key: 'Matemáticas', value: APICareer.weighing.math },

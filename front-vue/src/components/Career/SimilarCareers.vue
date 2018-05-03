@@ -3,7 +3,7 @@
     <router-link v-for="career in careers" :key="`career-${career.id}`"
       :to="{ name: 'career', params: { id: career.id } }"
     >
-      <app-career-card :university="university" :career="career"></app-career-card>
+      <app-career-card :career="career"></app-career-card>
     </router-link>
   </div>
 
@@ -37,12 +37,12 @@ export default {
           .then(response => {
             put(response);
 
-            /*
             this.careers = response;
 
             this.fetched = true;
 
             resolve();
+            /*
             */
           })
           .catch(error => {

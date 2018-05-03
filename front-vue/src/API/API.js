@@ -51,7 +51,7 @@ const API = {
         .then(response => {
           resolve(
             response.body.map(APICareer => {
-              preprocessors.careers(APICareer);
+              return preprocessors.careers(APICareer);
             })
           );
         })
