@@ -89,8 +89,10 @@ export default {
       });
     },
     fetchHeavySearchResponse() {
-      this.$store.dispatch('fetchSearchResponse', { query: this.search.query });
-      this.$router.push({ name: 'search' });
+      this.$router.push({
+        name: 'search',
+        query: { query: this.search.query },
+      });
 
       this.$refs.input.blur();
     },

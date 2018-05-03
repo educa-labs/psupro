@@ -78,12 +78,20 @@ const API = {
       });
     },
   },
-  search(query, filters = null, minimize = false, pictures = false) {
-    let params = { text: query, ...filters, minimize, pictures };
-
+  campus(id) {
     return new Promise((resolve, reject) => {
       Vue.http
-        .get(`${API.url}/search`, { params })
+        .get(`${API.url}/campus/${id}`)
+        .then(response => {
+          resolve(response.body);
+        })
+        .catch(error => reject(error));
+    });
+  },
+  search(parameters) {
+    return new Promise((resolve, reject) => {
+      Vue.http
+        .get(`${API.url}/search`, { params: parameters })
         .then(response => resolve(preprocessors.search(response.body)))
         .catch(error => reject(error));
     });

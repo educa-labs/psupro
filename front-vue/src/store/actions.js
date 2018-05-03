@@ -8,14 +8,19 @@ export default {
       resolve();
     });
   },
-  fetchSearchResponse(context, { query, filters }) {
+  fetchSearchResponse(context, { query, filters, ..._parameters }) {
     return new Promise(resolve => {
       context.commit('updateSearch', { fetching: true });
 
-      Vue.prototype.$API.search(query, filters, false, true).then(response => {
+      let parameters = Object.assign(
+        { text: query, ...filters, ..._parameters },
+        { minimize: false, pictures: true }
+      );
+
+      Vue.prototype.$API.search(parameters).then(response => {
         context.commit('updateSearch', { query, response, fetching: false });
 
-        resolve();
+        resolve(response);
       });
     });
   },

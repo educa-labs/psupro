@@ -3,7 +3,10 @@ import API from './API';
 export default {
   careers(APICareer) {
     return {
+      title: APICareer.title,
+      university: APICareer.university,
       university_id: APICareer.university_id,
+      description: APICareer.description,
       weighing: {
         language: { key: 'Lenguaje', value: APICareer.weighing.language },
         mathematics: { key: 'Matemáticas', value: APICareer.weighing.math },

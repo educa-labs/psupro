@@ -1,6 +1,8 @@
 class Api::V1::SearchController < ApplicationController
   # before_action :authenticate_with_token!, only: [:create]
   respond_to :json
+
+  PAGE_SIZE = 10
   
   # /search?text=string&minimize=boolean&pictures=boolean&degree_type=integer
   def index
@@ -32,7 +34,9 @@ class Api::V1::SearchController < ApplicationController
       university_result = University.search(
         params[:text],
         fields: [:title, :description, :initials],
-        where: where_university
+        where: where_university,
+        page: params[:page] || 1, # Pagination
+        per_page: params[:page_size] || PAGE_SIZE
         )
       
       minimize = ActiveModel::Type::Boolean.new.cast(params[:minimize]) # Casting param to boolean and result minimization if necessary.
@@ -43,7 +47,9 @@ class Api::V1::SearchController < ApplicationController
         params[:text],
         fields: [:title,:description],
         where: where_carreer,
-        includes: [:university,:campu] # To prevent n+1 query.
+        includes: [:university,:campu],   # To prevent n+1 query.
+        page: params[:page] || 1, # Pagination
+        per_page: params[:page_size] || PAGE_SIZE
         )
       # Result minimization if necessary.
       result[:carreers] = minimize ? carreer_result.map { |x| {id: x.id, title: x.title, university_title: x.university.title, university_id:x.university.id} } : carreer_result.map {|x| x.as_json(methods: [:campu_name,:university_title,:university_initials])}

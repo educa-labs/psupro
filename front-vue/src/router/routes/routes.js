@@ -1,16 +1,19 @@
 import Vue from 'vue';
+import VueRouter from 'vue-router';
 import store from './../../store/store';
 
 import Root from './../../components/Root.vue';
 import Home from './../../components/Home.vue';
+
 import Career from './../../components/Career/main.vue';
+import CareerInformation from './../../components/Career/Information.vue';
+import SimilarCareers from './../../components/Career/SimilarCareers.vue';
 
 import University from './../../components/University/main.vue';
-import Information from './../../components/University/Information.vue';
+import UniversityInformation from './../../components/University/Information.vue';
 import Careers from './../../components/University/Careers.vue';
 
 import Search from './../../components/Search.vue';
-import VueRouter from 'vue-router';
 
 export default [
   {
@@ -21,8 +24,21 @@ export default [
       {
         path: '/career/:id',
         component: Career,
-        name: 'career',
         props: route => ({ id: Number(route.params.id) }),
+        children: [
+          {
+            path: '',
+            component: CareerInformation,
+            name: 'career',
+            props: route => ({ id: Number(route.params.id) }),
+          },
+          {
+            path: 'similar-careers',
+            component: SimilarCareers,
+            name: 'similar-careers',
+            props: route => ({ id: Number(route.params.id) }),
+          },
+        ],
       },
       {
         path: '/university/:id',
@@ -31,7 +47,7 @@ export default [
         children: [
           {
             path: '',
-            component: Information,
+            component: UniversityInformation,
             name: 'university',
             props: route => ({ id: Number(route.params.id) }),
           },
