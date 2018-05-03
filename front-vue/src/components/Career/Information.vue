@@ -31,7 +31,7 @@
         <table><tbody>
           <tr v-for="(value, key) in career.information" :key="key">
             <td class="key">{{ value.key }}</td>
-            <td class="value">{{ value.value }}</td>
+            <td class="value" :class="{ undefined: !value.value }">{{ value.value || $l.undefined }}</td>
           </tr>
         </tbody></table>
       </div>
@@ -104,4 +104,7 @@ export default {
 
   .description
     margin: 1rem
+    font-weight: 300
+    color: c-gray(900)
+    color: $c-black
 </style>

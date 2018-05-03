@@ -114,7 +114,7 @@ export default {
   & > .back-button
     color: $c-white
 
-    @include icon(32px)
+    @include icon(28px)
     @include p-absolute(null, 1rem, null, null, 1rem)
 
   & > .profile

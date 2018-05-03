@@ -2,6 +2,8 @@
   <div class="career-container" v-if="fetched">
     <div class="card career z-depth-1">
       <div class="cover" :style="{ backgroundImage: `url(${'http://www.urosario.edu.co/getattachment/4f0337a7-7d99-4f73-a202-6f39cf785b79/Egresados-Rosaristas-de-la-Escuela-de-Medicina-y'})` }">
+        <div class="overlay"></div>
+
         <app-back-button><app-icon>arrow_back</app-icon></app-back-button>
       </div>
 
@@ -103,9 +105,15 @@ export default {
   @include background-image
   @include p-relative
 
+  & > .overlay
+    @include p-absolute(0, 0, 0, 0 ,0)
+
+    background-color: rgba(0, 0, 0, .25);
+
   & > .back-button
     color: $c-white
 
+    @include icon(28px)
     @include p-absolute(null, 1rem, null, null, 1rem)
 
 .career > .card-title
@@ -115,9 +123,9 @@ export default {
 
   & > div
     width: 66%
-    padding: 1rem 2rem
+    padding: 1rem 1.5rem
 
-    font-size: $f-large
+    font-size: $f-x-large
     font-weight: 500
     
     & > div

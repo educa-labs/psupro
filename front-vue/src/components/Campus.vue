@@ -40,7 +40,7 @@ export default {
     @include icon(24px, $padding)
   
   .address
-    color: c-gray(600)
+    color: c-gray(500)
 
     font-size: $f-small
 </style>

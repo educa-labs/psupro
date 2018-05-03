@@ -5,6 +5,7 @@ export default {
   empty: 'Sin resultados',
   in: 'en',
   loading: 'Cargando',
+  undefined: 'Desconocido',
   universities: 'Universidades',
 
   cCareer: {

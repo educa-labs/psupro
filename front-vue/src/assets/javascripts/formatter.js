@@ -29,15 +29,22 @@ const formatter = {
     APICareer.information.vacancies.value = formatter.formatNumber(
       APICareer.information.vacancies.value
     );
-    APICareer.information.averageSalary.value = formatter.formatMoney(
+    
+    let averageSalary = APICareer.information.averageSalary.value;
+
+    APICareer.information.averageSalary.value = averageSalary ? formatter.formatMoney(
       APICareer.information.averageSalary.value
-    );
+    ) : undefined;
+
     APICareer.information.tariff.value = formatter.formatMoney(
       APICareer.information.tariff.value
     );
-    APICareer.information.employability.value = `${
-      APICareer.information.employability.value
-    }%`;
+
+    let employability = APICareer.information.employability.value;
+
+    APICareer.information.employability.value = employability ? `${
+      employability
+    }%` : undefined;
     APICareer.information.duration.value = `${
       APICareer.information.duration.value
     } ${store.state.locale.cCareer.semesters}`.toLowerCase();

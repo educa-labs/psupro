@@ -2,6 +2,20 @@ import API from './API';
 
 export default {
   careers(APICareer) {
+    let weighingSciencesValue = APICareer.weighing.science,
+      weighingHistoryValue = APICareer.weighing.history;
+
+    let weighingSHKey = 'Ciencias o Historia';
+    let weighingSHValue = weighingSciencesValue;
+
+    if (weighingSciencesValue && !weighingHistoryValue) {
+      weighingSHKey = 'Ciencias';
+      weighingSHValue = weighingSciencesValue;
+    } else if (!weighingSciencesValue && weighingHistoryValue) {
+      weighingSHKey = 'Historia';
+      weighingSHValue = weighingHistoryValue;
+    }
+
     return {
       title: APICareer.title,
       university: APICareer.university,
@@ -12,11 +26,11 @@ export default {
       weighing: {
         language: { key: 'Lenguaje', value: APICareer.weighing.language },
         mathematics: { key: 'Matemáticas', value: APICareer.weighing.math },
-        sciences: { key: 'Ciencias', value: APICareer.weighing.science },
+        sh: { key: weighingSHKey, value: weighingSHValue },
         nem: { key: 'NEM', value: APICareer.weighing.NEM },
         ranking: { key: 'Ranking', value: APICareer.weighing.ranking },
       },
-      minScore: { key: 'Corte 2017', value: APICareer.last_cut },
+      minScore: { key: 'Puntaje de corte 2017', value: APICareer.last_cut },
       information: {
         area: { key: 'Área', value: APICareer.area_title },
         vacancies: { key: 'Vacantes', value: APICareer.openings },

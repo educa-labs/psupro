@@ -5,7 +5,7 @@
   >
     <slot></slot>
 
-    <app-icon v-if="expandible">chevron_right</app-icon>
+    <app-icon class="chevron" v-if="expandible">chevron_right</app-icon>
   </div>
 </template>
 
@@ -44,9 +44,13 @@ export default {
   @include d-flex
   @include p-relative
 
-  .icon
-    margin-top: auto
-    margin-bottom: auto
+.expandible > .chevron
+  margin-top: auto
+  margin-bottom: auto
+
+  transition: transform .2s
+
+  @include icon(32px)
 
 .expandible::after
   width: 100%
@@ -61,8 +65,8 @@ export default {
 .expandible.open
   cursor: default
 
-  .icon
-    display: none
+.expandible.open > .chevron
+  display: none
 
 .expandible.open::after
   display: none
