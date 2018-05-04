@@ -20,31 +20,39 @@ const formatter = {
   ...accounting,
   formatCareer(APICareer) {
     Object.values(APICareer.weighing).forEach(
-      weight => (weight.value = `${weight.value}%`)
+      weight => (weight.value = weight.value ? `${weight.value}%` : undefined)
     );
 
-    APICareer.minScore.value = formatter.formatNumber(
-      APICareer.minScore.value
-    );
-    APICareer.information.vacancies.value = formatter.formatNumber(
-      APICareer.information.vacancies.value
-    );
-    
+    let minScore = APICareer.minScore.value;
+
+    APICareer.minScore.value = minScore
+      ? formatter.formatNumber(minScore)
+      : undefined;
+
+    let vacancies = APICareer.information.vacancies.value;
+
+    APICareer.information.vacancies.value = vacancies
+      ? formatter.formatNumber(vacancies)
+      : undefined;
+
     let averageSalary = APICareer.information.averageSalary.value;
 
-    APICareer.information.averageSalary.value = averageSalary ? formatter.formatMoney(
-      APICareer.information.averageSalary.value
-    ) : undefined;
+    APICareer.information.averageSalary.value = averageSalary
+      ? formatter.formatMoney(averageSalary)
+      : undefined;
 
-    APICareer.information.tariff.value = formatter.formatMoney(
-      APICareer.information.tariff.value
-    );
+    let tariff = APICareer.information.tariff.value;
+
+    APICareer.information.tariff.value = tariff
+      ? formatter.formatMoney(tariff)
+      : undefined;
 
     let employability = APICareer.information.employability.value;
 
-    APICareer.information.employability.value = employability ? `${
-      employability
-    }%` : undefined;
+    APICareer.information.employability.value = employability
+      ? `${employability}%`
+      : undefined;
+
     APICareer.information.duration.value = `${
       APICareer.information.duration.value
     } ${store.state.locale.cCareer.semesters}`.toLowerCase();

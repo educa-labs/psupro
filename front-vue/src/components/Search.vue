@@ -105,15 +105,12 @@ export default {
           .dispatch('fetchSearchResponse', payload)
           .then(response => {
             if (this.isSearchResponseEmpty(response)) {
-              put('Vacío!', page, {...filters})
               this.onLastPage = true;
 
               if (this.page > page) this.page = page - 1;
 
               resolve();
             } else {
-              put(response);
-
               this.mergeSearchResponse(response);
 
               resolve();
@@ -192,7 +189,7 @@ export default {
   $padding: 1rem
 
   @include media-up(md)
-    width: calc(#{$breakpoint-md} * .66 - 2 * #{$padding})
+    width: calc(#{$breakpoint-md} - 2 * #{$padding})
     margin: $padding auto
 
   @include canvas
@@ -222,7 +219,7 @@ export default {
     margin-left: 0
 
   width: 100%
-  max-width: calc(#{$breakpoint-md} * .66) 
+  max-width: calc(#{$breakpoint-md}) 
 
 .search > .results > .content > a:last-child
   margin-bottom: 0

@@ -16,7 +16,7 @@
           <label for="region">{{ $l.cFilter.region }}</label>
           <app-select id="region" :options="regions" :default="$l.cFilter.default"
             v-model="filters.region"
-            @input="fetchSearchResponse2"
+            @input="fetchSearchResponse22"
           ></app-select>
 
           <label for="city">{{ $l.cFilter.city }}</label>
@@ -81,6 +81,18 @@ export default {
         return Object.assign({}, { key, value });
       });
     },
+    fetchCitiesPerRegion() {
+      return new Promise((resolve, reject) => {
+        this.$API.constants
+          .citiesPerRegion(this.filters.region)
+          .then(response => {
+            this.cities = this.format(response);
+
+            resolve();
+          })
+          .catch(error => reject(error));
+      });
+    },
     fetch() {
       Promise.all([
         this.$API.constants.cities().then(response => {
@@ -108,6 +120,13 @@ export default {
     },
     fetchSearchResponse2() {
       this.$emit('filter', this.filters);
+    },
+    fetchSearchResponse22() {
+      this.fetchCitiesPerRegion().then(() => {
+        this.filters.city = 0;
+
+        this.$emit('filter', this.filters);
+      });
     },
     open() {
       this.$store.dispatch('showOverlay', { method: this.close, zIndex: 1015 });

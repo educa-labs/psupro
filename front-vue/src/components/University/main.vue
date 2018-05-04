@@ -45,9 +45,14 @@ export default {
 
       if (
         routes.includes(to.name) &&
-        !(routes.includes(from.name) && to.params.id === from.params.id)
-      )
+        routes.includes(from.name) &&
+        to.params.id !== from.params.id
+      ) {
         this.fetch();
+      }
+      if (routes.includes(to.name) && !routes.includes(from.name)) {
+        this.fetch();
+      }
     },
   },
   methods: {
@@ -147,11 +152,9 @@ export default {
     width: 66%
     padding: 1rem
 
-    text-transform: uppercase
-
-    font-size: $f-large
+    font-size: $f-x-large
     font-weight: 500
     
     & > div
-      font-weight: 400
+      font-size: 1.1rem
 </style>

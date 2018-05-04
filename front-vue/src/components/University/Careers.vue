@@ -68,6 +68,9 @@ export default {
   display: block
   margin-bottom: .75rem
 
+.careers > a:last-child
+  margin-bottom: 0
+
 .careers > a > .career-card
   &:focus, &:hover
     background-color: c-gray(100)

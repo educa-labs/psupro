@@ -5,6 +5,7 @@ Vue.use(VueResource);
 
 // Preprocessors for each API endpoint
 import preprocessors from './preprocessors';
+import { puts } from 'util';
 
 const API = {
   url: 'http://localhost:3000',
@@ -119,6 +120,20 @@ const API = {
           .get(`${API.url}/cities`)
           .then(response =>
             resolve(preprocessors.constants.cities(response.body))
+          )
+          .catch(error => reject(error));
+      });
+    },
+    citiesPerRegion(id) {
+      return new Promise((resolve, reject) => {
+        Vue.http
+          .get(`${API.url}/regions/${id}/cities`)
+          .then(response =>
+            resolve(
+              response.body.map(APICareer => {
+                return preprocessors.constants.cities(APICareer);
+              })
+            )
           )
           .catch(error => reject(error));
       });

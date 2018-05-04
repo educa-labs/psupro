@@ -1,6 +1,6 @@
 <template>
   <div class="select">
-    <input type="text" readonly :value="_options[value].key" @click="open">
+    <input type="text" readonly :value="_options[index].key" @click="open">
 
     <app-icon>arrow_drop_down</app-icon>
   </div>
@@ -24,9 +24,22 @@ export default {
   data() {
     return {
       _options: null,
+      index: 0,
     };
   },
+  watch: {
+    options(newOptions) {
+      this.parseOptions(newOptions);
+    },
+  },
   methods: {
+    parseOptions(options) {
+      this._options = JSON.parse(JSON.stringify(options));
+
+      if (this.default) {
+        this._options.unshift({ value: 0, key: this.default });
+      }
+    },
     open() {
       this.$store.dispatch('mountOverlayComponent', {
         is: 'app-select-options',
@@ -37,15 +50,13 @@ export default {
       });
     },
     handleOptionClick(index) {
+      this.index = index;
+
       this.$emit('input', this._options[index].value);
     },
   },
   created() {
-    this._options = JSON.parse(JSON.stringify(this.options));
-
-    if (this.default) {
-      this._options.unshift({ value: 0, key: this.default });
-    }
+    this.parseOptions(this.options);
   },
 };
 </script>

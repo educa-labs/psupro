@@ -28,7 +28,7 @@
             <div>{{ $l.careers }}</div>
 
             <ul><li v-for="career in search.response.careers.slice(0, 5)" :key="`career-${career.id}`">
-              <router-link :to="{ name: 'career', params: { id: career.id }}">
+              <router-link :to="{ name: 'career', params: { id: career.id }}" @click.native="unfocus">
                 <app-icon>school</app-icon> <span>{{ career.title }} <div>{{ career.university_title }}</div></span>
               </router-link>
             </li></ul>
@@ -38,7 +38,7 @@
             <div>{{ $l.universities }}</div>
 
             <ul><li v-for="university in search.response.universities.slice(0, 5)" :key="`university-${university.id}`">
-              <router-link :to="{ name: 'university', params: { id: university.id }}">
+              <router-link :to="{ name: 'university', params: { id: university.id }}" @click.native="unfocus">
                 <app-icon>account_balance</app-icon> {{ university.title }}
               </router-link>
             </li></ul>
@@ -101,7 +101,6 @@ export default {
       this.$API
         .search(parameters)
         .then(response => {
-          put(response);
           this.search.response = response;
         })
         .catch(error => put(error));

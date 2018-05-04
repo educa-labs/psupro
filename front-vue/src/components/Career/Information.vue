@@ -13,12 +13,12 @@
         <table><tbody>
           <tr v-for="(value, key) in career.weighing" :key="key">
             <td class="key">{{ value.key }}</td>
-            <td class="value">{{ value.value }}</td>
+            <td class="value" :class="{ undefined: !value.value }">{{ value.value || $l.undefined }}</td>
           </tr>
 
           <tr>
             <td class="key">{{ career.minScore.key }}</td>
-            <td class="value">{{ career.minScore.value }}</td>
+            <td class="value" :class="{ undefined: !career.minScore.value }">{{ career.minScore.value || $l.undefined }}</td>
           </tr>
         </tbody></table>
       </div>

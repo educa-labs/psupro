@@ -6,23 +6,27 @@
       </app-expandible>
     </div></section>
 
-    <section class="row">
-      <div class="col-xs-12 col-sm-6">
-        <table><tbody>
-          <tr v-for="(value, key) in university.first" :key="key">
-            <td class="key">{{ value.key }}</td>
-            <td class="value">{{ value.value }}</td>
-          </tr>
-        </tbody></table>
-      </div>
+    <section>
+      <h5 class="title">{{ $l.cUniversity.information }}</h5>
 
-      <div class="col-xs-12 col-sm-6">
-        <table><tbody>
-          <tr v-for="(value, key) in university.second" :key="key">
-            <td class="key">{{ value.key }}</td>
-            <td class="value">{{ value.value }}</td>
-          </tr>
-        </tbody></table>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <table><tbody>
+            <tr v-for="(value, key) in university.first" :key="key">
+              <td class="key">{{ value.key }}</td>
+              <td class="value">{{ value.value }}</td>
+            </tr>
+          </tbody></table>
+        </div>
+
+        <div class="col-xs-12 col-sm-6">
+          <table><tbody>
+            <tr v-for="(value, key) in university.second" :key="key">
+              <td class="key">{{ value.key }}</td>
+              <td class="value">{{ value.value }}</td>
+            </tr>
+          </tbody></table>
+        </div>
       </div>
     </section>
 
@@ -93,6 +97,9 @@ export default {
   section.university
     .description
       margin: 1rem
+      font-weight: 300
+      color: c-gray(900)
+      color: $c-black
     
     .row
       padding-top: .25rem
