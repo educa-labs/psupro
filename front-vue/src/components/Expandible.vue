@@ -54,7 +54,7 @@ export default {
 
 .expandible::after
   width: 100%
-  height: 20px
+  height: 50%
 
   content: ''
 

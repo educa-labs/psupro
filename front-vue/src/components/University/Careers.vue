@@ -3,7 +3,7 @@
     <router-link v-for="career in careers" :key="`career-${career.id}`"
       :to="{ name: 'career', params: { id: career.id } }"
     >
-      <app-career-card :university="university" :career="career"></app-career-card>
+      <app-career-card :career="career"></app-career-card>
     </router-link>
   </div>
 
@@ -38,6 +38,10 @@ export default {
             this.university = university;
 
             this.$API.universities.careers(this.id).then(careers => {
+              careers.forEach(career => {
+                career.university_picture = university.profile;
+              });
+
               this.careers = careers;
 
               this.fetched = true;
@@ -58,11 +62,13 @@ export default {
 @import './../../assets/stylesheets/main'
 
 .careers
-  padding: 2rem
+  padding: .75rem
+
+.careers > a
+  display: block
+  margin-bottom: .75rem
 
 .careers > a > .career-card
-  transition: background-color .1s
-
   &:focus, &:hover
     background-color: c-gray(100)
 

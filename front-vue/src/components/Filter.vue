@@ -22,13 +22,13 @@
           <label for="city">{{ $l.cFilter.city }}</label>
           <app-select id="city" :options="cities" :default="$l.cFilter.default"
             v-model="filters.city"
-            @input="fetchSearchResponse"
+            @input="fetchSearchResponse2"
           ></app-select>
 
           <label for="degree-type">{{ $l.cFilter.degreeType }}</label>
           <app-select id="degree-type" :options="degreeTypes" :default="$l.cFilter.default"
             v-model="filters.degreeType"
-            @input="fetchSearchResponse"
+            @input="fetchSearchResponse2"
           ></app-select>
         </form>
       </div>
@@ -122,7 +122,7 @@ export default {
     clear() {
       Object.keys(this.filters).forEach(key => (this.filters[key] = 0));
 
-      this.fetchSearchResponse();
+      this.fetchSearchResponse2();
     },
     enter(el, done) {
       if (!this.closed) {
@@ -225,6 +225,8 @@ export default {
 
       grid-template-columns: auto 1fr
       grid-row-gap: 1rem
+
+      padding-bottom: 1rem
 
       label
         margin-right: .75rem

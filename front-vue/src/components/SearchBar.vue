@@ -1,8 +1,8 @@
 <template>
   <form class="search-bar z-depth-2" :class="{ focused, opening }">
     <div class="input">
-      <app-back-button v-if="$route.name === 'search'"></app-back-button>
-      <app-icon v-else>search</app-icon>
+      <!-- <app-back-button v-if="$route.name === 'search'"></app-back-button> -->
+      <app-icon>search</app-icon>
 
       <input type="text" :placeholder="$l.cSearchBar.placeholder"
         v-model="search.query"
@@ -24,19 +24,23 @@
     >
       <div class="search-response" @mousedown.prevent v-if="focused">
         <template v-if="search.response">
-          <section v-if="search.response.universities.length > 0">
-            <div>{{ $l.universities }}</div>
-
-            <ul><li v-for="university in search.response.universities.slice(0, 5)" :key="`university-${university.id}`">
-              <app-icon>account_balance</app-icon> {{ university.title }}
-            </li></ul>
-          </section>
-
           <section v-if="search.response.careers.length > 0">
             <div>{{ $l.careers }}</div>
 
             <ul><li v-for="career in search.response.careers.slice(0, 5)" :key="`career-${career.id}`">
-              <app-icon>school</app-icon> <span>{{ career.title }} <div>{{ career.university_title }}</div></span>
+              <router-link :to="{ name: 'career', params: { id: career.id }}">
+                <app-icon>school</app-icon> <span>{{ career.title }} <div>{{ career.university_title }}</div></span>
+              </router-link>
+            </li></ul>
+          </section>
+
+          <section v-if="search.response.universities.length > 0">
+            <div>{{ $l.universities }}</div>
+
+            <ul><li v-for="university in search.response.universities.slice(0, 5)" :key="`university-${university.id}`">
+              <router-link :to="{ name: 'university', params: { id: university.id }}">
+                <app-icon>account_balance</app-icon> {{ university.title }}
+              </router-link>
             </li></ul>
           </section>
 
@@ -88,9 +92,19 @@ export default {
     fetchLightSearchResponse() {
       this.search.response = null;
 
-      this.$API.search(this.search.query, null, true, false).then(response => {
-        this.search.response = response;
-      });
+      let parameters = {
+        text: this.search.query,
+        minimize: true,
+        pictures: false,
+      };
+
+      this.$API
+        .search(parameters)
+        .then(response => {
+          put(response);
+          this.search.response = response;
+        })
+        .catch(error => put(error));
     },
     fetchHeavySearchResponse() {
       this.$router.push({
@@ -212,11 +226,14 @@ export default {
     font-size: .875em
 
   li
-    margin-bottom: $gap
+    a
+      margin-bottom: $gap
 
-    color: $c-black
+      color: $c-black
 
-    @include d-flex(center)
+      @include d-flex(center)
+
+      color: $c-black
 
     .icon
       color: c-gray(400)

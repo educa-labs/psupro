@@ -17,6 +17,8 @@ export default {
     }
 
     return {
+      university_title: APICareer.university_title,
+      campu_name: APICareer.campu_name,
       title: APICareer.title,
       university: APICareer.university,
       university_id: APICareer.university_id,
@@ -44,6 +46,9 @@ export default {
       },
       image: null,
     };
+  },
+  similar(APISimilarCareers) {
+    return APISimilarCareers.slice(0);
   },
   universities: {
     universities(APIUniversity, config) {

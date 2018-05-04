@@ -41,7 +41,13 @@ export default {
   },
   watch: {
     $route(to, from) {
-      if (to.name === 'university' && from.name === 'home') this.fetch();
+      let routes = ['university', 'careers'];
+
+      if (
+        routes.includes(to.name) &&
+        !(routes.includes(from.name) && to.params.id === from.params.id)
+      )
+        this.fetch();
     },
   },
   methods: {

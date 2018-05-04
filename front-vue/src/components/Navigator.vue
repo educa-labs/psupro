@@ -1,6 +1,9 @@
 <template>
   <div class="navigator">
-    <app-back-button v-if="buttons.back"></app-back-button> {{ name }}
+    <app-navigator-button :name="'home'" v-if="buttons.home">arrow_back</app-navigator-button>
+    <app-back-button v-if="buttons.back"></app-back-button>
+    
+    {{ name }}
   </div>
 </template>
 
@@ -34,7 +37,8 @@ export default {
   color: $c-white
   background-color: $c-main
 
-  font-size: $f-large
+  font-size: 20px
+  font-weight: 500
 
   @include d-flex(center)
 

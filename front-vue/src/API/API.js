@@ -50,9 +50,11 @@ const API = {
         .get(`${API.url}/similar`, { params: parameters })
         .then(response => {
           resolve(
-            response.body.map(APICareer => {
-              return preprocessors.careers(APICareer);
-            })
+            preprocessors.similar(
+              response.body.map(APICareer => {
+                return preprocessors.careers(APICareer);
+              })
+            )
           );
         })
         .catch(error => reject(error));

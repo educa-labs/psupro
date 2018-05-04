@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <app-navigator :buttons="{ back: false }" v-if="['xs', 'sm'].includes($mq)"></app-navigator>
+    <app-navigator :buttons="{ home: true, back: false }" v-if="['xs', 'sm'].includes($mq)"></app-navigator>
 
     <app-hero class="closed" v-if="['xs', 'sm'].includes($mq)"></app-hero>
 
@@ -8,13 +8,15 @@
       <template v-if="!isResponseEmpty">
         <h5 class="title">{{ $l.cSearch.results }}</h5>
 
-        <router-link v-for="(card, index) in response" :key="`card-${index}`"
-          :to="{ name: card.name, params: card.params}"
-        >
-          <component :is="card.component" v-bind="card.props"></component>
-        </router-link>
+        <div class="content">
+          <router-link v-for="(card, index) in response" :key="`card-${index}`"
+            :to="{ name: card.name, params: card.params}"
+          >
+            <component :is="card.component" v-bind="card.props"></component>
+          </router-link>
 
-        <app-spinner v-if="fetching"></app-spinner>
+          <app-spinner v-if="fetching"></app-spinner>
+        </div>
       </template>
 
       <div class="empty" v-else>{{ $l.empty }}</div>
@@ -186,26 +188,44 @@ export default {
 
   @include p-relative
     
-.search
-  .career-card, .university-card
-    margin: 1rem
-    
-    @include media-up(md)
-      margin-right: 0
-      margin-left: 0
-
 .search > .results
   $padding: 1rem
 
-  @include canvas
-
   @include media-up(md)
-    width: calc(#{$breakpoint-md} - 2 * #{$padding})
+    width: calc(#{$breakpoint-md} * .66 - 2 * #{$padding})
     margin: $padding auto
 
+  @include canvas
+  @include d-flex(center, center)
+  flex-direction: column
+
 .search > .results > .title
+  width: 100%
+  box-sizing: border-box
+
   @include media-up(md)
-    border-radius: 3px
+    border-radius: 2px
+
+.search > .results > .content
+  padding: .75rem
+
+  @include media-up(md)
+    padding-left: 0
+    padding-right: 0
+
+.search > .results > .content > a
+  display: block
+  margin-bottom: .75rem
+
+  @include media-up(md)
+    margin-right: 0
+    margin-left: 0
+
+  width: 100%
+  max-width: calc(#{$breakpoint-md} * .66) 
+
+.search > .results > .content > a:last-child
+  margin-bottom: 0
 
 .search > .results > .empty
   transform: translate(-50%, -50%)

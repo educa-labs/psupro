@@ -35,15 +35,23 @@ export default {
         this.$API
           .similar({ id: this.id, k: 5 })
           .then(response => {
-            put(response);
+            let promises = []
 
-            this.careers = response;
+            response.forEach(career => {
+              promises.push(this.$API.universities
+                .universities(career.university_id, { params: { image: true } })
+                .then(university => {
+                  career.university_picture = university.profile;
+                }));
+            });
 
-            this.fetched = true;
+            Promise.all(promises).then(() => {
+              this.careers = response;
 
-            resolve();
-            /*
-            */
+              this.fetched = true;
+
+              resolve();
+            })
           })
           .catch(error => {
             put(error);
@@ -75,11 +83,13 @@ export default {
 @import './../../assets/stylesheets/main'
 
 .careers
-  padding: 2rem
+  padding: .75rem
+
+.careers > a
+  display: block
+  margin-bottom: .75rem
 
 .careers > a > .career-card
-  transition: background-color .1s
-
   &:focus, &:hover
     background-color: c-gray(100)
 

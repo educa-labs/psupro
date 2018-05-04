@@ -39,7 +39,13 @@ export default {
   },
   watch: {
     $route(to, from) {
-      // if (to.name === 'university' && from.name === 'home') this.fetch();
+      let routes = ['career', 'similar-careers'];
+
+      if (
+        routes.includes(to.name) &&
+        !(routes.includes(from.name) && to.params.id === from.params.id)
+      )
+        this.fetch();
     },
   },
   methods: {
@@ -53,14 +59,11 @@ export default {
 
       let params = { image: true };
 
-      this.$API.careers(this.id, { params })
-        .then(response => {
-          this.career = response;
-          
-          put(this.career)
+      this.$API.careers(this.id, { params }).then(response => {
+        this.career = response;
 
-          this.fetched = true;
-        });
+        this.fetched = true;
+      });
     },
   },
   beforeRouteUpdate(to, from, next) {

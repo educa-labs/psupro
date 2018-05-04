@@ -99,8 +99,6 @@ export default {
       padding-bottom: .25rem
 
   section.campus > .content > .campus
-    transition: background-color .1s
-
     &:focus, &:hover
       background-color: c-gray(100)
 </style>

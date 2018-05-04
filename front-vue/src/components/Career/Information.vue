@@ -37,7 +37,7 @@
       </div>
     </section>
 
-    <section>
+    <section class="campus">
       <h5 class="title">{{ $l.cCareer.campus }}</h5>
 
       <div class="content">
@@ -107,4 +107,8 @@ export default {
     font-weight: 300
     color: c-gray(900)
     color: $c-black
+
+  section.campus > .content > .campus
+    &:focus, &:hover
+      background-color: c-gray(100)
 </style>

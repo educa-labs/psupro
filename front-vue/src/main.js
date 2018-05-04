@@ -33,6 +33,9 @@ Vue.component('app-icon', Icon);
 import Navigator from './components/Navigator.vue';
 Vue.component('app-navigator', Navigator);
 
+import NavigatorButton from './components/NavigatorButton.vue';
+Vue.component('app-navigator-button', NavigatorButton);
+
 import Spinner from './components/Spinner.vue';
 Vue.component('app-spinner', Spinner);
 

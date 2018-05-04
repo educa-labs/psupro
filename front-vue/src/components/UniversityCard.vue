@@ -7,22 +7,22 @@
     </div>
 
     <div class="card-content">
-      <div class="description" ref="description">{{ university.description }}</div>
+      <app-expandible class="description" :expandible="false" :maxHeight="75">
+        <p>{{ university.description }}</p>
+      </app-expandible>
     </div>
   </div>
 </template>
 
 <script>
-import Ellipsis from 'ellipsis.js';
-
-let ellipsis = Ellipsis({ lines: 3 });
+import Expandible from './Expandible.vue';
 
 export default {
+  components: {
+    'app-expandible': Expandible,
+  },
   props: {
     university: { type: Object, required: true },
-  },
-  mounted() {
-    ellipsis.add(this.$refs.description);
   },
 };
 </script>
@@ -31,8 +31,6 @@ export default {
 @import './../assets/stylesheets/main'
 
 .university-card
-  margin-bottom: 1rem
-
   .cover
     position: relative
 
@@ -41,8 +39,8 @@ export default {
     @include d-flex(flex-end)
 
     .overlay
-      opacity: .5
       background-color: c-gray(900)
+      background-color: rgba(0, 0, 0, .70)
 
       @include p-absolute(0, 0, 0, 0, 0)
 
@@ -55,8 +53,9 @@ export default {
       margin-bottom: $margin
       margin-left: $margin
 
-      font-size: 1.25em
+      font-size: $f-large
 
   .description
     color: c-gray(600)
+    font-size: $f-small
 </style>

@@ -13,4 +13,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.back-button
+  cursor: pointer !important
 </style>
