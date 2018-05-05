@@ -4,7 +4,7 @@
 
     <app-trending></app-trending>
 
-    <app-news></app-news>
+    <!-- <app-news></app-news> -->
   </div>
 </template>
 

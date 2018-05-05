@@ -24,6 +24,7 @@ export default {
       university_id: APICareer.university_id,
       description: APICareer.description,
       campus_id: APICareer.campu_id,
+      cover: APICareer.area_picture,
       id: APICareer.id,
       weighing: {
         language: { key: 'Lenguaje', value: APICareer.weighing.language },

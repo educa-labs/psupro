@@ -109,8 +109,6 @@ export default {
       return new Promise((resolve, reject) => {
         let payload = { query, filters, page, page_size: this.page_size };
 
-        put(filters.city, filters.degree_type, filters.region);
-
         this.$store
           .dispatch('fetchSearchResponse', payload)
           .then(response => {
@@ -147,7 +145,6 @@ export default {
       });
     },
     mergeFilters(filters) {
-      put('Nuevos filtros:', filters);
       for (let [name, value] of Object.entries(filters))
         this.filters[name] = value;
 
@@ -160,7 +157,6 @@ export default {
       let promises = [];
 
       for (let i = 1; i < this.page + 1; i++) {
-        put('Pidiendo página: ', i);
         promises.push(this.fetch(this.$route.query.query, this.filters, i));
       }
 
@@ -209,6 +205,9 @@ export default {
   @include canvas
   @include d-flex(center, center)
   flex-direction: column
+  
+  & > .content > a
+    width: calc(#{$breakpoint-md} - 2 * #{$padding})
 
 .search > .results > .title
   width: 100%
@@ -231,9 +230,6 @@ export default {
   @include media-up(md)
     margin-right: 0
     margin-left: 0
-
-  width: 100%
-  max-width: calc(#{$breakpoint-md}) 
 
 .search > .results > .content > a:last-child
   margin-bottom: 0

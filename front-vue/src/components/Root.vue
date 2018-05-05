@@ -31,16 +31,14 @@ export default {
     };
   },
   beforeRouteUpdate(to, from, next) {
-    if (to.name === 'home' && ['university', 'careers'].includes(from.name))
+    if (to.name === 'home')
       this.transition = 'slide-right';
     else if (
-      ['career', 'university'].includes(to.name) &&
       from.name === 'search'
     )
       this.transition = 'slide-left';
     else if (
-      to.name === 'search' &&
-      ['career', 'university'].includes(from.name)
+      to.name === 'search'
     )
       this.transition = 'slide-right';
     else if (to.name === 'university' && from.name === 'career')

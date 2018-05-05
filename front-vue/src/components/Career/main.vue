@@ -1,7 +1,7 @@
 <template>
   <div class="career-container" v-if="fetched">
     <div class="card career z-depth-1">
-      <div class="cover" :style="{ backgroundImage: `url(${'http://www.urosario.edu.co/getattachment/4f0337a7-7d99-4f73-a202-6f39cf785b79/Egresados-Rosaristas-de-la-Escuela-de-Medicina-y'})` }">
+      <div class="cover" :style="{ backgroundImage: `url(${career.cover})` }">
         <div class="overlay"></div>
 
         <app-back-button><app-icon>arrow_back</app-icon></app-back-button>
@@ -116,7 +116,7 @@ export default {
   & > .overlay
     @include p-absolute(0, 0, 0, 0 ,0)
 
-    background-color: rgba(0, 0, 0, .25);
+    background: linear-gradient(to top, transparent, rgba(0, 0, 0, .3));
 
   & > .back-button
     color: $c-white

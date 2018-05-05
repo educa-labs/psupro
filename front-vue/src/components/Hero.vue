@@ -29,9 +29,16 @@ export default {
   padding: 1rem
 
   background-color: $c-main
+  transition: height .4s
 
   @include media-up(md)
+    height: 33vh
     // background-image: url($pattern)
+
+  @include d-flex(center, center)
+
+.hero.closed
+  height: 48px
 
 .hero.sticky
   @include p-fixed(1030, 0, 0, null, 0)

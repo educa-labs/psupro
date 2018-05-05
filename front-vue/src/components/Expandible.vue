@@ -1,7 +1,7 @@
 <template>
   <div class="expandible" :class="{ open }"
     :style="{ 'max-height': _maxHeight }"
-    @click="open = !open"
+    @click="toggleOpen"
   >
     <slot></slot>
 
@@ -17,7 +17,8 @@ export default {
   },
   data() {
     return {
-      open: false,
+      overflowed: this.expandible,
+      open: true,
     };
   },
   computed: {
@@ -27,8 +28,13 @@ export default {
   },
   methods: {
     toggleOpen() {
-      if (this.expandible) this.open = !this.open;
+      if (this.expandible && this.overflowed) this.open = !this.open;
     },
+  },
+  mounted() {
+    this.overflowed = this.$slots.default[0].elm.offsetHeight > this.maxHeight;
+
+    if (this.overflowed) this.open = false;
   },
 };
 </script>
@@ -49,6 +55,8 @@ export default {
   margin-bottom: auto
 
   transition: transform .2s
+
+  color: c-gray(600)
 
   @include icon(32px)
 

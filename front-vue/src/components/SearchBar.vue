@@ -105,7 +105,6 @@ export default {
         .then(response => {
           this.search.response = response;
         })
-        .catch(error => put(error));
     },
     fetchHeavySearchResponse() {
       this.$router.push({
