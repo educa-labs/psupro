@@ -201,13 +201,12 @@ export default {
   @include media-up(md)
     width: calc(#{$breakpoint-md} - 2 * #{$padding})
     margin: $padding auto
-
-    & > .content > a
-      width: calc(#{$breakpoint-md} - 2 * #{$padding})
-
   @include canvas
   @include d-flex(center, center)
   flex-direction: column
+  
+  & > .content > a
+    width: calc(#{$breakpoint-md} - 2 * #{$padding})
 
 .search > .results > .title
   width: 100%

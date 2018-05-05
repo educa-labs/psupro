@@ -1,5 +1,5 @@
 class Api::V1::NewsController < ApplicationController
-  before_action :authenticate_with_token!, only: [:show,:index]
+  
 
   def index
     render json:New.all.order("id DESC") , status:200
