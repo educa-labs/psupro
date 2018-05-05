@@ -1,6 +1,6 @@
 <template>
   <div class="select">
-    <input type="text" readonly :value="_options[value].key" @click="open">
+    <input type="text" readonly :value="_options[index].key" @click="open">
 
     <app-icon>arrow_drop_down</app-icon>
   </div>
@@ -9,24 +9,27 @@
 <script>
 export default {
   props: {
-    value: {
-      type: Number,
-      default: 0,
-    },
-    options: {
-      type: Array,
-      required: true,
-    },
-    default: {
-      type: String,
-    },
+    name: { type: String, required: true },
+    options: { type: Array, required: true },
+    index: { type: Number, default: 0 },
+    default: { type: String },
   },
   data() {
     return {
       _options: null,
     };
   },
+  watch: {
+    options(newOptions) {
+      this.parseOptions(newOptions);
+    },
+  },
   methods: {
+    parseOptions(options) {
+      this._options = JSON.parse(JSON.stringify(options));
+
+      if (this.default) this._options.unshift({ value: 0, key: this.default });
+    },
     open() {
       this.$store.dispatch('mountOverlayComponent', {
         is: 'app-select-options',
@@ -37,15 +40,17 @@ export default {
       });
     },
     handleOptionClick(index) {
-      this.$emit('input', this._options[index].value);
+      let filters = {};
+      filters[this.name] = this._options[index].value;
+
+      let indexes = {};
+      indexes[this.name] = index;
+
+      this.$emit('input', filters, indexes);
     },
   },
   created() {
-    this._options = JSON.parse(JSON.stringify(this.options));
-
-    if (this.default) {
-      this._options.unshift({ value: 0, key: this.default });
-    }
+    this.parseOptions(this.options);
   },
 };
 </script>

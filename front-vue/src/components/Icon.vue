@@ -1,9 +1,13 @@
 <template>
-  <i class="material-icons icon"><slot></slot></i>
+  <i class="material-icons icon" :class="{ button }"><slot></slot></i>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    button: { type: Boolean, default: false },
+  },
+};
 </script>
 
 <style lang="sass" scoped>

@@ -1,10 +1,10 @@
 <template>
-  <form class="search-bar z-depth-2" :class="{ focused, opening }"
-    @click="$refs.input.focus()"
-  >
+  <form class="search-bar z-depth-2" :class="{ focused, opening }">
     <div class="input">
-      <app-icon v-if="search.query.length === 0">search</app-icon>
-      <app-icon @click.native="search.query = ''" v-else>arrow_back</app-icon>
+      <app-icon :button="true"
+        @click.native="fetchHeavySearchResponse"
+        @mousedown.native.prevent
+      >search</app-icon>
 
       <input type="text" :placeholder="$l.cSearchBar.placeholder"
         v-model="search.query"
@@ -12,6 +12,12 @@
         @focus="focus" @blur="unfocus"
         ref="input"
       >
+
+      <app-icon :button="true"
+        @click.native="search.query = ''"
+        @mousedown.native.prevent
+        v-if="search.query.length !== 0"
+      >clear</app-icon>
     </div>
 
     <transition
@@ -20,19 +26,23 @@
     >
       <div class="search-response" @mousedown.prevent v-if="focused">
         <template v-if="search.response">
-          <section v-if="search.response.universities.length > 0">
-            <div>{{ $l.universities }}</div>
-
-            <ul><li v-for="university in search.response.universities.slice(0, 5)" :key="`university-${university.id}`">
-              <app-icon>account_balance</app-icon> {{ university.title }}
-            </li></ul>
-          </section>
-
           <section v-if="search.response.careers.length > 0">
             <div>{{ $l.careers }}</div>
 
             <ul><li v-for="career in search.response.careers.slice(0, 5)" :key="`career-${career.id}`">
-              <app-icon>school</app-icon> <span>{{ career.title }} <div>{{ career.university_title }}</div></span>
+              <router-link :to="{ name: 'career', params: { id: career.id }}" @click.native="unfocus">
+                <app-icon>school</app-icon> <span>{{ career.title }} <div>{{ career.university_title }}</div></span>
+              </router-link>
+            </li></ul>
+          </section>
+
+          <section v-if="search.response.universities.length > 0">
+            <div>{{ $l.universities }}</div>
+
+            <ul><li v-for="university in search.response.universities.slice(0, 5)" :key="`university-${university.id}`">
+              <router-link :to="{ name: 'university', params: { id: university.id }}" @click.native="unfocus">
+                <app-icon>account_balance</app-icon> {{ university.title }}
+              </router-link>
             </li></ul>
           </section>
 
@@ -84,13 +94,23 @@ export default {
     fetchLightSearchResponse() {
       this.search.response = null;
 
-      this.$API.search(this.search.query, null, true, false).then(response => {
-        this.search.response = response;
-      });
+      let parameters = {
+        text: this.search.query,
+        minimize: true,
+        pictures: false,
+      };
+
+      this.$API
+        .search(parameters)
+        .then(response => {
+          this.search.response = response;
+        })
     },
     fetchHeavySearchResponse() {
-      this.$store.dispatch('fetchSearchResponse', { query: this.search.query });
-      this.$router.push({ name: 'search' });
+      this.$router.push({
+        name: 'search',
+        query: { query: this.search.query },
+      });
 
       this.$refs.input.blur();
     },
@@ -159,14 +179,13 @@ export default {
     height: 100%
     padding: $padding
 
-    cursor: pointer
-
     @include d-flex(center)
 
     .icon
-      margin-right: $padding
-
       color: c-gray(600)
+
+    .icon:first-child
+      margin-right: $padding
 
 .search-bar
   $border-radius: 2px
@@ -207,11 +226,14 @@ export default {
     font-size: .875em
 
   li
-    margin-bottom: $gap
+    a
+      margin-bottom: $gap
 
-    color: $c-black
+      color: $c-black
 
-    @include d-flex(center)
+      @include d-flex(center)
+
+      color: $c-black
 
     .icon
       color: c-gray(400)

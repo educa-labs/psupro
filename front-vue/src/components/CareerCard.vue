@@ -4,7 +4,9 @@
       <div class="image" :style="{ 'background-image': `url(${career.university_picture})` }"></div>
 
       <div class="information">
-        {{ career.title }}
+        <div class="title">
+          {{ career.title }}
+        </div>
 
         <div class="university-campus">
           {{ `${career.university_title} ${$l.in} ${career.campu_name}` }}
@@ -25,9 +27,6 @@ export default {
 <style lang="sass" scoped>
 @import './../assets/stylesheets/main'
 
-.career-card
-  margin: 0 auto 1rem
-
 .career-card > .card-content
   @include d-flex(center)
 
@@ -35,12 +34,13 @@ export default {
     flex-shrink: 0
 
     @include background-image
-    @include icon(48px, 1rem)
+    @include icon(56px, 1rem)
 
   .information
-    text-transform: uppercase
-
     color: $c-black
+
+  .information > .title
+    display: inline-block
 
   .information > .university-campus
     margin-top: .25rem

@@ -1,11 +1,11 @@
 <template>
   <div class="expandible" :class="{ open }"
     :style="{ 'max-height': _maxHeight }"
-    @click="open = !open"
+    @click="toggleOpen"
   >
     <slot></slot>
 
-    <app-icon v-if="expandible">chevron_right</app-icon>
+    <app-icon class="chevron" v-if="expandible">chevron_right</app-icon>
   </div>
 </template>
 
@@ -17,7 +17,8 @@ export default {
   },
   data() {
     return {
-      open: false,
+      overflowed: this.expandible,
+      open: true,
     };
   },
   computed: {
@@ -27,8 +28,13 @@ export default {
   },
   methods: {
     toggleOpen() {
-      if (this.expandible) this.open = !this.open;
+      if (this.expandible && this.overflowed) this.open = !this.open;
     },
+  },
+  mounted() {
+    this.overflowed = this.$slots.default[0].elm.offsetHeight > this.maxHeight;
+
+    if (this.overflowed) this.open = false;
   },
 };
 </script>
@@ -44,13 +50,19 @@ export default {
   @include d-flex
   @include p-relative
 
-  .icon
-    margin-top: auto
-    margin-bottom: auto
+.expandible > .chevron
+  margin-top: auto
+  margin-bottom: auto
+
+  transition: transform .2s
+
+  color: c-gray(600)
+
+  @include icon(32px)
 
 .expandible::after
   width: 100%
-  height: 20px
+  height: 50%
 
   content: ''
 
@@ -61,8 +73,8 @@ export default {
 .expandible.open
   cursor: default
 
-  .icon
-    display: none
+.expandible.open > .chevron
+  display: none
 
 .expandible.open::after
   display: none

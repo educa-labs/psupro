@@ -1,6 +1,9 @@
 <template>
   <div class="navigator">
-    <app-icon class="button" @click.native="back" v-if="buttons.back">arrow_back</app-icon> {{ name }}
+    <app-navigator-button :name="'home'" v-if="buttons.home">arrow_back</app-navigator-button>
+    <app-back-button v-if="buttons.back"></app-back-button>
+    
+    {{ name }}
   </div>
 </template>
 
@@ -16,11 +19,6 @@ export default {
     return {
       name: '',
     };
-  },
-  methods: {
-    back() {
-      this.$router.go(-1);
-    },
   },
   beforeMount() {
     this.name = this.$l.cNavigator[this.$route.name];
@@ -39,7 +37,8 @@ export default {
   color: $c-white
   background-color: $c-main
 
-  font-size: $f-large
+  font-size: 20px
+  font-weight: 500
 
   @include d-flex(center)
 

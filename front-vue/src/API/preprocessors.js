@@ -2,16 +2,38 @@ import API from './API';
 
 export default {
   careers(APICareer) {
+    let weighingSciencesValue = APICareer.weighing.science,
+      weighingHistoryValue = APICareer.weighing.history;
+
+    let weighingSHKey = 'Ciencias o Historia';
+    let weighingSHValue = weighingSciencesValue;
+
+    if (weighingSciencesValue && !weighingHistoryValue) {
+      weighingSHKey = 'Ciencias';
+      weighingSHValue = weighingSciencesValue;
+    } else if (!weighingSciencesValue && weighingHistoryValue) {
+      weighingSHKey = 'Historia';
+      weighingSHValue = weighingHistoryValue;
+    }
+
     return {
+      university_title: APICareer.university_title,
+      campu_name: APICareer.campu_name,
+      title: APICareer.title,
+      university: APICareer.university,
       university_id: APICareer.university_id,
+      description: APICareer.description,
+      campus_id: APICareer.campu_id,
+      cover: APICareer.area_picture,
+      id: APICareer.id,
       weighing: {
         language: { key: 'Lenguaje', value: APICareer.weighing.language },
         mathematics: { key: 'Matemáticas', value: APICareer.weighing.math },
-        sciences: { key: 'Ciencias', value: APICareer.weighing.science },
+        sh: { key: weighingSHKey, value: weighingSHValue },
         nem: { key: 'NEM', value: APICareer.weighing.NEM },
         ranking: { key: 'Ranking', value: APICareer.weighing.ranking },
       },
-      minScore: { key: 'Corte 2017', value: APICareer.last_cut },
+      minScore: { key: 'Puntaje de corte 2017', value: APICareer.last_cut },
       information: {
         area: { key: 'Área', value: APICareer.area_title },
         vacancies: { key: 'Vacantes', value: APICareer.openings },
@@ -26,6 +48,9 @@ export default {
       image: null,
     };
   },
+  similar(APISimilarCareers) {
+    return APISimilarCareers.slice(0);
+  },
   universities: {
     universities(APIUniversity, config) {
       if (config && config.params && config.params.image) {
@@ -33,8 +58,6 @@ export default {
 
         university.cover = APIUniversity.cover;
         university.profile = APIUniversity.profile;
-
-        university.initials = 'PUC'; // Temporal
 
         return university;
       }

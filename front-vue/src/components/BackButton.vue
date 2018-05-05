@@ -1,7 +1,5 @@
 <template>
-  <button type="button" class="back-button" @click="back">
-    <slot></slot>
-  </button>
+  <app-icon class="back-button" @click.native="back">arrow_back</app-icon>
 </template>
 
 <script>
@@ -15,4 +13,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.back-button
+  cursor: pointer !important
 </style>

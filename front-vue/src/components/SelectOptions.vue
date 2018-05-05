@@ -3,9 +3,9 @@
     <ul class="select-options">
       <li class="disabled">{{ $l.cSelect.tip }}</li>
 
-      <li v-for="(value, index) in options" :key="`option-${index}`"
+      <li v-for="(option, index) in options" :key="`option-${index}`"
         @click="_handleOptionClick(index)"
-      >{{ value.key }}</li>
+      >{{ option.key }}</li>
     </ul>
   </transition>
 </template>

@@ -1,7 +1,9 @@
 <template>
   <div class="hero z-depth-1">
     <div class="hero-content">
-      <div class="logo z-depth-2"></div>
+      <app-navigator-button name="home">
+        <div class="logo z-depth-2"></div>
+      </app-navigator-button>
 
       <app-search-bar></app-search-bar>
     </div>
@@ -27,9 +29,16 @@ export default {
   padding: 1rem
 
   background-color: $c-main
+  transition: height .4s
 
   @include media-up(md)
+    height: 33vh
     // background-image: url($pattern)
+
+  @include d-flex(center, center)
+
+.hero.closed
+  height: 48px
 
 .hero.sticky
   @include p-fixed(1030, 0, 0, null, 0)
@@ -48,7 +57,7 @@ export default {
 .hero.closed > .hero-content
   flex-direction: row
 
-.hero > .hero-content > .logo
+.hero > .hero-content .logo
   width: 150px
   height: 48px
 
@@ -56,7 +65,7 @@ export default {
 
   @include canvas
 
-.hero.closed > .hero-content > .logo
+.hero.closed > .hero-content .logo
   display: none
 
   @include media-up(md)

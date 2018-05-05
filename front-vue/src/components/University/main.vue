@@ -2,6 +2,8 @@
   <div class="university-container" v-if="fetched">
     <div class="card university z-depth-1">
       <div class="cover" :style="{ backgroundImage: `url(${university.cover})` }">
+        <div class="overlay"></div>
+
         <app-back-button><app-icon>arrow_back</app-icon></app-back-button>
 
         <div class="profile z-depth-2"><div :style="{ backgroundImage: `url(${university.profile})` }"></div></div>
@@ -39,7 +41,18 @@ export default {
   },
   watch: {
     $route(to, from) {
-      if (to.name === 'university' && from.name === 'home') this.fetch();
+      let routes = ['university', 'careers'];
+
+      if (
+        routes.includes(to.name) &&
+        routes.includes(from.name) &&
+        to.params.id !== from.params.id
+      ) {
+        this.fetch();
+      }
+      if (routes.includes(to.name) && !routes.includes(from.name)) {
+        this.fetch();
+      }
     },
   },
   methods: {
@@ -104,9 +117,15 @@ export default {
   @include background-image
   @include p-relative
 
+  & > .overlay
+    @include p-absolute(0, 0, 0, 0 ,0)
+
+    background: linear-gradient(to top, transparent, rgba(0, 0, 0, .3));
+
   & > .back-button
     color: $c-white
 
+    @include icon(28px)
     @include p-absolute(null, 1rem, null, null, 1rem)
 
   & > .profile
@@ -133,11 +152,9 @@ export default {
     width: 66%
     padding: 1rem
 
-    text-transform: uppercase
-
-    font-size: $f-large
+    font-size: $f-x-large
     font-weight: 500
     
     & > div
-      font-weight: 400
+      font-size: 1.1rem
 </style>

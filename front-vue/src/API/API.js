@@ -5,6 +5,7 @@ Vue.use(VueResource);
 
 // Preprocessors for each API endpoint
 import preprocessors from './preprocessors';
+import { puts } from 'util';
 
 const API = {
   url: 'http://localhost:3000',
@@ -44,6 +45,22 @@ const API = {
         .catch(error => reject(error));
     });
   },
+  similar(parameters) {
+    return new Promise((resolve, reject) => {
+      Vue.http
+        .get(`${API.url}/similar`, { params: parameters })
+        .then(response => {
+          resolve(
+            preprocessors.similar(
+              response.body.map(APICareer => {
+                return preprocessors.careers(APICareer);
+              })
+            )
+          );
+        })
+        .catch(error => reject(error));
+    });
+  },
   universities: {
     universities(id, config) {
       return new Promise((resolve, reject) => {
@@ -78,12 +95,20 @@ const API = {
       });
     },
   },
-  search(query, filters = null, minimize = false, pictures = false) {
-    let params = { text: query, ...filters, minimize, pictures };
-
+  campus(id) {
     return new Promise((resolve, reject) => {
       Vue.http
-        .get(`${API.url}/search`, { params })
+        .get(`${API.url}/campus/${id}`)
+        .then(response => {
+          resolve(response.body);
+        })
+        .catch(error => reject(error));
+    });
+  },
+  search(parameters) {
+    return new Promise((resolve, reject) => {
+      Vue.http
+        .get(`${API.url}/search`, { params: parameters })
         .then(response => resolve(preprocessors.search(response.body)))
         .catch(error => reject(error));
     });
@@ -95,6 +120,20 @@ const API = {
           .get(`${API.url}/cities`)
           .then(response =>
             resolve(preprocessors.constants.cities(response.body))
+          )
+          .catch(error => reject(error));
+      });
+    },
+    citiesPerRegion(id) {
+      return new Promise((resolve, reject) => {
+        Vue.http
+          .get(`${API.url}/regions/${id}/cities`)
+          .then(response =>
+            resolve(
+              response.body.map(APICareer => {
+                return preprocessors.constants.cities(APICareer);
+              })
+            )
           )
           .catch(error => reject(error));
       });
@@ -119,6 +158,17 @@ const API = {
           .catch(error => reject(error));
       });
     },
+  },
+  news: {
+    news() {
+      return new Promise((resolve, reject) => {
+        Vue.http
+          .get(`${API.url}/news`)
+          .then(response => resolve(response.body))
+          .catch(error => reject(error));
+      });
+    },
+    newsImage(id) {},
   },
 };
 

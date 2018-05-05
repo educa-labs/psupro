@@ -32,23 +32,44 @@ export default {
       return new Promise(resolve => {
         let params = { image: true };
 
-        this.$API.universities
-          .universities(this.id, { params })
-          .then(university => {
-            this.university = university;
+        this.$API
+          .similar({ id: this.id, k: 5 })
+          .then(response => {
+            let promises = []
 
-            this.$API.universities.careers(this.id).then(careers => {
-              careers.forEach(career => {
-                career.university_picture = university.profile;
-              });
+            response.forEach(career => {
+              promises.push(this.$API.universities
+                .universities(career.university_id, { params: { image: true } })
+                .then(university => {
+                  career.university_picture = university.profile;
+                }));
+            });
 
-              this.careers = careers;
+            Promise.all(promises).then(() => {
+              this.careers = response;
 
               this.fetched = true;
 
               resolve();
-            });
+            })
+          })
+          .catch(error => {
+            put(error);
           });
+
+        /*
+        this.$API.universities.universities(1, { params }).then(university => {
+          this.university = university;
+
+          this.$API.universities.careers(1).then(careers => {
+            this.careers = careers;
+
+            this.fetched = true;
+
+            resolve();
+          });
+        });
+        */
       });
     },
   },

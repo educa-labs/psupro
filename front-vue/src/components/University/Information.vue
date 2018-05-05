@@ -6,23 +6,27 @@
       </app-expandible>
     </div></section>
 
-    <section class="row">
-      <div class="col-xs-12 col-sm-6">
-        <table><tbody>
-          <tr v-for="(value, key) in university.first" :key="key">
-            <td class="key">{{ value.key }}</td>
-            <td class="value">{{ value.value }}</td>
-          </tr>
-        </tbody></table>
-      </div>
+    <section>
+      <h5 class="title">{{ $l.cUniversity.information }}</h5>
 
-      <div class="col-xs-12 col-sm-6">
-        <table><tbody>
-          <tr v-for="(value, key) in university.second" :key="key">
-            <td class="key">{{ value.key }}</td>
-            <td class="value">{{ value.value }}</td>
-          </tr>
-        </tbody></table>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <table><tbody>
+            <tr v-for="(value, key) in university.first" :key="key">
+              <td class="key">{{ value.key }}</td>
+              <td class="value">{{ value.value }}</td>
+            </tr>
+          </tbody></table>
+        </div>
+
+        <div class="col-xs-12 col-sm-6">
+          <table><tbody>
+            <tr v-for="(value, key) in university.second" :key="key">
+              <td class="key">{{ value.key }}</td>
+              <td class="value">{{ value.value }}</td>
+            </tr>
+          </tbody></table>
+        </div>
       </div>
     </section>
 
@@ -30,11 +34,9 @@
       <h5 class="title">{{ $l.cUniversity.campus }}</h5>
 
       <div class="content">
-        <div v-for="_campus in campus" :key="`campus-${_campus.id}`">
-          <app-icon>place</app-icon>
-
-          <div>{{ _campus.title }} <div class="address">{{ _campus.address }}</div></div>
-        </div>
+        <app-campus v-for="_campus in campus" :key="`campus-${_campus.id}`"
+          :campus="_campus"
+        ></app-campus>
       </div>
     </section>
   </div>
@@ -43,10 +45,12 @@
 </template>
 
 <script>
+import Campus from './../Campus.vue';
 import Expandible from './../Expandible.vue';
 
 export default {
   components: {
+    'app-campus': Campus,
     'app-expandible': Expandible,
   },
   props: {
@@ -93,28 +97,15 @@ export default {
   section.university
     .description
       margin: 1rem
+      font-weight: 300
+      color: c-gray(900)
+      color: $c-black
     
     .row
       padding-top: .25rem
       padding-bottom: .25rem
 
-  section.campus > .content > div
-    $padding: 1.25rem
-
-    padding: $padding
-
-    color: $c-black
-
-    @include border-bottom(c-gray(200))
-    @include d-flex(center)
-
-    .icon
-      color: $c-main
-
-      @include icon(24px, $padding)
-    
-    .address
-      color: c-gray(600)
-
-      font-size: $f-small
+  section.campus > .content > .campus
+    &:focus, &:hover
+      background-color: c-gray(100)
 </style>
