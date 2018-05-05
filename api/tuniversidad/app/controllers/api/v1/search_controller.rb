@@ -37,7 +37,7 @@ class Api::V1::SearchController < ApplicationController
         where: where_university,
         page: params[:page] || 1, # Pagination
         per_page: params[:page_size] || PAGE_SIZE,
-        misspellings: {edit_distance: 5, below:5}
+        misspellings: {edit_distance: 3, below:5}
         )
 
       minimize = ActiveModel::Type::Boolean.new.cast(params[:minimize]) # Casting param to boolean and result minimization if necessary.
@@ -51,7 +51,7 @@ class Api::V1::SearchController < ApplicationController
         includes: [:university,:campu],   # To prevent n+1 query.
         page: params[:page] || 1, # Pagination
         per_page: params[:page_size] || PAGE_SIZE,
-        misspellings: {edit_distance: 5, below:5}
+        misspellings: {edit_distance: 3, below:5}
         )
       # Result minimization if necessary.
       result[:carreers] = minimize ? carreer_result.map { |x| {id: x.id, title: x.title, university_title: x.university.title, university_id:x.university.id} } : carreer_result.map {|x| x.as_json(methods: [:campu_name,:university_title,:university_initials])}
