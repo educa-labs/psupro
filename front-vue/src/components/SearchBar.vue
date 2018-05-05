@@ -1,8 +1,10 @@
 <template>
   <form class="search-bar z-depth-2" :class="{ focused, opening }">
     <div class="input">
-      <!-- <app-back-button v-if="$route.name === 'search'"></app-back-button> -->
-      <app-icon>search</app-icon>
+      <app-icon :button="true"
+        @click.native="fetchHeavySearchResponse"
+        @mousedown.native.prevent
+      >search</app-icon>
 
       <input type="text" :placeholder="$l.cSearchBar.placeholder"
         v-model="search.query"
@@ -11,7 +13,7 @@
         ref="input"
       >
 
-      <app-icon
+      <app-icon :button="true"
         @click.native="search.query = ''"
         @mousedown.native.prevent
         v-if="search.query.length !== 0"

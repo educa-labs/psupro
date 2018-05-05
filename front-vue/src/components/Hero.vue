@@ -1,7 +1,9 @@
 <template>
   <div class="hero z-depth-1">
     <div class="hero-content">
-      <div class="logo z-depth-2"></div>
+      <app-navigator-button name="home">
+        <div class="logo z-depth-2"></div>
+      </app-navigator-button>
 
       <app-search-bar></app-search-bar>
     </div>
@@ -48,7 +50,7 @@ export default {
 .hero.closed > .hero-content
   flex-direction: row
 
-.hero > .hero-content > .logo
+.hero > .hero-content .logo
   width: 150px
   height: 48px
 
@@ -56,7 +58,7 @@ export default {
 
   @include canvas
 
-.hero.closed > .hero-content > .logo
+.hero.closed > .hero-content .logo
   display: none
 
   @include media-up(md)
