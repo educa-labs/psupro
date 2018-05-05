@@ -22,7 +22,7 @@
       <div class="empty" v-else>{{ $l.empty }}</div>
     </section>
 
-    <app-filter @filter="setFilter" :height="filterHeight"></app-filter>
+    <app-filter @filter="mergeFilters" :filters="filters" :height="filterHeight"></app-filter>
   </div>
 </template>
 
@@ -40,9 +40,13 @@ export default {
   data() {
     return {
       response: [],
-      filters: null,
-      page: -1,
-      pageSize: 10,
+      filters: {
+        city: 0,
+        degree_type: 0,
+        region: 0,
+      },
+      page: 0,
+      page_size: 10,
       onLastPage: false,
 
       fetching: false,
@@ -59,7 +63,11 @@ export default {
     $route(to, from) {
       if (to.name === 'search') {
         this.response = [];
-        this.filters = null;
+        this.filters = {
+          city: 0,
+          degree_type: 0,
+          region: 0,
+        };
         this.page = 0;
         this.onLastPage = false;
         this.fetching = false;
@@ -99,7 +107,9 @@ export default {
     },
     fetch(query, filters = {}, page) {
       return new Promise((resolve, reject) => {
-        let payload = { query, filters, page, page_size: this.pageSize };
+        let payload = { query, filters, page, page_size: this.page_size };
+
+        put(filters.city, filters.degree_type, filters.region);
 
         this.$store
           .dispatch('fetchSearchResponse', payload)
@@ -136,23 +146,27 @@ export default {
           .catch(error => reject(error));
       });
     },
+    mergeFilters(filters) {
+      put('Nuevos filtros:', filters);
+      for (let [name, value] of Object.entries(filters))
+        this.filters[name] = value;
+
+      this.refetchAll();
+    },
     refetchAll() {
       this.response = [];
       this.onLastPage = false;
 
       let promises = [];
 
-      for (let i = 1; i < this.page + 1; i++)
+      for (let i = 1; i < this.page + 1; i++) {
+        put('Pidiendo página: ', i);
         promises.push(this.fetch(this.$route.query.query, this.filters, i));
+      }
 
       this.fetching = true;
 
       Promise.all(promises).then(() => (this.fetching = false));
-    },
-    setFilter(filters) {
-      this.filters = filters;
-
-      this.refetchAll();
     },
     getOffsetHeight() {
       let heroOffsetHeight = ['xs', 'sm'].includes(this.$mq) ? 0 : 80;

@@ -9,22 +9,14 @@
 <script>
 export default {
   props: {
-    value: {
-      type: Number,
-      default: 0,
-    },
-    options: {
-      type: Array,
-      required: true,
-    },
-    default: {
-      type: String,
-    },
+    name: { type: String, required: true },
+    options: { type: Array, required: true },
+    index: { type: Number, default: 0 },
+    default: { type: String },
   },
   data() {
     return {
       _options: null,
-      index: 0,
     };
   },
   watch: {
@@ -36,9 +28,7 @@ export default {
     parseOptions(options) {
       this._options = JSON.parse(JSON.stringify(options));
 
-      if (this.default) {
-        this._options.unshift({ value: 0, key: this.default });
-      }
+      if (this.default) this._options.unshift({ value: 0, key: this.default });
     },
     open() {
       this.$store.dispatch('mountOverlayComponent', {
@@ -50,9 +40,13 @@ export default {
       });
     },
     handleOptionClick(index) {
-      this.index = index;
+      let filters = {};
+      filters[this.name] = this._options[index].value;
 
-      this.$emit('input', this._options[index].value);
+      let indexes = {};
+      indexes[this.name] = index;
+
+      this.$emit('input', filters, indexes);
     },
   },
   created() {

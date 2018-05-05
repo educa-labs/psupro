@@ -14,20 +14,17 @@
 
         <form>
           <label for="region">{{ $l.cFilter.region }}</label>
-          <app-select id="region" :options="regions" :default="$l.cFilter.default"
-            v-model="filters.region"
+          <app-select id="region" name="region" :options="regions" :index="indexes.region" :default="$l.cFilter.default"
             @input="fetchSearchResponse22"
           ></app-select>
 
           <label for="city">{{ $l.cFilter.city }}</label>
-          <app-select id="city" :options="cities" :default="$l.cFilter.default"
-            v-model="filters.city"
+          <app-select id="city" name="city" :options="cities" :index="indexes.city" :default="$l.cFilter.default"
             @input="fetchSearchResponse2"
           ></app-select>
 
           <label for="degree-type">{{ $l.cFilter.degreeType }}</label>
-          <app-select id="degree-type" :options="degreeTypes" :default="$l.cFilter.default"
-            v-model="filters.degreeType"
+          <app-select id="degree-type" name="degree_type" :options="degreeTypes" :index="indexes.degreeType" :default="$l.cFilter.default"
             @input="fetchSearchResponse2"
           ></app-select>
         </form>
@@ -41,6 +38,7 @@ import Select from './Select.vue';
 
 export default {
   props: {
+    filters: { type: Object, required: true },
     height: { type: Number, default: 42 },
   },
   components: {
@@ -48,17 +46,13 @@ export default {
   },
   data() {
     return {
-      fetched: false,
-
       cities: null,
       degreeTypes: null,
       regions: null,
 
-      filters: {
-        city: 0,
-        degree_type: 0,
-        region: 0,
-      },
+      indexes: { city: 0, degree_type: 0, region: 0 },
+
+      fetched: false,
 
       closed: true,
       duration: 250,
@@ -73,7 +67,7 @@ export default {
   },
   methods: {
     format(response) {
-      // { id: A, title: B } to { key: B, value: A }
+      // '{ id: A, title: B }' to '{ key: B, value: A }'
 
       return response.map(region => {
         let { id: value, title: key } = region;
@@ -81,10 +75,10 @@ export default {
         return Object.assign({}, { key, value });
       });
     },
-    fetchCitiesPerRegion() {
+    fetchCitiesPerRegion(id) {
       return new Promise((resolve, reject) => {
         this.$API.constants
-          .citiesPerRegion(this.filters.region)
+          .citiesPerRegion(id)
           .then(response => {
             this.cities = this.format(response);
 
@@ -108,25 +102,21 @@ export default {
         this.fetched = true;
       });
     },
-    fetchSearchResponse() {
-      this.$store.dispatch('clearSearchResponse').then(() => {
-        let payload = {
-          query: this.$store.state.search.query,
-          filters: this.filters,
-        };
-
-        this.$store.dispatch('fetchSearchResponse', payload);
-      });
+    mergeIndexes(indexes) {
+      for (let [name, index] of Object.entries(indexes))
+        this.indexes[name] = index;
     },
-    fetchSearchResponse2() {
-      this.$emit('filter', this.filters);
-    },
-    fetchSearchResponse22() {
-      this.fetchCitiesPerRegion().then(() => {
-        this.filters.city = 0;
+    fetchSearchResponse2(filters, indexes) {
+      this.$emit('filter', filters);
 
-        this.$emit('filter', this.filters);
+      this.mergeIndexes(indexes);
+    },
+    fetchSearchResponse22(filters, indexes) {
+      this.fetchCitiesPerRegion(filters.region).then(() => {
+        this.$emit('filter', { city: 0, ...filters });
       });
+
+      this.mergeIndexes({ city: 0, ...indexes });
     },
     open() {
       this.$store.dispatch('showOverlay', { method: this.close, zIndex: 1015 });
@@ -139,9 +129,19 @@ export default {
       this.closed = true;
     },
     clear() {
-      Object.keys(this.filters).forEach(key => (this.filters[key] = 0));
+      let clearFilters = {
+        city: 0,
+        degree_type: 0,
+        region: 0,
+      };
 
-      this.fetchSearchResponse2();
+      let clearIndexes = {
+        city: 0,
+        degree_type: 0,
+        region: 0,
+      };
+
+      this.fetchSearchResponse2(clearFilters, clearIndexes);
     },
     enter(el, done) {
       if (!this.closed) {

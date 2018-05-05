@@ -3,7 +3,8 @@ import locales from './../locales/locales';
 export default {
   locales,
   locale: locales.esCL,
-  search: { query: '', response: null, fetching: false },
+  search: {
+  },
   overlay: {
     show: false,
     stack: [],

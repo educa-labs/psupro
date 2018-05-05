@@ -17,6 +17,8 @@ export default {
         { minimize: false, pictures: true }
       );
 
+      put(parameters)
+
       Vue.prototype.$API.search(parameters).then(response => {
         context.commit('updateSearch', { query, response, fetching: false });
 
