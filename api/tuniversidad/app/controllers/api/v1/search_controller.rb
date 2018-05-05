@@ -3,7 +3,7 @@ class Api::V1::SearchController < ApplicationController
   respond_to :json
 
   PAGE_SIZE = 10
-  
+
   # /search?text=string&minimize=boolean&pictures=boolean&degree_type=integer
   def index
     if params[:text] # If we received a correct query.
@@ -11,7 +11,7 @@ class Api::V1::SearchController < ApplicationController
       where_university = {} # Filters for universities.
       where_carreer = {} # Filters for carreers.
       # Input sanitize.
-      degree_type = [1,2].include?(params[:degree_type].to_i) ? params[:degree_type].to_i : nil 
+      degree_type = [1,2].include?(params[:degree_type].to_i) ? params[:degree_type].to_i : nil
       city_id = params[:city].to_i
       region_id = params[:region].to_i
 
@@ -19,7 +19,7 @@ class Api::V1::SearchController < ApplicationController
         where_carreer[:degree_type] = degree_type  # We search on carreers with given degree type.
         where_university[:level] = [0,degree_type] # We search on universities that have both types or just the asked type.
       end
-      
+
       if city_id != 0 # If valid city_id
         where_university[:cities] = city_id
         where_carreer[:city_id] = city_id
@@ -36,12 +36,13 @@ class Api::V1::SearchController < ApplicationController
         fields: [:title, :description, :initials],
         where: where_university,
         page: params[:page] || 1, # Pagination
-        per_page: params[:page_size] || PAGE_SIZE
+        per_page: params[:page_size] || PAGE_SIZE,
+        misspellings: {edit_distance: 5, below:5}
         )
-      
+
       minimize = ActiveModel::Type::Boolean.new.cast(params[:minimize]) # Casting param to boolean and result minimization if necessary.
       result[:universities] = minimize ? university_result.map { |x| {id: x.id, title: x.title} } : university_result.map {|x| x.as_json(methods: :u_type)}
-      
+
       # Carreer search
       carreer_result = Carreer.search(
         params[:text],
@@ -49,7 +50,8 @@ class Api::V1::SearchController < ApplicationController
         where: where_carreer,
         includes: [:university,:campu],   # To prevent n+1 query.
         page: params[:page] || 1, # Pagination
-        per_page: params[:page_size] || PAGE_SIZE
+        per_page: params[:page_size] || PAGE_SIZE,
+        misspellings: {edit_distance: 5, below:5}
         )
       # Result minimization if necessary.
       result[:carreers] = minimize ? carreer_result.map { |x| {id: x.id, title: x.title, university_title: x.university.title, university_id:x.university.id} } : carreer_result.map {|x| x.as_json(methods: [:campu_name,:university_title,:university_initials])}
