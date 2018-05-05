@@ -33,7 +33,7 @@ export default {
         let params = { image: true };
 
         this.$API
-          .similar({ id: this.id, k: 5 })
+          .similar({ carreer_id: this.id, k: 5 })
           .then(response => {
             let promises = []
 

@@ -201,7 +201,6 @@ export default {
   @include media-up(md)
     width: calc(#{$breakpoint-md} - 2 * #{$padding})
     margin: $padding auto
-
   @include canvas
   @include d-flex(center, center)
   flex-direction: column
