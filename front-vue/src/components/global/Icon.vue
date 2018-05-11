@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-@import './../assets/stylesheets/main'
+@import './../../assets/stylesheets/main'
 
 .icon
   cursor: default

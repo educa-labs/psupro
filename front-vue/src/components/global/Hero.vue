@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import SearchBar from './SearchBar.vue';
+import SearchBar from './../SearchBar.vue';
 
 export default {
   components: {
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-@import './../assets/stylesheets/main'
+@import './../../assets/stylesheets/main'
 
 $hero-offset-height: 144px
 $logo-offset-height: 66px

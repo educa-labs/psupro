@@ -21,22 +21,22 @@ Vue.prototype.$l = store.state.locale; // Abbreviation
 
 import App from './App.vue';
 
-import BackButton from './components/BackButton.vue';
+import BackButton from './components/global/BackButton.vue';
 Vue.component('app-back-button', BackButton);
 
-import Hero from './components/Hero.vue';
+import Hero from './components/global/Hero.vue';
 Vue.component('app-hero', Hero);
 
-import Icon from './components/Icon.vue';
+import Icon from './components/global/Icon.vue';
 Vue.component('app-icon', Icon);
 
-import Navigator from './components/Navigator.vue';
+import Navigator from './components/global/Navigator.vue';
 Vue.component('app-navigator', Navigator);
 
-import NavigatorButton from './components/NavigatorButton.vue';
+import NavigatorButton from './components/global/NavigatorButton.vue';
 Vue.component('app-navigator-button', NavigatorButton);
 
-import Spinner from './components/Spinner.vue';
+import Spinner from './components/global/Spinner.vue';
 Vue.component('app-spinner', Spinner);
 
 new Vue({ el: '#app', router, store, render: h => h(App) });

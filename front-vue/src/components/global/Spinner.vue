@@ -3,7 +3,7 @@
 </template>
 
 <style lang="sass" scoped>
-@import './../assets/stylesheets/main'
+@import './../../assets/stylesheets/main'
 
 .spinner
   padding-top: 2rem
