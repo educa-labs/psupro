@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs-container">
+  <div class="tabs-container" v-if="fetched">
     <ul class="tabs z-depth-1" ref="tabs">
       <li v-for="(route, index) in routes" :key="`tab-${index}`"
         class="tab" :class="{ active: active === index }"
@@ -17,20 +17,26 @@
       </transition>
     </div>
   </div>
+  
+  <app-tabs-fetching v-else></app-tabs-fetching>
 </template>
 
 <script>
+import TabsFetching from './TabsFetching.vue';
+
 export default {
+  components: {
+    'app-tabs-fetching': TabsFetching,
+  },
   props: {
-    transition: { type: String, required: true },
+    routes: { type: Array },
+    transition: { type: String },
+
+    fetched: { type: Boolean, default: true },
   },
   data() {
     return {
       active: 0,
-      routes: [
-        { tab: this.$l.cCareer.information, name: 'career' },
-        { tab: this.$l.cCareer.similarCareers, name: 'similar-careers' },
-      ],
 
       tabs: null,
 
@@ -92,22 +98,26 @@ export default {
     },
   },
   created() {
-    for (let [index, route] of this.routes.entries()) {
-      if (route.name === this.$route.name) {
-        this.active = index;
+    if (this.fetched) {
+      for (let [index, route] of this.routes.entries()) {
+        if (route.name === this.$route.name) {
+          this.active = index;
 
-        break;
+          break;
+        }
       }
     }
   },
   mounted() {
-    this.tabs = Array.from(this.$refs.tabs.children).filter(li =>
-      li.className.match(/\btab\b/)
-    );
+    if (this.fetched) {
+      this.tabs = Array.from(this.$refs.tabs.children).filter(li =>
+        li.className.match(/\btab\b/)
+      );
 
-    this.adjust();
+      this.adjust();
 
-    window.addEventListener('resize', this.adjust);
+      window.addEventListener('resize', this.adjust);
+    }
   },
 };
 </script>

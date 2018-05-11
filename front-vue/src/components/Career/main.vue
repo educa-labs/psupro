@@ -1,28 +1,32 @@
 <template>
-  <div class="career-container" v-if="fetched">
-    <div class="card career z-depth-1">
-      <div class="cover" :style="{ backgroundImage: `url(${career.cover})` }">
-        <div class="overlay"></div>
+  <div>
+    <div class="career-container" v-if="fetched">
+      <div class="card career z-depth-1">
+        <div class="image" :style="{ backgroundImage: `url(${career.cover})` }">
+          <div class="overlay"></div>
 
-        <app-back-button><app-icon>arrow_back</app-icon></app-back-button>
+          <app-back-button><app-icon>arrow_back</app-icon></app-back-button>
+        </div>
+
+        <div class="card-title">
+          <div>{{ career.title }} {{ career.university.initials }}</div>
+        </div>
+
+        <app-tabs :routes="routes" :transition="transition"></app-tabs>
       </div>
+    </div> 
 
-      <div class="card-title">
-        <div>{{ career.title }} {{ career.university.initials }}</div>
-      </div>
-
-      <app-tabs :transition="transition"></app-tabs>
-    </div>
-  </div> 
-
-  <app-spinner v-else></app-spinner>
+    <app-fetching v-else></app-fetching>
+  </div>
 </template>
 
 <script>
-import Tabs from './Tabs.vue';
+import Fetching from './Fetching.vue';
+import Tabs from './../Tabs/Tabs.vue';
 
 export default {
   components: {
+    'app-fetching': Fetching,
     'app-tabs': Tabs,
   },
   props: {
@@ -31,6 +35,10 @@ export default {
   data() {
     return {
       career: null,
+      routes: [
+        { tab: this.$l.cCareer.information, name: 'career' },
+        { tab: this.$l.cCareer.similarCareers, name: 'similar-careers' },
+      ],
 
       fetched: false,
 
@@ -67,7 +75,9 @@ export default {
       this.$API.careers(this.id, { params }).then(response => {
         this.career = response;
 
-        this.fetched = true;
+        setTimeout(() => {
+          this.fetched = true;
+        }, 5000)
       });
     },
   },
@@ -94,17 +104,17 @@ export default {
   @include media-up(md)
     padding: 0 $padding
 
-  .career
+  & > .career
     @include media-up(md)
       width: calc(#{$breakpoint-md} - 2 * #{$padding})
       margin: $padding auto
 
-.career
+.career-container > .career
   @include media-down(sm)
     border-radius: 0
     box-shadow: none
 
-.career > .cover
+.career-container > .career > .image
   height: 175px
 
   @include media-up(sm)
@@ -114,9 +124,9 @@ export default {
   @include p-relative
 
   & > .overlay
-    @include p-absolute(0, 0, 0, 0 ,0)
+    background: linear-gradient(to top, transparent, rgba(0, 0, 0, .3))
 
-    background: linear-gradient(to top, transparent, rgba(0, 0, 0, .3));
+    @include p-absolute(0, 0, 0, 0 ,0)
 
   & > .back-button
     color: $c-white
@@ -124,8 +134,10 @@ export default {
     @include icon(28px)
     @include p-absolute(null, 1rem, null, null, 1rem)
 
-.career > .card-title
+.career-container > .career > .card-title
   z-index: 1
+
+  min-height: 75px
 
   background-color: $c-main
 

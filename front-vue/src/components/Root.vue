@@ -86,7 +86,7 @@ export default {
 #root > main > .content > .child-view
   min-height: 100%
 
-  transition: all .4s cubic-bezier(.55, 0, .1, 1)
+  transition: transform .4s cubic-bezier(.55, 0, .1, 1), opacity .4s cubic-bezier(.55, 0, .1, 1)
 
   @include p-absolute(null, null, 0, null, 0)
 

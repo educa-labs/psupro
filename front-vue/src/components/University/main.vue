@@ -1,30 +1,34 @@
 <template>
-  <div class="university-container" v-if="fetched">
-    <div class="card university z-depth-1">
-      <div class="cover" :style="{ backgroundImage: `url(${university.cover})` }">
-        <div class="overlay"></div>
+  <div>
+    <div class="university-container" v-if="fetched">
+      <div class="card university z-depth-1">
+        <div class="image" :style="{ backgroundImage: `url(${university.cover})` }">
+          <div class="overlay"></div>
 
-        <app-back-button><app-icon>arrow_back</app-icon></app-back-button>
+          <app-back-button><app-icon>arrow_back</app-icon></app-back-button>
 
-        <div class="profile z-depth-2"><div :style="{ backgroundImage: `url(${university.profile})` }"></div></div>
+          <div class="profile z-depth-2"><div :style="{ backgroundImage: `url(${university.profile})` }"></div></div>
+        </div>
+
+        <div class="card-title">
+          <div>{{ university.title }} <div>{{ university.initials }}</div></div>
+        </div>
+
+        <app-tabs :routes="routes" :transition="transition"></app-tabs>
       </div>
+    </div> 
 
-      <div class="card-title">
-        <div>{{ university.title }} <div>{{ university.initials }}</div></div>
-      </div>
-
-      <app-tabs :transition="transition"></app-tabs>
-    </div>
-  </div> 
-
-  <app-spinner v-else></app-spinner>
+    <app-fetching v-else></app-fetching>
+  </div>
 </template>
 
 <script>
-import Tabs from './Tabs.vue';
+import Fetching from './Fetching.vue';
+import Tabs from './../Tabs/Tabs.vue';
 
 export default {
   components: {
+    'app-fetching': Fetching,
     'app-tabs': Tabs,
   },
   props: {
@@ -33,6 +37,10 @@ export default {
   data() {
     return {
       university: null,
+      routes: [
+        { tab: this.$l.cUniversity.information, name: 'university' },
+        { tab: this.$l.cUniversity.careers, name: 'careers' },
+      ],
 
       fetched: false,
 
@@ -71,7 +79,9 @@ export default {
         .then(response => {
           this.university = response;
 
-          this.fetched = true;
+          setTimeout(() => {
+            this.fetched = true;
+          }, 5000)
         });
     },
   },
@@ -98,17 +108,17 @@ export default {
   @include media-up(md)
     padding: 0 $padding
 
-  .university
+  & > .university
     @include media-up(md)
       width: calc(#{$breakpoint-md} - 2 * #{$padding})
       margin: $padding auto
 
-.university
+.university-container > .university
   @include media-down(sm)
     border-radius: 0
     box-shadow: none
 
-.university > .cover
+.university-container > .university > .image
   height: 175px
 
   @include media-up(sm)
@@ -118,9 +128,9 @@ export default {
   @include p-relative
 
   & > .overlay
-    @include p-absolute(0, 0, 0, 0 ,0)
+    background: linear-gradient(to top, transparent, rgba(0, 0, 0, .3))
 
-    background: linear-gradient(to top, transparent, rgba(0, 0, 0, .3));
+    @include p-absolute(0, 0, 0, 0 ,0)
 
   & > .back-button
     color: $c-white
@@ -129,9 +139,9 @@ export default {
     @include p-absolute(null, 1rem, null, null, 1rem)
 
   & > .profile
-    $size: 75px
-
     background-color: $c-white
+
+    $size: 75px
 
     @include circle($size) 
     @include d-flex(center, center)
@@ -141,7 +151,7 @@ export default {
       @include background-image
       @include size(66%)
 
-.university > .card-title
+.university-container > .university > .card-title
   z-index: 1
 
   min-height: 75px

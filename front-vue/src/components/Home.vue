@@ -28,15 +28,17 @@ export default {
     let threshold = 64; // height: 48px, margin-bottom: 1rem (16px)
 
     window.onscroll = () => {
-      if (breakpoints.includes(this.$mq)) {
-        if (window.pageYOffset > threshold && !this.closed) {
-          this.closed = true;
-          this.sticky = true;
-        } else if (window.pageYOffset <= threshold && this.closed) {
-          this.closed = false;
-          this.sticky = false;
+      requestAnimationFrame(() => {
+        if (breakpoints.includes(this.$mq)) {
+          if (window.pageYOffset > threshold && !this.closed) {
+            this.closed = true;
+            this.sticky = true;
+          } else if (window.pageYOffset <= threshold && this.closed) {
+            this.closed = false;
+            this.sticky = false;
+          }
         }
-      }
+      });
     };
   },
 };
