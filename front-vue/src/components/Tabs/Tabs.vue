@@ -68,18 +68,22 @@ export default {
       );
     },
     adjust() {
-      this.$refs.indicator.style.right = `${this.get('right')}px`;
-      this.$refs.indicator.style.left = `${this.get('left')}px`;
+      if (this.$refs.indicator) {
+        this.$refs.indicator.style.right = `${this.get('right')}px`;
+        this.$refs.indicator.style.left = `${this.get('left')}px`;
+      }
     },
     animateIndicator(property) {
-      this.$a({
-        targets: this.$refs.indicator,
-        duration: this.duration,
-        easing: 'easeInOutQuad',
-        ...(property === 'right'
-          ? { right: this.get('right') }
-          : { left: this.get('left') }),
-      });
+      if (this.$refs.indicator) {
+        this.$a({
+          targets: this.$refs.indicator,
+          duration: this.duration,
+          easing: 'easeInOutQuad',
+          ...(property === 'right'
+            ? { right: this.get('right') }
+            : { left: this.get('left') }),
+        });
+      }
     },
     animateIndicatorToRight() {
       this.animateIndicator('right');
