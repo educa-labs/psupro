@@ -86,7 +86,7 @@ $size: 75px
       border-radius: 2px
 
     & > div:first-child
-      height: 1rem
+      height: 1.5rem
 
       margin-bottom: .5rem
 

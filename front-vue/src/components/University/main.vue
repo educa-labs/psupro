@@ -79,9 +79,7 @@ export default {
         .then(response => {
           this.university = response;
 
-          setTimeout(() => {
-            this.fetched = true;
-          }, 5000)
+          this.fetched = true;
         });
     },
   },

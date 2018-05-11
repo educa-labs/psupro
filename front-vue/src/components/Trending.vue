@@ -108,7 +108,7 @@ export default {
     grid-area: nth-4
 
   @media (min-width: 576px)
-    padding: 1rem 5%
+    padding: 1rem
 
   @media (min-width: 768px)
     padding: 1rem 10%

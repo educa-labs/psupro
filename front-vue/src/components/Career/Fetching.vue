@@ -75,17 +75,11 @@ $size: 75px
     margin-right: calc(2 * #{$size} - 1rem)
 
     & > div
-      border-radius: 2px
-
-    & > div:first-child
-      height: 1rem
+      height: 1.5rem
 
       margin-bottom: .5rem
 
-    & > div:last-child
-      height: 1.1rem
-
-      margin-bottom: 0
+      border-radius: 2px
 
 .shimmer-background
   animation: shimmer 2s cubic-bezier(.55, 0, .1, 1) infinite

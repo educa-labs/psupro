@@ -75,9 +75,7 @@ export default {
       this.$API.careers(this.id, { params }).then(response => {
         this.career = response;
 
-        setTimeout(() => {
-          this.fetched = true;
-        }, 5000)
+        this.fetched = true;
       });
     },
   },
