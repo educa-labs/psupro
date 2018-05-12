@@ -22,6 +22,16 @@ def encode_picture(file,output)
   end
 end
 
+admin = User.create! do |user|
+  user.email = "admin@asd.cl"
+  user.password = "123123"
+  user.password_confirmation = "123123"
+  user.first_name = "ignacio"
+  user.last_name =  "soffia"
+  user.admin = true
+end
+
+
 if ENV['seed_pictures'] == '1'
   University.all.each do |u|
     u.profile_picture = u.id.to_s
