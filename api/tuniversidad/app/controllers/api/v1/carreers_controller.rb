@@ -1,5 +1,5 @@
 class Api::V1::CarreersController < ApplicationController
-  before_action :authenticate_with_token_admin!, only: [:create,:update]
+  before_action :authenticate_with_token_admin!, only: [:create,:update, :delete]
 
   def show
     ca = Carreer.where(id:params[:id]).includes(:campu,:weighing,:area,:university).limit(1).first
@@ -35,6 +35,16 @@ class Api::V1::CarreersController < ApplicationController
       render json: carreer, status:201
     else
       render json: {errors: {carreer: carreer.errors, weighing:carreer.weighing.errors}}, status:422
+    end
+  end
+
+  def destroy
+    carreer = Carreer.find(params[:id])
+    if carreer
+      carreer.destroy
+      render  json: { status: 'success'}, status:200
+    else
+      render  json: { status: 'failure'}, status:422
     end
   end
 
