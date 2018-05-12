@@ -13,6 +13,7 @@ import News from './News.vue';
 import Trending from './Trending.vue';
 
 export default {
+  name: 'home',
   components: {
     'app-news': News,
     'app-trending': Trending,

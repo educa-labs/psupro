@@ -47,22 +47,6 @@ export default {
       transition: '',
     };
   },
-  watch: {
-    $route(to, from) {
-      let routes = ['university', 'careers'];
-
-      if (
-        routes.includes(to.name) &&
-        routes.includes(from.name) &&
-        to.params.id !== from.params.id
-      ) {
-        this.fetch();
-      }
-      if (routes.includes(to.name) && !routes.includes(from.name)) {
-        this.fetch();
-      }
-    },
-  },
   methods: {
     reset() {
       this.fetched = false;

@@ -10,8 +10,8 @@
       </mq-layout>
 
       <div class="content">
-        <transition :name="transition">
-          <keep-alive><router-view class="child-view"></router-view></keep-alive>
+        <transition :name="transition" :mode="mode">
+          <keep-alive :include="/home/"><router-view class="child-view" :key="key"></router-view></keep-alive>
         </transition>
       </div>
     </main>
@@ -28,29 +28,26 @@ export default {
   data() {
     return {
       transition: 'slide-right',
+      mode: '',
     };
   },
+  computed: {
+    key() {
+      return get(this.$route, 'params.id');
+    },
+  },
   beforeRouteUpdate(to, from, next) {
-    if (to.name === 'home')
-      this.transition = 'slide-right';
-    else if (
-      from.name === 'search'
-    )
-      this.transition = 'slide-left';
-    else if (
-      to.name === 'search'
-    )
-      this.transition = 'slide-right';
-    else if (to.name === 'university' && from.name === 'career')
-      this.transition = 'slide-right';
-    else if (to.name === 'careers' && from.name === 'career')
-      this.transition = 'slide-right';
-    else if (to.name === 'career' && from.name === 'careers')
-      this.transition = 'slide-left';
-    else if (to.name === 'university' && from.name === 'home')
-      this.transition = 'appear-top';
-    else
-      this.transition = 'appear-top';
+    this.transition = '';
+    this.mode = '';
+
+    if (to.name === 'home') this.transition = 'leave-bottom';
+    else if (from.name === 'home') this.transition = 'enter-top';
+    else if (to.name === 'search') this.transition = 'slide-right';
+    else if (from.name === 'search') this.transition = 'slide-left';
+    else {
+      this.transition = 'replace';
+      this.mode = 'out-in';
+    }
 
     next();
   },
@@ -100,12 +97,30 @@ export default {
 
     opacity: 0
   
-  &.appear-top-enter
+  &.leave-bottom-enter
+    opacity: 0
+
+  &.leave-bottom-leave-active
     transform: translateY(150px)
 
     opacity: 0
 
-  &.appear-top-leave-active
+  &.enter-top-enter
+    transform: translateY(150px)
+
+    opacity: 0
+
+  &.enter-top-leave-active
+    opacity: 0
+
+  &.replace-enter
+    transform: translateY(150px)
+
+    opacity: 0
+
+  &.replace-leave-active
+    transform: translateY(100px)
+
     opacity: 0
 </style>
 
