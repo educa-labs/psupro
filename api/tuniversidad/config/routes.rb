@@ -12,7 +12,7 @@ Rails.application.routes.draw do
         resources :carreers, only: [:index]
         resources :campus, only: [:index]
       end
-      resources :carreers, only: [:index, :show]
+      resources :carreers, only: [:index, :show,:create,:update]
       resources :cities, only: [:show,:index] do
         resources :universities, only: [:index]
         resources :campus, only: [:index]
