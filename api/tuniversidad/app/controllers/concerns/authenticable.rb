@@ -10,4 +10,10 @@ module Authenticable
     render json: { errors: "authentication error" },
            status: :unauthorized unless current_user.present?
   end
+
+  def authenticate_with_token_admin!
+    render json: { errors: "authentication error" },
+           status: :unauthorized unless (current_user.present? && current_user.admin)
+  end
+
 end

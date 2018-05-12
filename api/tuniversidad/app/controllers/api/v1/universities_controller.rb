@@ -1,5 +1,5 @@
 class Api::V1::UniversitiesController < ApplicationController
-  #before_action :authenticate_with_token!, only: [:show,:index]
+  before_action :authenticate_with_token_admin!, only: [:create,:update]
   respond_to :json
 
   def show
@@ -17,6 +17,29 @@ class Api::V1::UniversitiesController < ApplicationController
     end
   end
 
+
+  def create
+    attributes = university_params
+    uni = University.new(attributes)
+    if uni.save
+      render json: uni, status:201
+    else
+      render json: {errors: uni.errors}, status:422
+    end
+  end
+
+
+  def update
+    attributes = university_params
+    uni = University.find(params[:id])
+    uni.update(attributes)
+    if uni.save
+      render json: uni, status:201
+    else
+      render json: {errors: uni.errors}, status:422
+    end
+  end
+
   def index
     # /cities/city_id/universities .
     if params[:city_id]
@@ -25,4 +48,11 @@ class Api::V1::UniversitiesController < ApplicationController
       render json: University.all.includes(:university_type).order("title asc"), status:200
     end
   end
+
+  private
+
+  def university_params
+    params.require(:university).permit(:foundation,:website,:freeness,:motto,:nick,:initials,:students,:teachers,:degrees,:postgraduates,:doctorates,:description,:visits,:title,:level,:university_type_id)
+  end
+
 end
