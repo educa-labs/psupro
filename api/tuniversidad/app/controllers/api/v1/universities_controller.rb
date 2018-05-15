@@ -6,8 +6,10 @@ class Api::V1::UniversitiesController < ApplicationController
     u = University.find(params[:id])
     if u
       if params[:image].nil?
-        u.visits += 1 # Update count for most popular.
-        u.save
+        if current_user && !current_user.admin
+          u.visits += 1 # Update count for most popular.
+          u.save
+        end
         render json:u, status: 200
       else
         render json:{university: u, cover:u.encoded_cover_picture,profile:u.encoded_profile_picture} # Return images.
