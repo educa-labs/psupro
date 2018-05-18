@@ -1,5 +1,5 @@
 class Api::V1::CampusController < ApplicationController
-  #before_action :authenticate_with_token!, only: [:show,:index]
+  before_action :authenticate_with_token_admin!, only: [:create,:update]
 
   def show
     a = Campu.find_by(id: params[:id])
@@ -7,6 +7,27 @@ class Api::V1::CampusController < ApplicationController
       render json:a, status:200
     else
       render json:{errors:"invalid id"}, status:404
+    end
+  end
+
+  def create
+    attributes = campu_params
+    campu = Campu.new(attributes)
+    if campu.save
+      render json:campu, status:201
+    else
+      render json: {errors: campu.errors}, status: 422
+    end
+  end
+
+  def update
+    attributes = campu_params
+    campu = Campu.find(params[:id])
+    campu.update(attributes)
+    if campu.save
+      render json:campu, status:201
+    else
+      render json: {errors: campu.errors}, status:422
     end
   end
 
@@ -20,6 +41,12 @@ class Api::V1::CampusController < ApplicationController
     else
       render json:Campu.all, status:200
     end
+  end
+
+  private
+
+  def campu_params
+    params.require(:campu).permit(:title,:university_id, :lat, :long, :address,:city_id)
   end
 
 end
