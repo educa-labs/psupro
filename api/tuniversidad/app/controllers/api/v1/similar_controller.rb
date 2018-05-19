@@ -7,7 +7,7 @@ class Api::V1::SimilarController < ApplicationController
     carreer_id = [params[:carreer_id].to_i]
     k = params[:k].to_i + 1
     request_result = request_similar(carreer_id,k)
-    deleted = request_result.delete(:carrer_id)
+    deleted = request_result.delete(carreer_id[0])
     if deleted.nil?
       request_result.pop()
     end
