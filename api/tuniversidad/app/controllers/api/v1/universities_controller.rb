@@ -1,5 +1,5 @@
 class Api::V1::UniversitiesController < ApplicationController
-  before_action :authenticate_with_token_admin!, only: [:create,:update]
+  before_action :authenticate_with_token_admin!, only: [:create,:update, :destroy]
   respond_to :json
 
   def show
@@ -49,6 +49,17 @@ class Api::V1::UniversitiesController < ApplicationController
     else
       render json: University.all.includes(:university_type).order("title asc"), status:200
     end
+  end
+
+  def destroy
+    u = University.find(params[:id])
+    if u
+      u.destroy
+      render json: {status: "success"}, status:200
+    else
+      render json: {status: "failure"}, status:422
+    end
+
   end
 
   private

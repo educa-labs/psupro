@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       root 'main#home'
       resources :users, only: [:show,:create,:update,:destroy]
       resources :sessions, only: [:create, :destroy]
-      resources :universities, only: [:create,:update]
+      resources :universities, only: [:create,:update,:destroy]
       resources :universities, only: [:index,:show] do
         resources :carreers, only: [:index]
         resources :campus, only: [:index]
