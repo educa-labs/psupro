@@ -17,7 +17,7 @@ Rails.application.routes.draw do
         resources :universities, only: [:index]
         resources :campus, only: [:index]
       end
-      resources :campus, only: [:index,:show,:create,:update]
+      resources :campus, only: [:index,:show,:create,:update, :destroy]
       resources :goals, only: [:index,:create,:update,:show,:destroy]
       resources :search, only: [:index]
       resources :regions, only: [:show,:index] do

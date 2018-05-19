@@ -1,5 +1,5 @@
 class Api::V1::CampusController < ApplicationController
-  before_action :authenticate_with_token_admin!, only: [:create,:update]
+  before_action :authenticate_with_token_admin!, only: [:create,:update,:destroy]
 
   def show
     a = Campu.find_by(id: params[:id])
@@ -40,6 +40,16 @@ class Api::V1::CampusController < ApplicationController
       render json:Campu.where(university_id: params[:university_id]), status:200
     else
       render json:Campu.all, status:200
+    end
+  end
+
+  def destroy
+    campu = Campu.find(params[:id])
+    if campu
+      campu.destroy
+      render json: {status: "success"}, status:200
+    else
+      render json: {status: "failure"}, status:422
     end
   end
 
