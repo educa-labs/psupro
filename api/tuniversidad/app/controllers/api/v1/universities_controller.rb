@@ -24,6 +24,7 @@ class Api::V1::UniversitiesController < ApplicationController
     attributes = university_params
     uni = University.new(attributes)
     if uni.save
+      uni.update_pictures(picture_params)
       render json: uni, status:201
     else
       render json: {errors: uni.errors}, status:422
@@ -36,6 +37,7 @@ class Api::V1::UniversitiesController < ApplicationController
     uni = University.find(params[:id])
     uni.update(attributes)
     if uni.save
+      uni.update_pictures(picture_params)
       render json: uni, status:201
     else
       render json: {errors: uni.errors}, status:422
@@ -61,11 +63,15 @@ class Api::V1::UniversitiesController < ApplicationController
     end
 
   end
-
+  
   private
 
   def university_params
     params.require(:university).permit(:foundation,:website,:freeness,:motto,:nick,:initials,:students,:teachers,:degrees,:postgraduates,:doctorates,:description,:visits,:title,:level,:university_type_id)
+  end
+
+  def picture_params
+    params.permit(:cover,:profile,:cover_extension,:profile_extension)
   end
 
 end

@@ -32,7 +32,6 @@ class University < ApplicationRecord
     self.university_type.title
   end
 
-
   # Returns string with base64 profile image for injection in html.
   def encoded_profile_picture
     "data:image/#{self.profile_extension};base64,#{File.open('public/images/universities/profile/' + self.profile_picture,'rb').read}"
@@ -54,15 +53,32 @@ class University < ApplicationRecord
   end
   # Creates file with base64 profile image data.
   def save_profile_picture(data)
-    File.open('public/images/universities/'+ self.profile_picture,'w') do |f|
+    File.open('public/images/universities/cover/'+ self.profile_picture,'w') do |f|
       f.write data
     end
   end
 
   # Creates file with base64 cover image data.
   def save_cover_picture(data)
-    File.open('public/images/universities/'+ self.cover_picture,'w') do |f|
+    File.open('public/images/universities/profile/'+ self.cover_picture,'w') do |f|
       f.write data
     end
   end
+
+  def update_pictures(params)
+    puts "SAVING PICTURES"
+    if params[:cover] && params[:cover_extension]
+      self.cover_picture = self.id
+      self.cover_extension = params[:cover_extension]
+      self.save_cover_picture(params[:cover])
+    end
+    if params[:profile] && params[:profile_extension]
+      puts "SAVING Profile"
+      self.profile_picture = self.id
+      self.profile_extension = params[:profile_extension]
+      self.save_profile_picture(params[:profile])
+    end
+  end 
+
+
 end
