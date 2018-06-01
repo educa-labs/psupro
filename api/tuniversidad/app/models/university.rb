@@ -53,14 +53,16 @@ class University < ApplicationRecord
   end
   # Creates file with base64 profile image data.
   def save_profile_picture(data)
-    File.open('public/images/universities/cover/'+ self.profile_picture,'w') do |f|
+    File.open('public/images/universities/profile/'+ self.profile_picture,'w') do |f|
+      data.gsub!("\n",'')
       f.write data
     end
   end
 
   # Creates file with base64 cover image data.
   def save_cover_picture(data)
-    File.open('public/images/universities/profile/'+ self.cover_picture,'w') do |f|
+    File.open('public/images/universities/cover/'+ self.cover_picture,'w') do |f|
+      data.gsub!("\n",'')
       f.write data
     end
   end
@@ -78,6 +80,7 @@ class University < ApplicationRecord
       self.profile_extension = params[:profile_extension]
       self.save_profile_picture(params[:profile])
     end
+    self.save()
   end 
 
 
