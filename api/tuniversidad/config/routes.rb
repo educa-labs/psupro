@@ -29,7 +29,7 @@ Rails.application.routes.draw do
       resources :essays, only:[:index,:create,:destroy]
       resources :progress, only: [:index]
       resources :objectives, on: [:index,:create]
-      resources :news, only: [:index,:show]
+      resources :news, only: [:index,:show,:create, :update,:destroy]
       resources :reset_passwords, only: [:index]
       resources :prediction, only: [:index,:show]
       resources :recommendation, only: [:index,:create,:update]
