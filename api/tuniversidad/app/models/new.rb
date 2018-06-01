@@ -12,7 +12,7 @@ class New < ApplicationRecord
 
 
   def save_picture(data)
-    File.open('public/images/news/'+ self.cover_picture,'w') do |f|
+    File.open('public/images/news/'+ self.picture,'w') do |f|
       data.gsub!("\n",'')
       f.write data
     end
@@ -22,8 +22,8 @@ class New < ApplicationRecord
   def update_picture(params)
     puts "SAVING PICTURES"
     if params[:picture] && params[:extension]
-      self.cover_picture = self.id
-      self.cover_extension = params[:extension]
+      self.picture = self.id
+      self.extension = params[:extension]
       self.save_picture(params[:picture])
       self.save
     end
