@@ -32,8 +32,8 @@ class Api::V1::NewsController < ApplicationController
 
   def update
     attributes = new_params
-    nw = New.find(params[:id])
-    if nw.save
+    nw = New.find_by(id:params[:id])
+    if nw.update(attributes)
       nw.update_picture(picture_params)
       render json: nw, status:201
     else
@@ -47,7 +47,7 @@ class Api::V1::NewsController < ApplicationController
   private
 
   def new_params
-    params.require(:new).permit(:body,:title,:lowering,)
+    params.require(:new).permit(:body,:title,:lowering,:author)
   end
 
   def picture_params
