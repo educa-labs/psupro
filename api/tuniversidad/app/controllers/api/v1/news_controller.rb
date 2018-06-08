@@ -42,6 +42,13 @@ class Api::V1::NewsController < ApplicationController
   end 
 
   def destroy
+    nw = New.find_by(id:params[:id])
+    if nw
+      nw.destroy
+      render json: {status: "success"}, status:200
+    else
+      render json: {status: "failure"}, status:422
+    end
   end
 
   private
