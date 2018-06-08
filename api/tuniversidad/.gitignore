@@ -17,5 +17,8 @@
 .byebug_history
 .idea/*
 /solr/*
-/config/secrets.yml
-/config/database.yml
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
