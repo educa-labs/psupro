@@ -7,16 +7,17 @@ Rails.application.routes.draw do
       root 'main#home'
       resources :users, only: [:show,:create,:update,:destroy]
       resources :sessions, only: [:create, :destroy]
+      resources :universities, only: [:create,:update,:destroy]
       resources :universities, only: [:index,:show] do
         resources :carreers, only: [:index]
         resources :campus, only: [:index]
       end
-      resources :carreers, only: [:index, :show]
+      resources :carreers, only: [:index, :show,:create,:update,:destroy]
       resources :cities, only: [:show,:index] do
         resources :universities, only: [:index]
         resources :campus, only: [:index]
       end
-      resources :campus, only: [:index,:show]
+      resources :campus, only: [:index,:show,:create,:update, :destroy]
       resources :goals, only: [:index,:create,:update,:show,:destroy]
       resources :search, only: [:index]
       resources :regions, only: [:show,:index] do
@@ -28,7 +29,7 @@ Rails.application.routes.draw do
       resources :essays, only:[:index,:create,:destroy]
       resources :progress, only: [:index]
       resources :objectives, on: [:index,:create]
-      resources :news, only: [:index,:show]
+      resources :news, only: [:index,:show,:create, :update,:destroy]
       resources :reset_passwords, only: [:index]
       resources :prediction, only: [:index,:show]
       resources :recommendation, only: [:index,:create,:update]
