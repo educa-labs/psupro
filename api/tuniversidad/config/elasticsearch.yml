@@ -1,17 +1,17 @@
 development:
-  host: 'http://elasticsearch:9200'
+  host: <%= ENV.fetch('ELASTIC') %>
   transport_options:
     request:
       timeout: 10
 
 test:
-  host: 'http://localhost:9200'
+  host: <%= ENV.fetch('ELASTIC') %>
   transport_options:
     request:
       timeout: 10
 
 production:
-  host: 'http://localhost:9200'
+  host: <%= ENV.fetch('ELASTIC') %>
   transport_options:
     request:
       timeout: 10
